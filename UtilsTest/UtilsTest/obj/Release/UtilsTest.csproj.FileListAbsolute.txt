@@ -1,0 +1,14 @@
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\bin\Release\UtilsTest.dll
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\bin\Release\UtilsTest.pdb
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\bin\Release\SqlTest1.exe
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\bin\Release\SqlTest1.pdb
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\obj\Release\UtilsTest.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\obj\Release\UtilsTest.dll
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\obj\Release\UtilsTest.pdb
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\bin\Release\UtilsTest.dll
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\bin\Release\UtilsTest.pdb
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\bin\Release\SqlTest1.exe
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\bin\Release\SqlTest1.pdb
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\obj\Release\UtilsTest.csprojResolveAssemblyReference.cache
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\obj\Release\UtilsTest.dll
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\obj\Release\UtilsTest.pdb

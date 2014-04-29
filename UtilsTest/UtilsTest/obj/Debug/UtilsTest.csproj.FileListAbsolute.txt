@@ -1,0 +1,21 @@
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\bin\Debug\UtilsTest.dll
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\bin\Debug\UtilsTest.pdb
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\bin\Debug\SqlTest1.exe
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\bin\Debug\SqlTest1.pdb
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\obj\Debug\UtilsTest.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\obj\Debug\UtilsTest.dll
+C:\Users\Administrator\Documents\Visual Studio 2013\Projects\SqlTest1\UtilsTest\UtilsTest\obj\Debug\UtilsTest.pdb
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\bin\Debug\UtilsTest.dll
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\bin\Debug\UtilsTest.pdb
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\bin\Debug\SqlTest1.exe
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\bin\Debug\SqlTest1.pdb
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\obj\Debug\UtilsTest.csprojResolveAssemblyReference.cache
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\obj\Debug\UtilsTest.dll
+C:\Users\xd\Desktop\test\ScriptQL\UtilsTest\UtilsTest\obj\Debug\UtilsTest.pdb
+C:\Users\xd\Documents\Visual Studio 2013\Projects\ScriptQL\UtilsTest\UtilsTest\bin\Debug\UtilsTest.dll
+C:\Users\xd\Documents\Visual Studio 2013\Projects\ScriptQL\UtilsTest\UtilsTest\bin\Debug\UtilsTest.pdb
+C:\Users\xd\Documents\Visual Studio 2013\Projects\ScriptQL\UtilsTest\UtilsTest\bin\Debug\SqlTest1.exe
+C:\Users\xd\Documents\Visual Studio 2013\Projects\ScriptQL\UtilsTest\UtilsTest\bin\Debug\SqlTest1.pdb
+C:\Users\xd\Documents\Visual Studio 2013\Projects\ScriptQL\UtilsTest\UtilsTest\obj\Debug\UtilsTest.csprojResolveAssemblyReference.cache
+C:\Users\xd\Documents\Visual Studio 2013\Projects\ScriptQL\UtilsTest\UtilsTest\obj\Debug\UtilsTest.dll
+C:\Users\xd\Documents\Visual Studio 2013\Projects\ScriptQL\UtilsTest\UtilsTest\obj\Debug\UtilsTest.pdb

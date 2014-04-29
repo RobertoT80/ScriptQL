@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ABF4FFC1-DBE8-40C6-86B6-63E1B717F16E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ScriptQL</RootNamespace>
+    <AssemblyName>ScriptQL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SqlDatabase.cs" />
+    <Compile Include="EventArgsFactory.cs" />
+    <Compile Include="frmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAbout.Designer.cs">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCreateDb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCreateDb.Designer.cs">
+      <DependentUpon>frmCreateDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDiscoverDetached.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDiscoverDetached.Designer.cs">
+      <DependentUpon>frmDiscoverDetached.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEditServers.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEditServers.Designer.cs">
+      <DependentUpon>frmEditServers.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ListViewExtended.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomFactory.cs" />
+    <Compile Include="SqlSchema.cs" />
+    <Compile Include="SqlInstance.cs" />
+    <Compile Include="SqlTable.cs" />
+    <Compile Include="SqlSystemDatabase.cs" />
+    <Compile Include="tabTables.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="utils.cs" />
+    <EmbeddedResource Include="frmAbout.resx">
+      <DependentUpon>frmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCreateDb.resx">
+      <DependentUpon>frmCreateDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDiscoverDetached.resx">
+      <DependentUpon>frmDiscoverDetached.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEditServers.resx">
+      <DependentUpon>frmEditServers.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Main.resx">
+      <DependentUpon>Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\DataSources\SqlServer.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\109_AllAnnotations_Complete_16x16_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\AF16_CheckGreen.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Arrow_RedoRetry_16xMD_color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Arrow_UndoRevertRestore_16xLG_color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Checked-outbyAnotherUser_Color_13301.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Checked-outbyAnotherUser_Color_13301_multi.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\CheckOutforEdit_13187.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\FlagThread-Flagged,NotHot,NotSelected_10392_11x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\FlagThread-Flaggedgreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\folder_Open_16xMD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Gear.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\GoToParentFolderHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\New_Folder_Command.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\NewCardHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\NewDocumentHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\NewFolderHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\OpenHL.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\OpenSelectedItemHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\repfld.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\saveHS.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\StatusAnnotations_Complete_and_ok_16xLG_color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\StatusAnnotations_Help_and_inconclusive_16xLG_color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\taskbrowse.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\timer_16xLG.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\whee16l.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\wheel.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\XSDSchema_GraphRightToLeft.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\StatusAnnotations_Critical_16xLG_color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\StatusAnnotations_Play_16xLG_color.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\restorefromfolder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Database-Add-icon copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\DB_CONNECT_16.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\Error_red_21x20_exp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\PendingAdd_13303.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\PendingDelete_13298.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\document-save-2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\112_Plus_Green_24x24_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Icons\112_Minus_Green_24x24_72.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
