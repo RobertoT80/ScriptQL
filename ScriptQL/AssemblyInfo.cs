@@ -8,12 +8,12 @@ namespace ScriptQL
 {
     class AssemblyInfo
     {
-        //[assembly: AssemblyTitle("Mentina")] 
-        //[assembly: AssemblyDescription("Implements the SuperWidget product.")] 
+        //[assembly: AssemblyTitle("ScriptQL")] 
+        //[assembly: AssemblyDescription("")] 
         //[assembly: AssemblyConfiguration("")] 
-        //[assembly: AssemblyCompany("McArthur Widgets, Inc.")] 
-        //[assembly: AssemblyProduct("Super Widget Deluxe")] 
-        //[assembly: AssemblyCopyright("Copyright © McArthur Widgets 2012")] 
+        //[assembly: AssemblyCompany("")] 
+        //[assembly: AssemblyProduct("")] 
+        //[assembly: AssemblyCopyright("")] 
         //[assembly: AssemblyTrademark("")] 
         //[assembly: AssemblyCulture("")] 
     }
