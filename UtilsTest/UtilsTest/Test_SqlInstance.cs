@@ -43,28 +43,28 @@ namespace UtilsTest
             var connection = _s.TestConnectionSync();
             Assert.AreEqual(connection, true);
 
-            _s.getDbList(true);
-            _s.getDbList(false);
+            _s.GetDbList(true);
+            _s.GetDbList(false);
 
             var wrongName = RandomFactory.GetRandomListOfSpecialString(1, 64)[0];
-            var wrongdbcreated = _s.createDatabaseSync(wrongName);
+            var wrongdbcreated = _s.CreateDatabaseSync(wrongName);
             Assert.AreEqual(wrongdbcreated, false);
-            wrongdbcreated = _s.createDatabase(wrongName).Result;
+            wrongdbcreated = _s.CreateDatabase(wrongName).Result;
             Assert.AreEqual(wrongdbcreated, false);
 
             var goodNames = RandomFactory.GetRandomListOfString(8, 32);
             foreach (var goodName in goodNames)
             {
-                var dbcreated = _s.createDatabaseSync(goodName);
+                var dbcreated = _s.CreateDatabaseSync(goodName);
                 Assert.AreEqual(dbcreated, true);
                 var deleted = _s.Drop(goodName).Result;
                 Assert.AreEqual(deleted, true);
             }
             
             
-            _s.getPaths();
-            _s.getProperties();
-            _s.getPhysicalFiles();
+            _s.GetPaths();
+            _s.GetProperties();
+            _s.GetPhysicalFiles();
 
             Utils.SerializeBinary(new List<SqlInstance>(){_s});
             _s = null;

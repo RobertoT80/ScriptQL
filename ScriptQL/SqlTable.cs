@@ -64,12 +64,12 @@ namespace ScriptQL
         }
 
 
-        public void bindData()
+        public void BindData()
         {
-            getColumns();
+            GetColumns();
         }
 
-        private void getColumns() // unificate with getViews
+        private void GetColumns() // unificate with getViews
         {
             var sb = new StringBuilder();
             sb.Append("USE [@dbname] ");
@@ -115,11 +115,11 @@ namespace ScriptQL
         [Serializable]
         public class Column
         {
-            SqlTable parent;
+            SqlTable _parent;
             public string name { get; set; }
             public Column(SqlTable parent, string name)
             {
-                this.parent = parent;
+                this._parent = parent;
                 this.name = name;
             }
 

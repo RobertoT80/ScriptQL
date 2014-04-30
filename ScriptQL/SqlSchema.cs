@@ -25,13 +25,13 @@ namespace ScriptQL
             return name;
         }
 
-        public void bindData()
+        public void BindData()
         {
-            getTables();
+            GetTables();
             //this.getViews();
         }
 
-        private void getTables() // unificate with getViews
+        private void GetTables() // unificate with getViews
         {
             var sb = new StringBuilder();
             sb.Append("USE [@dbname] SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES ");
@@ -52,7 +52,7 @@ namespace ScriptQL
                 {
                     string s = rdr[0].ToString();
                     var oSqlTable = new SqlTable(this, s);
-                    addTableToSchema(oSqlTable);
+                    AddTableToSchema(oSqlTable);
                 }
             }
 
@@ -66,38 +66,7 @@ namespace ScriptQL
             }
         }
 
-        //private void getViews() // unificate with getViews
-        //{
-        //    SqlConnection conn = parent.parent.GetConnection();
-        //    SqlCommand cmd = new SqlCommand();
-        //    cmd.Connection = conn;
-        //    cmd.CommandText = "USE " + this.parent.name + Environment.NewLine +
-        //                      "select TABLE_NAME from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA = " + "'" + this.name + "'" + Environment.NewLine +
-        //                      "AND TABLE_TYPE = 'VIEW' ORDER BY TABLE_SCHEMA";
-
-        //    try
-        //    {
-        //        conn.Open();
-        //        SqlDataReader rdr = cmd.ExecuteReader();
-        //        while (rdr.Read())
-        //        {
-        //            string name = rdr[0].ToString();
-        //            SqlView oSqlView = new SqlView(this, name);
-        //            this.addViewToSchema(oSqlView);
-        //        }
-        //    }
-
-        //    catch (Exception ex)
-        //    {
-        //        utils.WriteLog(ex.Message);
-        //    }
-        //    finally
-        //    {
-        //        conn.Close();
-        //    }
-        //}
-
-        private void addTableToSchema(SqlTable table)
+        private void AddTableToSchema(SqlTable table)
         {
             if (table != null)
             {

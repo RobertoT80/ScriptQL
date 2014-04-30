@@ -8,7 +8,7 @@ namespace ScriptQL
 {
     class SqlSystemDatabase : SqlDatabase
     {
-        public SqlSystemDatabase(SqlInstance parent, string name, string status, sbyte singleUserAccess, bool sysDb) : base(parent, name, status, singleUserAccess, sysDb)
+        public SqlSystemDatabase(SqlInstance parent, string name, string status, sbyte singleUserAccess) : base(parent, name, status, singleUserAccess)
         {
             // to be implemented
         }

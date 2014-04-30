@@ -153,7 +153,7 @@ namespace ScriptQL
             return name.GetHashCode();
         }
 
-        public void getDatabaseProperties()
+        public void GetDatabaseProperties()
         {
             var sb = new StringBuilder();
             sb.Append(@"SELECT create_date, collation_name, state_desc, recovery_model_desc,
@@ -194,7 +194,7 @@ namespace ScriptQL
                 //if (_singleUserAccess == 0 && _status == "ONLINE")
                 if (_status == "ONLINE")
                 {
-                    getPaths();    
+                    GetPaths();    
                 }
                 
             }
@@ -209,7 +209,7 @@ namespace ScriptQL
         }
 
 
-        private void getPaths()
+        private void GetPaths()
         {
             var conn = parent.GetConnection();
             var cmd = new SqlCommand {Connection = conn};
@@ -301,12 +301,12 @@ namespace ScriptQL
             }
         }
 
-        public void bindData()
+        public void BindData()
         {
-            getSchema();
+            GetSchema();
         }
 
-        private void getSchema()
+        private void GetSchema()
         {
             var conn = parent.GetConnection();
             var cmd = new SqlCommand();
@@ -457,7 +457,7 @@ namespace ScriptQL
             return verify.Result;
         }
 
-        private string restoreLogicalFilenames(string filename)
+        private string RestoreLogicalFilenames(string filename)
         {
             // Get backup logical names
             var sb = new StringBuilder("RESTORE FILELISTONLY FROM DISK='@filename'");
@@ -536,7 +536,7 @@ namespace ScriptQL
 
         public async Task<bool> RestoreAsync(string filename, CancellationToken token)
         {
-            var sb = restoreLogicalFilenames(filename);
+            var sb = RestoreLogicalFilenames(filename);
             var restore = Task.Run(() => parent.ExecuteNonQueryAsync(sb, token));
             await restore;
             if (token.IsCancellationRequested)
@@ -571,7 +571,7 @@ namespace ScriptQL
         }
 
 
-        public async Task<bool> check(CancellationToken token)
+        public async Task<bool> Check(CancellationToken token)
         {
             var sb = new StringBuilder();
             sb.Append("dbcc checkdb([@dbname]) ");

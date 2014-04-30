@@ -106,8 +106,8 @@ namespace ScriptQL
             _winAuth = winAuth;
 
             if (doNotConnect) return;
-            getPaths();
-            getProperties();
+            GetPaths();
+            GetProperties();
         }
 
         public override string ToString()
@@ -127,7 +127,7 @@ namespace ScriptQL
             return string.Concat(machinename, instancename).GetHashCode();
         }
 
-        public void getProperties()
+        public void GetProperties()
         {
             const string qry = @"SELECT @@servername as hostname, SERVERPROPERTY('MachineName') as machinename, @@SERVICENAME as servicename,
                 SERVERPROPERTY('InstanceName') as instancename, SERVERPROPERTY('Collation') as collation, 
@@ -162,7 +162,7 @@ namespace ScriptQL
             }
         }
 
-        public void getPaths()
+        public void GetPaths()
         {
             var qry = @"declare @DefaultData nvarchar(512) " + Environment.NewLine +
             @"exec master.dbo.xp_instance_regread N'HKEY_LOCAL_MACHINE', N'Software\Microsoft\MSSQLServer\MSSQLServer', N'DefaultData', @DefaultData output" + Environment.NewLine +
@@ -199,7 +199,7 @@ namespace ScriptQL
             }
         }
 
-        public List<string> getPhysicalFiles()
+        public List<string> GetPhysicalFiles()
         {
             const string qry = @"select m.physical_name
                         from sys.master_files m 
@@ -304,7 +304,7 @@ namespace ScriptQL
             }
         }
 
-        public void getDbList(bool systemdbEnabled)
+        public void GetDbList(bool systemdbEnabled)
         {
             //var connectionWorking = TestConnectionSync();
             //if (!connectionWorking)
@@ -407,7 +407,7 @@ namespace ScriptQL
             }
         }
 
-        public bool createDatabaseSync(string dbname)
+        public bool CreateDatabaseSync(string dbname)
         {
             // create for attach (ldf is optional).
             // Invoked by the create form and the main function that restores a database collection.
@@ -436,7 +436,7 @@ namespace ScriptQL
             }
         }
 
-        public async Task<bool> createDatabase(string dbname)
+        public async Task<bool> CreateDatabase(string dbname)
         {
             // create for attach (ldf is optional).
             // Invoked by the create form and the main function that restores a database collection.
@@ -457,7 +457,7 @@ namespace ScriptQL
         }
 
 
-        public async Task<bool> createDatabase(string dbname, FileInfo mdf, FileInfo ldf = null)
+        public async Task<bool> CreateDatabase(string dbname, FileInfo mdf, FileInfo ldf = null)
         {
             // create for attach (ldf is optional).
             // Invoked by the create form and the main function that restores a database collection.
@@ -489,7 +489,7 @@ namespace ScriptQL
             return createDatabase.Result;
         }
 
-        public async Task<bool> createDatabase(string dbname, string mdf, string[] ndfArray = null, string[] ldfArray = null)
+        public async Task<bool> CreateDatabase(string dbname, string mdf, string[] ndfArray = null, string[] ldfArray = null)
         {   // Create with attach multiple secondary ldf and ndf files 
             if (!DbnameCheck(dbname)) return false;
 
@@ -637,57 +637,7 @@ namespace ScriptQL
                 conn.Close();
             }
         }
-        public async Task<bool> ExecuteNonQueryAsyncNEW(string query, CancellationToken token, sbyte commandTimeout = 0)
-        {
-            var conn = GetConnection();
-            var cmd = new SqlCommand(query, conn) { CommandTimeout = commandTimeout };
-
-            var executeQuery = Task.Run(() => cmd.ExecuteNonQueryAsync(token));
-            Utils.WriteLog(_instance + "[" + executeQuery.Id + "][S] " + cmd.CommandText);
-            try
-            {
-                conn.Open();
-                Debug.Assert(conn.State == ConnectionState.Open);
-                await executeQuery;
-                if (token.IsCancellationRequested)
-                {
-                    throw new OperationCanceledException();
-                }
-                Utils.WriteLog(_instance + "[" + executeQuery.Id + "][R]" + executeQuery.Result);
-                return (executeQuery.Result == -1);
-            }
-            catch (OperationCanceledException)
-            {
-                Utils.WriteLog(_instance + "[" + executeQuery.Id + "][C]");
-                throw;
-            }
-            catch (SqlException ex)
-            {
-                Utils.WriteLog(_instance + "[" + executeQuery.Id + "][SQL_EX]" + "\n" + ex.Message + "\n" + ex.InnerException);
-                if (ex.Message.Contains("Operation cancelled by user"))
-                {
-                    throw new OperationCanceledException();
-                }
-                else if (ex.Number == -2) // Timeout or "general network error"
-                {
-                    throw new SqlTimeoutException();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.WriteLog(_instance + "[" + executeQuery.Id + "][EX]" + "\n" + ex.Message + "\n" + ex.InnerException);
-                throw;
-            }
-            finally
-            {
-                conn.Close();
-            }
-        }
-
+   
         public async Task<bool> KillAllConnections(string dbname)
         {
             var sb = new StringBuilder();

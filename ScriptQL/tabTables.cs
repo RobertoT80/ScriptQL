@@ -17,7 +17,7 @@ namespace ScriptQL
                 return;
             }
             _oDatabase.listSchema.Clear();
-            _oDatabase.bindData();
+            _oDatabase.BindData();
             cmbSchema.Text = string.Empty;
             cmbSchema.DataSource = _oDatabase.listSchema;
             cmbSchema.DisplayMember = "name";
@@ -46,7 +46,7 @@ namespace ScriptQL
             if (cmbTable.SelectedIndex == -1) return;
             var oTable = (SqlTable) cmbTable.SelectedItem;
             oTable.listColumn.Clear();
-            oTable.bindData();
+            oTable.BindData();
             cmbColumns.DataSource = oTable.listColumn;
             cmbColumns.DisplayMember = "name";
             btnUpdate.Enabled = true;
@@ -60,7 +60,7 @@ namespace ScriptQL
             if (cmbSchema.SelectedIndex == -1) return;
             var oSchema = (SqlSchema) cmbSchema.SelectedItem;
             oSchema.listTables.Clear();
-            oSchema.bindData();
+            oSchema.BindData();
             cmbTable.DataSource = oSchema.listTables;
             cmbTable.DisplayMember = "name";
         }

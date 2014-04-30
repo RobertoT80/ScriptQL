@@ -44,7 +44,7 @@ namespace ScriptQL
             }
             btnCreate.Enabled = false;
 
-            var result = Task.Run(() => _instance.createDatabase(dbname));
+            var result = Task.Run(() => _instance.CreateDatabase(dbname));
             try
             {
                 await result;

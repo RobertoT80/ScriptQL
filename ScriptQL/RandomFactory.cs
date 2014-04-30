@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace ScriptQL
 {
     public class RandomFactory
     {
-        private const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private const string CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
         public static List<string> GetRandomListOfString(int listCount, int maxValue)
         {
@@ -17,12 +18,12 @@ namespace ScriptQL
 
             var random = new Random();
             var list = new List<string>();
-            for (int i = 0; i < listCount; i++)
+            for (var i = 0; i < listCount; i++)
             {
                 var s = "";
-                for (int j = 0; j < maxValue; j++)
+                for (var j = 0; j < maxValue; j++)
                 {
-                    s += chars[random.Next(chars.Length)];
+                    s += CHARS[random.Next(CHARS.Length)];
                 }
                 list.Add(s);
             }
@@ -53,13 +54,13 @@ namespace ScriptQL
 
             var random = new Random();
             var list = new List<string>();
-            for (int i = 0; i < listCount; i++)
+            for (var i = 0; i < listCount; i++)
             {
                 string s = null;
-                for (int j = 0; j < maxValue; j++)
+                for (var j = 0; j < maxValue; j++)
                 {
-                    s += chars[random.Next(chars.Length)];
-                    s += Utils.patternSpecialChars[random.Next(0, Utils.patternSpecialChars.Length)].ToString();
+                    s += CHARS[random.Next(CHARS.Length)];
+                    s += Utils.patternSpecialChars[random.Next(0, Utils.patternSpecialChars.Length)].ToString(CultureInfo.InvariantCulture);
                 }
                 list.Add(s);
             }

@@ -38,7 +38,7 @@ namespace ScriptQL
         private List<ProgressBar> _progressBars;
         private List<CancellationTokenSource> _cancellationTokenSources;
 
-        public Main()
+        internal Main()
         {
             InitializeComponent();
             tabServer.Select();
@@ -64,7 +64,7 @@ namespace ScriptQL
             return token;
         }
 
-        public void SetStatus(object sender, object obj, string progress, string state, string message = "")
+        private void SetStatus(object sender, object obj, string progress, string state, string message = "")
         {
             var time = DateTime.Now.ToString("HH:mm:ss.fff");
             var source = new StringBuilder();
@@ -159,7 +159,7 @@ namespace ScriptQL
             var database = obj as SqlDatabase;
             if (database != null)
             {
-                database.getDatabaseProperties();
+                database.GetDatabaseProperties();
             }
         }
 
@@ -813,7 +813,7 @@ namespace ScriptQL
             var database = _oDatabase;
             UIOperationStarted(sender, database);
             var token = GetCancellationToken(SqlInstance.listServers.IndexOf(database.parent));
-            var check = Task.Run(() => database.check(token));
+            var check = Task.Run(() => database.Check(token));
 
             try
             {
@@ -938,7 +938,7 @@ namespace ScriptQL
             UIOperationStarted(sender, _oInstance, 0);
             try
             {
-                await _oInstance.createDatabase(dbname, mdf, ldf);
+                await _oInstance.CreateDatabase(dbname, mdf, ldf);
                 SetStatus(sender, _oInstance, "END", "COMPLETED", dbname + " has been attached");
             }
             catch (SqlException ex)
@@ -1169,7 +1169,7 @@ namespace ScriptQL
                     {
                         try
                         {
-                            instance.createDatabaseSync(dbname);
+                            instance.CreateDatabaseSync(dbname);
                             //SetStatus(sender, instance, status, "COMPLETED", dbname + " created");
                         }
                         catch (SqlTimeoutException ex)
@@ -1195,7 +1195,7 @@ namespace ScriptQL
 
                 if (instance == null || instance.databasesCollection == null) return;
                 var database = instance.databasesCollection.Find(x => x.name == dbname);
-                database.getDatabaseProperties();
+                database.GetDatabaseProperties();
                 var token = GetCancellationToken(SqlInstance.listServers.IndexOf(instance));
                 var restore = Task.Run(() => database.RestoreAsync(f.FullName, token));
                 try
@@ -1265,7 +1265,7 @@ namespace ScriptQL
                 }
                 var token = GetCancellationToken(SqlInstance.listServers.IndexOf(server));
                 var db = database;
-                var check = Task.Run(() => db.check(token));
+                var check = Task.Run(() => db.Check(token));
                 try
                 {
                     await check;
@@ -1476,7 +1476,7 @@ namespace ScriptQL
             _oInstance.totalDataSize = 0;
             foreach (var database in _oInstance.databasesCollection)
             {
-                if (database.status != "OFFLINE") database.getDatabaseProperties();
+                if (database.status != "OFFLINE") database.GetDatabaseProperties();
                 _oInstance.totalDataSize += (database.rowsSize/1024);
                 _oInstance.totalLogSize += (database.logSize/1024);
             }
@@ -1787,9 +1787,9 @@ namespace ScriptQL
                     if (server.isOnline != false)
                     {
                         prpServers.SelectedObject = server;
-                        server.getPaths();
-                        server.getProperties();
-                        server.getDbList(tlsEnableSystemDbs.Checked);
+                        server.GetPaths();
+                        server.GetProperties();
+                        server.GetDbList(tlsEnableSystemDbs.Checked);
 
                         // reset size values
                         server.totalDataSize = 0;
@@ -1797,7 +1797,7 @@ namespace ScriptQL
 
                         foreach (var database in server.databasesCollection)
                         {
-                            if (database.status == "ONLINE") database.getDatabaseProperties();
+                            if (database.status == "ONLINE") database.GetDatabaseProperties();
                             server.totalDataSize += database.rowsSize/1024;
                             server.totalLogSize += database.logSize/1024;
                         }

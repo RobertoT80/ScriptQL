@@ -117,7 +117,7 @@ namespace ScriptQL
 
             const string extensions = "*.mdf, *.ndf, *.ldf";
             var discoveredFiles = 0;
-            var physicalFiles = _oInstance.getPhysicalFiles().ToArray();
+            var physicalFiles = _oInstance.GetPhysicalFiles().ToArray();
 
             foreach (string folder in lstPaths.Items)
             {
@@ -188,7 +188,7 @@ namespace ScriptQL
 
                 try
                 {
-                    var result = await _oInstance.createDatabase(txtDbname.Text, mdf, ndfArray, ldfArray);
+                    var result = await _oInstance.CreateDatabase(txtDbname.Text, mdf, ndfArray, ldfArray);
                     if (!result)
                     {
                         lblStatus.ForeColor = Color.Red;
