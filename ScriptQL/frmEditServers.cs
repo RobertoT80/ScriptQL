@@ -10,43 +10,52 @@ namespace ScriptQL
     public partial class FrmServers : Form
     {
         private CancellationTokenSource cts;
-        private const sbyte maxInstances = 5;
+        private const sbyte MAXINSTANCES = 5;
+        private const string DATA_REQUIRED = "Please compile all the fields.";
 
         public FrmServers()
         {
             InitializeComponent();
             CenterToParent();
+            SetStatus(DATA_REQUIRED, Color.Black);
         }
 
-        private Boolean ValidateSettings() // TODO:  with sql authentication the database property IsSysDb returns true
+        private void SetStatus(string text, Color color)
         {
-            if (chkFrmEditServers_WinAuth.Checked)
+            lblEditServers_Status.ForeColor = color;
+            lblEditServers_Status.Text = text;
+        }
+
+        private Boolean ValidateSettings()
+        {
+            SetButtons(false);
+ 
+            if (txtEditServers_SqlInstance.Text.Length == 0)
             {
-                if (txtEditServers_SqlInstance.Text.Length == 0)
-                {
-                    MessageBox.Show("Please insert an Sql Instance.", "Configuration error");
-                    return false;
-                }
-                if (!Utils.IsStringValid(txtEditServers_SqlInstance.Text))
-                {
-                    MessageBox.Show("Instance name contains invalid characters, can't add.");
-                    return false;
-                }
-                if (lstEditServers_serverList.Items.Count == maxInstances)
-                {
-                    MessageBox.Show("You can add a maximum of 5 Sql instances.");
-                    return false;
-                }
+                SetStatus(DATA_REQUIRED, Color.Black);
+                return false;
             }
-            else
+            if (!Utils.IsStringValid(txtEditServers_SqlInstance.Text))
+            {
+                SetStatus("Instance name has invalid characters", Color.Red);
+                return false;
+            }
+            if (lstEditServers_serverList.Items.Count >= MAXINSTANCES)
+            {
+                SetStatus(DATA_REQUIRED, Color.Black);
+                return false;
+            }
+
+            if(!chkFrmEditServers_WinAuth.Checked)
             {
                 if (txtEditServers_User.Text.Length == 0 || txtEditServers_Password.Text.Length == 0)
                 {
-                    MessageBox.Show("Please insert Sql Login user and password.", "Configuration error");
+                    SetStatus(DATA_REQUIRED, Color.Black);
                     return false;
                 }
             }
-           
+            SetStatus("Press + to add the instance", Color.Black);
+            SetButtons(true);
             return true;
 
         }
@@ -76,6 +85,14 @@ namespace ScriptQL
             }
             ValidateSettings();
         }
+
+        private void SetButtons(bool state)
+        {
+            btnFrmEditServers_Test.Enabled = state;
+            btnFrmEditServers_add.Enabled = state;
+            btnFrmEditServers_Delete.Enabled = state;
+        }
+
         private async void btnTest_Click(object sender, EventArgs e)
         {
             var oServer = new SqlInstance(txtEditServers_SqlInstance.Text.Trim(),
@@ -85,65 +102,60 @@ namespace ScriptQL
                                                     true);
             if (!ValidateSettings()) return;
 
-            btnFrmEditServers_Test.Enabled = false;
-            btnFrmEditServers_add.Enabled = false;
-            btnFrmEditServers_Delete.Enabled = false;
-
-            btnCancel.Show();
-            lblEditServers_Status.ForeColor = Color.Black;
-            lblEditServers_Status.Text = string.Format("Pinging {0} ...", txtEditServers_SqlInstance.Text.Trim());
+            SetButtons(false);
+            SetStatus(string.Format("Pinging {0} ...", txtEditServers_SqlInstance.Text.Trim()), Color.Black);
 
             cts = new CancellationTokenSource();
             var token = cts.Token;
 
             try
             {
+                btnCancel.Show();
                 await oServer.TestConnection(token);
             }
             catch (OperationCanceledException)
             {
-                lblEditServers_Status.ForeColor = Color.Black;
-                lblEditServers_Status.Text = "User canceled.";
+                SetStatus("User canceled.", Color.Blue);
             }
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.Message);
             }
+            finally
+            {
+                btnCancel.Hide();
+            }
 
             if (oServer.isOnline == true)
             {
-                lblEditServers_Status.Text = "Connection OK to " + txtEditServers_SqlInstance.Text;
-                lblEditServers_Status.ForeColor = Color.Green;
+                SetStatus("Connection OK to " + txtEditServers_SqlInstance.Text, Color.Green);
             }
             else
             {
-                lblEditServers_Status.Text = txtEditServers_SqlInstance.Text + " not connected";
-                lblEditServers_Status.ForeColor = Color.Red;
+                SetStatus(txtEditServers_SqlInstance.Text + " not connected", Color.Red);
             }
-                
-            btnFrmEditServers_Test.Enabled = true;
-            btnFrmEditServers_add.Enabled = true;
-            btnFrmEditServers_Delete.Enabled = true;
-            btnCancel.Hide();
+            SetButtons(true);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (!Utils.IsStringValid(txtEditServers_SqlInstance.Text))
+            {
+                MessageBox.Show("Instance name has invalid characters", "Invalid data");
+                return;
+            }
             if (!ValidateSettings()) return;
 
             var oSqlServer = new SqlInstance(txtEditServers_SqlInstance.Text.Trim(),txtEditServers_User.Text,
                 txtEditServers_Password.Text, chkFrmEditServers_WinAuth.Checked, true);
             if (SqlInstance.listServers.Contains(oSqlServer))
             {
-                MessageBox.Show(oSqlServer + " exists yet.");
-                lblEditServers_Status.ForeColor = Color.Red;
-                lblEditServers_Status.Text = oSqlServer + " not added.";
+                SetStatus(oSqlServer + " exists yet.", Color.Red);
                 return;
             }
             lstEditServers_serverList.Items.Add(oSqlServer);
             SqlInstance.listServers.Add(oSqlServer);
-            lblEditServers_Status.ForeColor = Color.Green;
-            lblEditServers_Status.Text = oSqlServer + " added.";
+            SetStatus(oSqlServer + " added.", Color.Green);
         }
 
         private void lstEditServers_serverList_SelectedIndexChanged(object sender, EventArgs e)
@@ -154,16 +166,13 @@ namespace ScriptQL
         private void btnFrmEditServers_Delete_Click(object sender, EventArgs e)
         {
             if (lstEditServers_serverList.SelectedItem == null)
-
             {
-                MessageBox.Show("Please select an instance.");
-                
+                MessageBox.Show("Please select an instance.");           
             }
             else
             {
                 var server = (SqlInstance)lstEditServers_serverList.SelectedItem;
-                lblEditServers_Status.ForeColor = Color.Green;
-                lblEditServers_Status.Text = lstEditServers_serverList.SelectedItem + " deleted.";
+                SetStatus(lstEditServers_serverList.SelectedItem + " deleted.", Color.Green);
                 lstEditServers_serverList.Items.Remove(lstEditServers_serverList.SelectedItem);
                 SqlInstance.listServers.Remove(server);
             }
@@ -208,12 +217,12 @@ namespace ScriptQL
             try
             {
                 Utils.SerializeBinary(SqlInstance.listServers);
-                lblEditServers_Status.Text = "Settings saved to " + Utils.appPath;
+                SetStatus(lblEditServers_Status.Text = "Settings saved to " + Utils.appPath, Color.Black);
             }
             catch (SqlException ex)
             {
                 MessageBox.Show(ex.Message);
-                lblEditServers_Status.Text = "Error saving settings to disk.";
+                SetStatus("Error saving settings to disk.", Color.Red);
             }
         }
 
@@ -225,17 +234,17 @@ namespace ScriptQL
 
         private void txtEditServers_SqlInstance_TextChanged(object sender, EventArgs e)
         {
-            btnFrmEditServers_Test.Enabled = false;
-            btnFrmEditServers_add.Enabled = false;
+            ValidateSettings();
+        }
 
-            if(txtEditServers_SqlInstance.Text.Trim().Length > 0)
-            {
-                if (chkFrmEditServers_WinAuth.Checked || (txtEditServers_User.Text.Length > 0 && txtEditServers_Password.Text.Length > 0))
-                {
-                    btnFrmEditServers_Test.Enabled = true;
-                    btnFrmEditServers_add.Enabled = true;
-                }
-            }
+        private void txtEditServers_Password_TextChanged(object sender, EventArgs e)
+        {
+            ValidateSettings();
+        }
+
+        private void txtEditServers_User_TextChanged(object sender, EventArgs e)
+        {
+            ValidateSettings();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -244,46 +253,6 @@ namespace ScriptQL
             {
                 cts.Cancel();
             }
-        }
-
-        private void btnFrmEditServers_Test_EnabledChanged(object sender, EventArgs e)
-        {
-            //btnCancel.Visible = !btnFrmEditServers_Test.Enabled;
-        }
-
-        private void txtEditServers_Password_TextChanged(object sender, EventArgs e)
-        {
-            ValidateSettings();
-            //if (!chkFrmEditServers_WinAuth.Checked)
-            //{
-            //    if (txtEditServers_Password.Text.Length == 0)
-            //    {
-            //        btnAdd.Enabled = false;
-            //    }
-
-            //    if (txtEditServers_SqlInstance.Text.Length > 0 && txtEditServers_User.Text.Length > 0)
-            //    {
-            //        btnAdd.Enabled = true;
-            //    }
-            //}
-        }
-
-        private void txtEditServers_User_TextChanged(object sender, EventArgs e)
-        {
-            ValidateSettings();
-
-            //if (!chkFrmEditServers_WinAuth.Checked)
-            //{
-            //    if (txtEditServers_User.Text.Length == 0)
-            //    {
-            //        btnAdd.Enabled = false;
-            //    }
-                
-            //    if(txtEditServers_SqlInstance.Text.Length > 0 && txtEditServers_Password.Text.Length > 0)
-            //    {
-            //        btnAdd.Enabled = true;
-            //    }
-            //}
         }
     }
 }

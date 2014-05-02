@@ -15,7 +15,7 @@ namespace ScriptQL
         internal static string logTxt = Path.Combine(appPath, "log.txt");
         private static readonly string serializedInstances = Path.Combine(appPath, "instances.dat");
 
-        internal const string SPECIALCHARS = "[~#%&* {}/;:<>?|\"-]";
+        internal const string SPECIALCHARS = "[~#%&* {}/;:<>?|\"]";
 
         public static void WriteLog(string text)
         {

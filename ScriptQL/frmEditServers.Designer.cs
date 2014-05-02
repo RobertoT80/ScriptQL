@@ -375,7 +375,6 @@
             this.btnFrmEditServers_Test.TabIndex = 15;
             this.toolTip1.SetToolTip(this.btnFrmEditServers_Test, "Test connection");
             this.btnFrmEditServers_Test.UseVisualStyleBackColor = false;
-            this.btnFrmEditServers_Test.EnabledChanged += new System.EventHandler(this.btnFrmEditServers_Test_EnabledChanged);
             this.btnFrmEditServers_Test.Click += new System.EventHandler(this.btnTest_Click);
             // 
             // btnCancel
