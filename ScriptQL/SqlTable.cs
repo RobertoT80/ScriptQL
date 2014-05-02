@@ -23,10 +23,10 @@ namespace ScriptQL
 
         public DataTable SelectFromTable(int rowsNumber, string column, string sortorder, int commandTimeout)
         {
-            var conn = parent.parent.parent.GetConnection();
+            var conn = parent.parent.Parent.GetConnection();
             var sb = new StringBuilder();
             sb.Append("SET ROWCOUNT @rowcount").Replace("@rowcount", rowsNumber.ToString(CultureInfo.InvariantCulture));
-            sb.Append("USE [@dbname] ").Replace("@dbname", parent.parent.name);
+            sb.Append("USE [@dbname] ").Replace("@dbname", parent.parent.Name);
             sb.Append("SELECT * FROM [@schema].[@table] with (NOLOCK)").Replace("@schema", parent.name).Replace("@table", name);
             sb.Append("ORDER BY [@column] @sortorder").Replace("@column", column).Replace("@sortorder", sortorder);
 
@@ -77,11 +77,11 @@ namespace ScriptQL
             sb.Append("AND DATA_TYPE NOT IN('TEXT', 'NTEXT', 'IMAGE') AND TABLE_NAME = '@table' "); // not sortable data types
             sb.Append("ORDER BY COLUMN_NAME");
 
-            sb.Replace("@dbname", parent.parent.name);
+            sb.Replace("@dbname", parent.parent.Name);
             sb.Replace("@schema", parent.name);
             sb.Replace("@table", name);
 
-            SqlConnection conn = parent.parent.parent.GetConnection();
+            SqlConnection conn = parent.parent.Parent.GetConnection();
             var cmd = new SqlCommand(sb.ToString(), conn);
 
             try

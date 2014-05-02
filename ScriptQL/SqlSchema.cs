@@ -38,10 +38,10 @@ namespace ScriptQL
             sb.Append("WHERE TABLE_SCHEMA = '@tablename' AND TABLE_TYPE = 'BASE TABLE' ");
             sb.Append("ORDER BY TABLE_NAME");
            
-            sb.Replace("@dbname", parent.name);
+            sb.Replace("@dbname", parent.Name);
             sb.Replace("@tablename", name);
                 
-            var conn = parent.parent.GetConnection();
+            var conn = parent.Parent.GetConnection();
             var cmd = new SqlCommand(sb.ToString(), conn);
  
             try

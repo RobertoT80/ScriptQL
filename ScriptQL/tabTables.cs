@@ -16,18 +16,18 @@ namespace ScriptQL
                 tabGroup.SelectedIndex = 0;
                 return;
             }
-            _oDatabase.listSchema.Clear();
+            _oDatabase.ListSchema.Clear();
             _oDatabase.BindData();
             cmbSchema.Text = string.Empty;
-            cmbSchema.DataSource = _oDatabase.listSchema;
+            cmbSchema.DataSource = _oDatabase.ListSchema;
             cmbSchema.DisplayMember = "name";
-            if (_oDatabase.status != "ONLINE")
+            if (_oDatabase.Status != "ONLINE")
             {
                 MessageBox.Show("Database is not online.");
                 tabGroup.SelectedIndex = 0;
                 return;
             }
-            if (_oDatabase.isBusy)
+            if (_oDatabase.IsBusy)
             {
                 MessageBox.Show("Database is currently busy, please try later.");
                 tabGroup.SelectedIndex = 0;
@@ -35,7 +35,7 @@ namespace ScriptQL
             }
             if (cmbSchema.SelectedIndex == -1) // Db has no schema; return to previous tab
             {
-                MessageBox.Show("Database " + _oDatabase.name +
+                MessageBox.Show("Database " + _oDatabase.Name +
                                 " has no data, please select another.");
                 tabGroup.SelectedIndex = 0;
             }

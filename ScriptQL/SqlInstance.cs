@@ -319,7 +319,7 @@ namespace ScriptQL
 	                            WHEN 1 then 'true'
 	                            ELSE 'false'
                             END
-                            FROM sys.databases ORDER BY owner_sid, name";
+                            FROM sys.databases ORDER BY name";
 
             var conn = GetConnection();
             var cmd = new SqlCommand(qry, conn);
@@ -334,10 +334,9 @@ namespace ScriptQL
                     var name = rdr.GetString(0);
                     var status = rdr.GetString(1);
                     var userAccess = (sbyte) rdr.GetByte(2);
-                    var sysdb = bool.Parse(rdr.GetString(3));
+                    var distributor = bool.Parse(rdr.GetString(3));
 
-
-                    if (systemNames.Any(name.Contains) || sysdb)
+                    if (systemNames.Any(name.Contains) || distributor)
                     {
                         if (systemdbEnabled && name != "tempdb")
                         {
@@ -394,7 +393,7 @@ namespace ScriptQL
                 MessageBox.Show(dbname + " is not a valid name.");
                 return false;
             }
-            if (databasesCollection.FirstOrDefault(s => s.name == dbname) != null)
+            if (databasesCollection.FirstOrDefault(s => s.Name == dbname) != null)
             {
                 MessageBox.Show(dbname + " exists yet.");
                 return false;
@@ -452,25 +451,22 @@ namespace ScriptQL
             }
         }
 
-        public async Task<bool> CreateDatabase(string dbname)
-        {
-            // create for attach (ldf is optional).
-            // Invoked by the create form and the main function that restores a database collection.
-            if (!DbnameCheck(dbname)) return false;
+        //public async Task<bool> CreateDatabase(string query)
+        //{
+        //    // Invoked by the create form and the main function that restores a database collection.
+        //    //if (!DbnameCheck(dbname)) return false;
 
-            var sbCreate = new StringBuilder();
-            sbCreate.Append("CREATE DATABASE [@dbname] ");
-            sbCreate.Replace("@dbname", dbname);
+        //    var sbCreate = new StringBuilder();
 
-            var createDatabase = Task.Run(() => ExecuteNonQueryAsync(sbCreate.ToString()));
-            await createDatabase;
-            if (createDatabase.Result)
-            {
-                var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
-                databasesCollection.Add(oDatabase);
-            }
-            return createDatabase.Result;
-        }
+        //    var createDatabase = Task.Run(() => ExecuteNonQueryAsync(query));
+        //    await createDatabase;
+        //    if (createDatabase.Result)
+        //    {
+        //        var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
+        //        databasesCollection.Add(oDatabase);
+        //    }
+        //    return createDatabase.Result;
+        //}
 
 
         public async Task<bool> CreateDatabase(string dbname, FileInfo mdf, FileInfo ldf = null)
@@ -558,46 +554,36 @@ namespace ScriptQL
         {
             Debug.Assert(!string.IsNullOrEmpty(query));
             Debug.Assert(commandTimeout >= 0);
-            var conn = GetConnection();
-            var cmd = new SqlCommand(query, conn) { CommandTimeout = commandTimeout };
-            Utils.WriteLog("ExecuteNonQueryAsync(" + query + ", " + commandTimeout + ")");
-            var result = Task.Run(() => cmd.ExecuteNonQueryAsync());
+            Utils.WriteLog("ExecuteNonQueryAsync: " + query);
 
-            try
+            using (SqlConnection conn = GetConnection())
             {
-                conn.Open();
-                Debug.Assert(conn.State == ConnectionState.Open);
-                await result;
-                //conn.Close();
-                return (result.Result == -1);
-            }
-            catch (SqlException ex)
-            {
-                Utils.WriteLog("ExecuteNonQueryAsync sql exception: " + cmd.CommandText + "\n" + ex.Message + "\n" + ex.InnerException);
-                if (ex.Message.Contains("Operation cancelled by user"))
+                using (var cmd = new SqlCommand(query, conn) {CommandTimeout = commandTimeout})
                 {
-                    throw new OperationCanceledException();
+                    try
+                    {
+                        conn.Open();
+                        var result = Task.Run(() => cmd.ExecuteNonQueryAsync());
+                        await result;
+                        return (result.Result == -1);
+                    }
+                    catch (SqlException ex)
+                    {
+                        Utils.WriteLog("ExecuteNonQueryAsync sql exception: " + cmd.CommandText + "\n" + ex.Message +
+                                       "\n" + ex.InnerException);
+                        if (ex.Message.Contains("Operation cancelled by user"))
+                        {
+                            throw new OperationCanceledException();
+                        }
+                        if (ex.Number == -2) // Timeout or "general network error"
+                        {
+                            throw new SqlTimeoutException();
+                        }
+                        throw;
+                    }
                 }
-                else if (ex.Number == -2) // Timeout or "general network error"
-                {
-                    throw new SqlTimeoutException();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.WriteLog("ExecuteNonQueryAsync exception: " + cmd.CommandText + "\n" + ex.Message + "\n" + ex.InnerException);
-                throw;
-            }
-            finally
-            {
-                conn.Close();
             }
         }
-
 
         public async Task<bool> ExecuteNonQueryAsync(string query, CancellationToken token, sbyte commandTimeout = 0)
         {
@@ -605,55 +591,54 @@ namespace ScriptQL
             Debug.Assert(token != null);
             Debug.Assert(commandTimeout >= 0);
 
-            var conn = GetConnection();
-            var cmd = new SqlCommand(query, conn) { CommandTimeout = commandTimeout };
-
-            Utils.WriteLog("ExecuteNonQueryAsync: " + cmd.CommandText);
-
-            try
+            using (SqlConnection conn = GetConnection())
             {
-                conn.Open();
-                Debug.Assert(conn.State == ConnectionState.Open);
-                var result = Task.Run(() => cmd.ExecuteNonQueryAsync(token));
-                await result;
-                if (token.IsCancellationRequested)
+                using (var cmd = new SqlCommand(query, conn) {CommandTimeout = commandTimeout})
                 {
-                    throw new OperationCanceledException();
+                    try
+                    {
+                        conn.Open();
+                        Debug.Assert(conn.State == ConnectionState.Open);
+                        var result = Task.Run(() => cmd.ExecuteNonQueryAsync(token));
+                        await result;
+                        if (token.IsCancellationRequested)
+                        {
+                            throw new OperationCanceledException();
+                        }
+                        return (result.Result == -1);
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        Utils.WriteLog("ExecuteNonQueryAsync canceled: " + cmd.CommandText);
+                        throw;
+                    }
+                    catch (SqlException ex)
+                    {
+                        Utils.WriteLog("ExecuteNonQueryAsync sql exception: " + cmd.CommandText + "\n" + ex.Message +
+                                       "\n" + ex.InnerException);
+                        if (ex.Message.Contains("Operation cancelled by user"))
+                        {
+                            throw new OperationCanceledException();
+                        }
+                        else if (ex.Number == -2) // Timeout or "general network error"
+                        {
+                            throw new SqlTimeoutException();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Utils.WriteLog("ExecuteNonQueryAsync exception: " + cmd.CommandText + "\n" + ex.Message + "\n" +
+                                       ex.InnerException);
+                        throw;
+                    }
                 }
-                return (result.Result == -1);
-            }
-            catch (OperationCanceledException)
-            {
-                Utils.WriteLog("ExecuteNonQueryAsync canceled: " + cmd.CommandText);
-                throw;
-            }
-            catch (SqlException ex)
-            {
-                Utils.WriteLog("ExecuteNonQueryAsync sql exception: " + cmd.CommandText + "\n" + ex.Message + "\n" + ex.InnerException);
-                if (ex.Message.Contains("Operation cancelled by user"))
-                {
-                    throw new OperationCanceledException();
-                }
-                else if (ex.Number == -2) // Timeout or "general network error"
-                {
-                    throw new SqlTimeoutException();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-            catch (Exception ex)
-            {
-                Utils.WriteLog("ExecuteNonQueryAsync exception: " + cmd.CommandText + "\n" + ex.Message + "\n" + ex.InnerException);
-                throw;
-            }
-            finally
-            {
-                conn.Close();
             }
         }
-   
+
         public async Task<bool> KillAllConnections(string dbname)
         {
             var sb = new StringBuilder();

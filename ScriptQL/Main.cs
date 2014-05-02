@@ -30,7 +30,7 @@ namespace ScriptQL
         private SqlDatabase _oDatabase;
         private int _oDatabaseIndex;
         private SqlInstance _oInstance;
-        private int _oServerIndex;
+        private int _oServerIndex = -1;
 
         private BindingList<SqlDatabase> _databaseCollectionBindingList;
 
@@ -75,8 +75,8 @@ namespace ScriptQL
             if (database != null)
             {
                 source.Append("[@instance>@database]");
-                source.Replace("@database", database.name);
-                source.Replace("@instance", database.parent.ToString());
+                source.Replace("@database", database.Name);
+                source.Replace("@instance", database.Parent.ToString());
             }
             else
             {
@@ -187,13 +187,13 @@ namespace ScriptQL
         private void UIOperationStarted(object sender, SqlDatabase database, string message = "")
         {
             SetStatus(sender, database, "BEGIN", "INFO", message);
-            var index = SqlInstance.listServers.IndexOf(database.parent);
+            var index = SqlInstance.listServers.IndexOf(database.Parent);
 
             ButtonDisable();
             _progressBars[index].Style = ProgressBarStyle.Marquee;
             _progressBars[index].Show();
             _progressBars[index].Update();
-            database.isBusy = true;
+            database.IsBusy = true;
         }
 
         private void UIOperationStarted(object sender, SqlInstance instance, int totalOperations, string message = "")
@@ -236,8 +236,8 @@ namespace ScriptQL
         private void UIOperationClosed(object sender, SqlDatabase database, bool batchOperation = false)
         {
             if (batchOperation) SetStatus(sender, database, "END", "INFO"); // only logs instance operations
-            var serverIndex = SqlInstance.listServers.IndexOf(database.parent);
-            if (_oDatabase != null) database.isBusy = false;
+            var serverIndex = SqlInstance.listServers.IndexOf(database.Parent);
+            if (_oDatabase != null) database.IsBusy = false;
             _progressBars[serverIndex].Style = ProgressBarStyle.Blocks;
             _progressBars[serverIndex].Hide();
             UISelectObject(database);
@@ -255,14 +255,14 @@ namespace ScriptQL
                 MessageBox.Show(ERROR_NO_DATABASE);
                 return false;
             }
-            if (database.isBusy)
+            if (database.IsBusy)
             {
-                MessageBox.Show(database.name + WARNING_IS_BUSY);
+                MessageBox.Show(database.Name + WARNING_IS_BUSY);
                 return false;
             }
-            if (database.parent.isBusy)
+            if (database.Parent.isBusy)
             {
-                MessageBox.Show(database.parent + WARNING_IS_BUSY);
+                MessageBox.Show(database.Parent + WARNING_IS_BUSY);
                 return false;
             }
             return true;
@@ -389,7 +389,7 @@ namespace ScriptQL
             }
 
             // Database busy or null
-            if (database == null || database.isBusy) return;
+            if (database == null || database.IsBusy) return;
 
             if(database is SqlSystemDatabase)
             {
@@ -403,7 +403,7 @@ namespace ScriptQL
                 return;
             }
 
-            switch (database.status)
+            switch (database.Status)
             {
                     // Database offline (Control.Tag == "offline")
                 case "OFFLINE":
@@ -433,7 +433,7 @@ namespace ScriptQL
                         i.Enabled = true;
                     }
                     // Online single user
-                    if (database.access == "multi")
+                    if (database.Access == "multi")
                     {
                         tlsDatabase_Multi.Enabled = false;
                     }
@@ -461,12 +461,12 @@ namespace ScriptQL
         {
             if (!CanContinue(_oDatabase)) return;
             var database = _oDatabase;
-            if (database.status == "RESTORING")
+            if (database.Status == "RESTORING")
             {
-                MessageBox.Show(WRONG_DATABASE_STATE + "(" + database.status + ")");
+                MessageBox.Show(WRONG_DATABASE_STATE + "(" + database.Status + ")");
                 return;
             }
-            UIOperationStarted(sender, database.parent, 0);
+            UIOperationStarted(sender, database.Parent, 0);
 
             var token = GetCancellationToken(_oServerIndex);
             var alterDatabase = Task.Run(() => database.Alter(command, token, commandTimeout));
@@ -479,8 +479,8 @@ namespace ScriptQL
                 }
                 if (alterDatabase.Result)
                 {
-                    SetStatus(sender, database, "END", "COMPLETED", String.Format("{0} {1}", database.name, command));
-                    UIOperationClosed(sender, database.parent);
+                    SetStatus(sender, database, "END", "COMPLETED", String.Format("{0} {1}", database.Name, command));
+                    UIOperationClosed(sender, database.Parent);
                     return;
                 }
                 
@@ -511,18 +511,18 @@ namespace ScriptQL
             }
             else
             {
-                UIOperationStarted(sender, database.parent, 0);
+                UIOperationStarted(sender, database.Parent, 0);
                 alterDatabase = Task.Run(() => database.Alter(command, token, commandTimeout, null, true));
                 try
                 {
                     await alterDatabase;
                     if (alterDatabase.Result)
                     {
-                        SetStatus(sender, database, "END", "COMPLETED", String.Format("{0} {1}", database.name, command));
+                        SetStatus(sender, database, "END", "COMPLETED", String.Format("{0} {1}", database.Name, command));
                     }
                     else
                     {
-                        SetStatus(sender, database, "END", "ERROR", "Could not " + command + database.name);
+                        SetStatus(sender, database, "END", "ERROR", "Could not " + command + database.Name);
                     }
                 }
                 catch (Exception ex)
@@ -532,15 +532,15 @@ namespace ScriptQL
                 }
             }
             
-            UIOperationClosed(sender, database.parent);
+            UIOperationClosed(sender, database.Parent);
         }
 
         private async void Database_Backup(object sender, EventArgsFactory.BackupEventArgs e)
         {
             if (!CanContinue(_oDatabase)) return;
-            if (_oDatabase.status != "ONLINE")
+            if (_oDatabase.Status != "ONLINE")
             {
-                SetStatus(sender, _oDatabase, "END", "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", _oDatabase.status));
+                SetStatus(sender, _oDatabase, "END", "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", _oDatabase.Status));
                 return;
             }
             var database = _oDatabase;
@@ -556,7 +556,7 @@ namespace ScriptQL
             UIOperationStarted(sender, database);
             try
             {
-                var token = GetCancellationToken(SqlInstance.listServers.IndexOf(database.parent));
+                var token = GetCancellationToken(SqlInstance.listServers.IndexOf(database.Parent));
                 var backup = Task.Run(() => database.BackupAsync(par, token));
                 await backup;
                 if (token.IsCancellationRequested)
@@ -564,7 +564,7 @@ namespace ScriptQL
                     token.ThrowIfCancellationRequested();
                 }
 
-                SetStatus(sender, database, "END", "COMPLETED", string.Format("Database {0} backed up in {1} seconds", database.name,
+                SetStatus(sender, database, "END", "COMPLETED", string.Format("Database {0} backed up in {1} seconds", database.Name,
                     ((DateTime.Now - now).Seconds)));
             }
             catch (OperationCanceledException)
@@ -601,9 +601,9 @@ namespace ScriptQL
             foreach (var database in listDatabases)
             {
                 var status = String.Format("({0}/{1})", listDatabases.IndexOf(database) + 1, listDatabases.Count);
-                if (database.status != "ONLINE")
+                if (database.Status != "ONLINE")
                 {
-                    SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.status));
+                    SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.Status));
                     continue;
                 }
                 var par = new List<string>();
@@ -621,7 +621,7 @@ namespace ScriptQL
                     {
                         token.ThrowIfCancellationRequested();
                     }
-                    SetStatus(sender, db, status, "COMPLETED", database.name + " backed up.");
+                    SetStatus(sender, db, status, "COMPLETED", database.Name + " backed up.");
                     checkedOk++;
                 }
                 catch (OperationCanceledException)
@@ -709,7 +709,7 @@ namespace ScriptQL
         {
             if (!CanContinue(_oDatabase)) return;
             var database = _oDatabase;
-            var dropConfirmation = MessageBox.Show("Database " + database.name + " will be deleted permanently. \nDo you want to continue?",
+            var dropConfirmation = MessageBox.Show("Database " + database.Name + " will be deleted permanently. \nDo you want to continue?",
                 "Drop Confirmation", MessageBoxButtons.YesNo);
             if (!dropConfirmation.Equals(DialogResult.Yes))
             {
@@ -718,9 +718,9 @@ namespace ScriptQL
             }
 
 
-            if (database.status != "ONLINE")
+            if (database.Status != "ONLINE")
             {
-                var statusConfirmation = MessageBox.Show("Database status is " + database.status + ", Physical files won't likely be deleted. \nDo you want to continue?",
+                var statusConfirmation = MessageBox.Show("Database status is " + database.Status + ", Physical files won't likely be deleted. \nDo you want to continue?",
                     "Database status warning", MessageBoxButtons.YesNo);
                 if (!statusConfirmation.Equals(DialogResult.Yes))
                 {
@@ -729,14 +729,14 @@ namespace ScriptQL
                 }
 
             }
-            var server = database.parent;
+            var server = database.Parent;
             UIOperationStarted(sender, server, 0);
 
             var token = GetCancellationToken(_oServerIndex);
             var result = false;
             try
             {
-                result = await database.parent.Drop(database.name, token);
+                result = await database.Parent.Drop(database.Name, token);
                 if (token.IsCancellationRequested)
                 {
                     throw new OperationCanceledException();
@@ -766,7 +766,7 @@ namespace ScriptQL
             }
 
 
-            if (result || database.status == "RESTORING")
+            if (result || database.Status == "RESTORING")
             {
                 goto End;
             }
@@ -783,7 +783,7 @@ namespace ScriptQL
                 try
                 {
                     await database.Alter("SET OFFLINE", token, 10, null, true);
-                    result = await database.parent.Drop(database.name, token);
+                    result = await database.Parent.Drop(database.Name, token);
 
                 }
                 catch (Exception ex)
@@ -794,11 +794,11 @@ namespace ScriptQL
             End:
             if (result)
             {
-                SetStatus(sender, server, "END", "COMPLETED", String.Format("{0} {1}", database.name, "dropped"));
+                SetStatus(sender, server, "END", "COMPLETED", String.Format("{0} {1}", database.Name, "dropped"));
             }
             else
             {
-                SetStatus(sender, server, "END", "ERROR", "Could not drop " + database.name);
+                SetStatus(sender, server, "END", "ERROR", "Could not drop " + database.Name);
             }
             UIOperationClosed(sender, server);
         }
@@ -813,7 +813,7 @@ namespace ScriptQL
             if (!CanContinue(_oDatabase)) return;
             var database = _oDatabase;
             UIOperationStarted(sender, database);
-            var token = GetCancellationToken(SqlInstance.listServers.IndexOf(database.parent));
+            var token = GetCancellationToken(SqlInstance.listServers.IndexOf(database.Parent));
             var check = Task.Run(() => database.Check(token));
 
             try
@@ -907,7 +907,7 @@ namespace ScriptQL
             }
             if (_oInstance == null || _oInstance.databasesCollection == null) return;
 
-            if (_oInstance.databasesCollection.Any(x => x.name == dbname))
+            if (_oInstance.databasesCollection.Any(x => x.Name == dbname))
             {
                 MessageBox.Show(dbname + " esists yet on " + _oInstance);
                 return;
@@ -965,9 +965,9 @@ namespace ScriptQL
         {
             if (!CanContinue(_oDatabase)) return;
             var database = _oDatabase;
-            UIOperationStarted(sender, database.parent, 0);
+            UIOperationStarted(sender, database.Parent, 0);
 
-            var token = GetCancellationToken(SqlInstance.listServers.IndexOf(database.parent));
+            var token = GetCancellationToken(SqlInstance.listServers.IndexOf(database.Parent));
             var detach = Task.Run(() => database.Detach(token));
 
             try
@@ -977,12 +977,12 @@ namespace ScriptQL
                 {
                     throw new OperationCanceledException();
                 }
-                SetStatus(sender, database, "END", "COMPLETED", database.name + " has been detached");
+                SetStatus(sender, database, "END", "COMPLETED", database.Name + " has been detached");
             }
             catch (OperationCanceledException)
             {
                 SetStatus(sender, database, "END", "CANCEL");
-                UIOperationClosed(sender, database.parent);
+                UIOperationClosed(sender, database.Parent);
                 return;
             }
             catch (SqlException ex)
@@ -993,7 +993,7 @@ namespace ScriptQL
             {
                 SetStatus(sender, database, "END", "ERROR", ex.Message);
             }
-            UIOperationClosed(sender, database.parent);
+            UIOperationClosed(sender, database.Parent);
         }
 
         private void mnuDatabase_Detach_Click(object sender, EventArgs e)
@@ -1020,7 +1020,7 @@ namespace ScriptQL
 
             UIOperationStarted(sender, _oDatabase);
 
-            var token = GetCancellationToken(SqlInstance.listServers.IndexOf(_oDatabase.parent));
+            var token = GetCancellationToken(SqlInstance.listServers.IndexOf(_oDatabase.Parent));
             var restore = Task.Run(() => _oDatabase.RestoreAsync(dlg.FileName, token));
 
             try
@@ -1150,7 +1150,7 @@ namespace ScriptQL
                 var overwrite = false;
                 if (instance != null && instance.databasesCollection != null)
                 {
-                    if (instance.databasesCollection.Any(x => x.name == dbname))
+                    if (instance.databasesCollection.Any(x => x.Name == dbname))
                     {
                         var dr = MessageBox.Show("Database " + dbname + " exists yet, do you want to overwrite it?", "Confirmation", MessageBoxButtons.YesNoCancel);
                         if (dr == DialogResult.Cancel)
@@ -1210,7 +1210,7 @@ namespace ScriptQL
                 }
 
                 if (instance == null || instance.databasesCollection == null) return;
-                var database = instance.databasesCollection.Find(x => x.name == dbname);
+                var database = instance.databasesCollection.Find(x => x.Name == dbname);
                 database.GetDatabaseProperties();
                 var token = GetCancellationToken(SqlInstance.listServers.IndexOf(instance));
                 var restore = Task.Run(() => database.RestoreAsync(f.FullName, token));
@@ -1221,7 +1221,7 @@ namespace ScriptQL
                     {
                         token.ThrowIfCancellationRequested();
                     }
-                    SetStatus(sender, instance, status, "COMPLETED", database.name + " restored");
+                    SetStatus(sender, instance, status, "COMPLETED", database.Name + " restored");
                     restored++; //TODO: drop database if restored unsuccessful (and if !overwrite)  
                 }
                 catch (OperationCanceledException)
@@ -1243,7 +1243,7 @@ namespace ScriptQL
                 }
                 if (restore.IsFaulted && !overwrite)
                 {
-                    backupsFailed.Add(database.name);
+                    backupsFailed.Add(database.Name);
                 }
             }
             UIOperationClosed(sender, instance, true, String.Format("Restored successfully: {0}/{1}", restored, backupArray.Length));
@@ -1274,9 +1274,9 @@ namespace ScriptQL
             foreach (var database in listDatabases)
             {
                 var status = String.Format("({0}/{1})", listDatabases.IndexOf(database) + 1, listDatabases.Count);
-                if (database.status != "ONLINE")
+                if (database.Status != "ONLINE")
                 {
-                    SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.status));
+                    SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.Status));
                     continue;
                 }
                 var token = GetCancellationToken(SqlInstance.listServers.IndexOf(server));
@@ -1289,7 +1289,7 @@ namespace ScriptQL
                     {
                         token.ThrowIfCancellationRequested();
                     }
-                    SetStatus(sender, database, status, "COMPLETED", database.name + " checked OK");
+                    SetStatus(sender, database, status, "COMPLETED", database.Name + " checked OK");
                     checkedOk++;
                 }
 
@@ -1396,7 +1396,7 @@ namespace ScriptQL
                 txtDatabase_Rename.Focus();
                 return;
             }
-            if (_oInstance.databasesCollection.Any(x => x.name == newdbname))
+            if (_oInstance.databasesCollection.Any(x => x.Name == newdbname))
             {
                 MessageBox.Show(newdbname + " esists yet on " + _oInstance);
                 txtDatabase_Rename.Focus();
@@ -1404,19 +1404,19 @@ namespace ScriptQL
             }
             var sqlParams = new List<string[]> {new[] {"@newname", newdbname}};
 
-            UIOperationStarted(sender, database.parent, 0);
+            UIOperationStarted(sender, database.Parent, 0);
             try
             {
                 var token = GetCancellationToken(_oServerIndex);
                 await database.Alter("MODIFY NAME = [@newname] ", token, 5, sqlParams);
-                SetStatus(sender, database, "END", "COMPLETED", string.Format("{0} renamed to {1}.", database.name, newdbname));
+                SetStatus(sender, database, "END", "COMPLETED", string.Format("{0} renamed to {1}.", database.Name, newdbname));
                 txtDatabase_Rename.Clear();
             }
             catch (Exception ex)
             {
                 SetStatus(sender, database, "END", "ERROR", ex.Message);
             }
-            UIOperationClosed(sender, database.parent);
+            UIOperationClosed(sender, database.Parent);
         }
 
         private void mnuDatabase_Rename_Click(object sender, EventArgs e)
@@ -1492,9 +1492,9 @@ namespace ScriptQL
             _oInstance.totalDataSize = 0;
             foreach (var database in _oInstance.databasesCollection)
             {
-                if (database.status != "OFFLINE") database.GetDatabaseProperties();
-                _oInstance.totalDataSize += (database.rowsSize/1024);
-                _oInstance.totalLogSize += (database.logSize/1024);
+                if (database.Status != "OFFLINE") database.GetDatabaseProperties();
+                _oInstance.totalDataSize += (database.RowsSize/1024);
+                _oInstance.totalLogSize += (database.LogSize/1024);
             }
         }
 
@@ -1663,11 +1663,81 @@ namespace ScriptQL
         }
 
         private async void btnDeleteAll_Click(object sender, EventArgs e)
-        {   // temporary for debug
-            foreach (var d in _oInstance.databasesCollection)
+        {
+            var confirmation = MessageBox.Show("ARE YOU REALLY SURE you want to delete all user databases?", "Delete All Confirmation", MessageBoxButtons.YesNo);
+            if (!confirmation.Equals(DialogResult.Yes))
             {
-                var token = new CancellationToken(); 
-                await d.parent.Drop(d.name, token);
+                SetStatus(sender, _oInstance, "END", "CANCEL");
+            }
+            else
+            {
+                confirmation = MessageBox.Show("Pressing YES you will delete ALL USER DATABASES.", "Delete All Confirmation", MessageBoxButtons.YesNo);
+                if (!confirmation.Equals(DialogResult.Yes))
+                {
+                    SetStatus(sender, _oInstance, "END", "CANCEL");
+                }
+                else
+                {
+                    var instance = _oInstance;
+                    var listDatabases = new List<SqlDatabase>(instance.databasesCollection);
+                    var deleted = 0;
+
+                    UIOperationStarted(sender, instance, listDatabases.Count);
+                    foreach (var database in listDatabases)
+                    {
+                        var status = String.Format("({0}/{1})", listDatabases.IndexOf(database) + 1, listDatabases.Count);
+                        if (database is SqlSystemDatabase)
+                        {
+                            SetStatus(sender, database, status, "SKIPPED", CANCEL_SYSDB);
+                            continue;
+                        }
+                        if (database.Status != "ONLINE")
+                        {
+                            SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.Status));
+                            continue;
+                        }
+                        if (database.Name.StartsWith("ReportServer"))
+                        {
+                            SetStatus(sender, database, status, "SKIPPED", "Reporting Service databases must be deleted individually");
+                            continue;
+                        }
+                        
+                        var token = GetCancellationToken(SqlInstance.listServers.IndexOf(instance));
+                        var db = database;
+                        var drop = Task.Run(() => instance.Drop(db.Name));
+                        try
+                        {
+                            await drop;
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+                            SetStatus(sender, database, status, "COMPLETED", database.Name + " dropped");
+                            deleted++;
+                        }
+
+                        catch (OperationCanceledException)
+                        {
+                            SetStatus(sender, database, status, "CANCEL");
+                            break;
+                        }
+                        catch (SqlException ex)
+                        {
+                            SetStatus(sender, database, status, "ERROR", ex.Message);
+                        }
+                        catch (Exception ex)
+                        {
+                            SetStatus(sender, database, status, "EXCEPTION", ex.Message);
+                        }
+                        finally
+                        {
+                            _progressBars[SqlInstance.listServers.IndexOf(instance)].Increment(1);
+                            dgvDatabases.Refresh();
+                        }
+                    }
+                    UIOperationClosed(sender, instance, true, String.Format("Databases dropped: {0}/{1}", deleted, listDatabases.Count));
+        
+                }
             }
         }
 
@@ -1769,6 +1839,7 @@ namespace ScriptQL
                     lstMain_Servers.Items.Add(server);
                 }
             }
+            if(_oServerIndex != -1 && (lstMain_Servers.Items.Count > _oServerIndex + 1)) lstMain_Servers.SetSelected(_oServerIndex, true);
         }
 
 
@@ -1813,9 +1884,9 @@ namespace ScriptQL
 
                         foreach (var database in server.databasesCollection)
                         {
-                            if (database.status == "ONLINE") database.GetDatabaseProperties();
-                            server.totalDataSize += database.rowsSize/1024;
-                            server.totalLogSize += database.logSize/1024;
+                            if (database.Status == "ONLINE") database.GetDatabaseProperties();
+                            server.totalDataSize += database.RowsSize/1024;
+                            server.totalLogSize += database.LogSize/1024;
                         }
                         _databaseCollectionBindingList = new BindingList<SqlDatabase>(server.databasesCollection);
                         dgvDatabases.DataSource = _databaseCollectionBindingList;
@@ -1867,9 +1938,9 @@ namespace ScriptQL
             }
             _oDatabaseIndex = dgvDatabases.CurrentCell.RowIndex;
             _oDatabase = _oInstance.databasesCollection[_oDatabaseIndex];
-            Utils.WriteLog(string.Format("Connected to {0}@{1}", _oDatabase.name, lstMain_Servers.SelectedItem));
+            Utils.WriteLog(string.Format("Connected to {0}@{1}", _oDatabase.Name, lstMain_Servers.SelectedItem));
             ButtonDisable();
-            EnableButtons(_oDatabase.parent, _oDatabase);
+            EnableButtons(_oDatabase.Parent, _oDatabase);
         }
 
         private void dgvDatabases_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
@@ -1882,7 +1953,7 @@ namespace ScriptQL
             if (e.Value == null) return;
             switch (dgvDatabases.Columns[e.ColumnIndex].Name)
             {        
-                case "status":
+                case "Status":
                     switch ((string) e.Value)
                     {
                         case "ONLINE":
@@ -1896,7 +1967,7 @@ namespace ScriptQL
                             break;
                     }
                     break;
-                case "access":
+                case "Access":
                 {
                     if ((string) e.Value == "multi")
                     {
@@ -1908,7 +1979,7 @@ namespace ScriptQL
                     }
                 }
                     break;
-                case "name":
+                case "Name":
                     if (SqlInstance.systemNames.Contains(e.Value))
                     {
                         e.CellStyle.BackColor = Color.BurlyWood;
@@ -1970,28 +2041,28 @@ namespace ScriptQL
                 }
 
                 if (mode == "OFFLINE")
-                    if (database.status == "OFFLINE")
+                    if (database.Status == "OFFLINE")
                     {
-                        SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.status));
+                        SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.Status));
                         continue;
                     }
                 if (mode == "ONLINE")
-                    if (database.status == "ONLINE")
+                    if (database.Status == "ONLINE")
                     {
-                        SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.status));
+                        SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.Status));
                         continue;
                     }
                 if (mode == "MULTI_USER")
-                    if (database.access == "multi")
+                    if (database.Access == "multi")
                     {
-                        SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.access));
+                        SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.Access));
                         continue;
                     }
                 if (mode == "SINGLE_USER")
                 {
-                    if (database.status == "single")
+                    if (database.Status == "single")
                     {
-                        SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.access));
+                        SetStatus(sender, database, status, "SKIPPED", WRONG_DATABASE_STATE + string.Format("({0})", database.Access));
                         continue;
                     }
                 }
@@ -2007,7 +2078,7 @@ namespace ScriptQL
                     }
                     if (switchAll.Result)
                     {
-                        SetStatus(sender, database, status, "COMPLETED", database.name + " set " + mode);
+                        SetStatus(sender, database, status, "COMPLETED", database.Name + " set " + mode);
                         switched++;
                     }
                     else
@@ -2044,17 +2115,17 @@ namespace ScriptQL
             var database = _oDatabase;
 
             
-            UIOperationStarted(sender, database.parent, 0, "Killing connections to database: " + database.name);
+            UIOperationStarted(sender, database.Parent, 0, "Killing connections to database: " + database.Name);
             try
             {
-                await _oInstance.KillAllConnections(database.name);
-                SetStatus(sender, database, "END", "COMPLETED", database.name + " has no open connections now");
+                await _oInstance.KillAllConnections(database.Name);
+                SetStatus(sender, database, "END", "COMPLETED", database.Name + " has no open connections now");
             }
             catch (Exception ex)
             {
                 SetStatus(sender, database, "END", "ERROR", ex.Message);
             }         
-            UIOperationClosed(sender, database.parent);
+            UIOperationClosed(sender, database.Parent);
         }
 
         private void lstMain_Servers_MouseHover(object sender, EventArgs e)

@@ -124,9 +124,7 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Icons\109_AllAnnotations_Complete_16x16_72.png" />
   </ItemGroup>
@@ -240,6 +238,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Icons\112_Minus_Green_24x24_72.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dbDestruction.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

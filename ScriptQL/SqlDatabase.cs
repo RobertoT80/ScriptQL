@@ -17,111 +17,95 @@ namespace ScriptQL
     {
         private readonly string _name;
         [Category("Properties"), ReadOnly(true)]
-        public string name
+        public string Name
         {
             get { return _name; }
         }
 
-        private string _status;
-
         [Category("Properties"), ReadOnly(true)]
-        public string status
-        {
-            get { return _status; }
-        }
+        public string Status { get; private set; }
 
         private readonly sbyte _singleUserAccess;
 
         [Category("Properties"), ReadOnly(true)]
-        public string access
+        public string Access
         {
             get { return _singleUserAccess == 0 ? "multi" : "single"; }
         }
 
         private DateTime _created;
 
-        [Category("Properties")]
-        [ReadOnly(true)]
-        public DateTime created
+        [Category("Properties"), ReadOnly(true)]
+        public DateTime Created
         {
             get { return _created; }
         }
 
         private DateTime? _lastBackup;
 
-        [Category("Properties")]
-        [ReadOnly(true)]
-        public DateTime? lastBackup
+        [Category("Properties"), ReadOnly(true)]
+        public DateTime? LastBackup
         {
             get { return _lastBackup; }
         }
 
         [Category("Properties"), ReadOnly(true)]
-        public int id { get; private set; }
+        public int Id { get; private set; }
 
         [Category("Size (MB)"), ReadOnly(true)]
-        public decimal rowsSize { get; private set; }
+        public decimal RowsSize { get; private set; }
 
         [Category("Size (MB)"), ReadOnly(true)]
-        public decimal logSize { get; private set; }
+        public decimal LogSize { get; private set; }
 
         [Category("Size (MB)"), ReadOnly(true)]
-        public decimal totalSize { get; private set; }
+        public decimal TotalSize { get; private set; }
 
-        public SqlInstance parent;
-
-        
+        public SqlInstance Parent;  
 
         [Category("Properties"), ReadOnly(true)]
-        public string recovery { get; private set; }
-
-        private string _collation;
+        public string Recovery { get; private set; }
 
         [Category("Properties"), ReadOnly(true)]
-        public string collation
-        {
-            get { return _collation; }
-        }
+        public string Collation { get; private set; }
 
-       
-        [Category("Data Files")]
-        [ReadOnly(true)]
-        public string datafilePrimaryLogical { get; set; }
 
         [Category("Data Files")]
         [ReadOnly(true)]
-        public string datafilePrimaryPhysical { get; set; }
+        public string DatafilePrimaryLogical { get; set; }
 
         [Category("Data Files")]
         [ReadOnly(true)]
-        public string datafileLogLogical { get; set; }
+        public string DatafilePrimaryPhysical { get; set; }
 
         [Category("Data Files")]
         [ReadOnly(true)]
-        public string datafileLogPhysical { get; set; }
+        public string DatafileLogLogical { get; set; }
+
+        [Category("Data Files")]
+        [ReadOnly(true)]
+        public string DatafileLogPhysical { get; set; }
 
         [Category("Data Files")]
         [ReadOnly(true)]
 
-        public List<string[]> datafileDataSecondary { get; set; }
+        public List<string[]> DatafileDataSecondary { get; set; }
 
         [Category("Data Files")]
         [ReadOnly(true)]
-        public List<string[]> datafileLogSecondary { get; set; }
+        public List<string[]> DatafileLogSecondary { get; set; }
 
-        private List<string> dbPhysicalFiles;
+        private List<string> _dbPhysicalFiles;
 
-        public bool isBusy;
+        public bool IsBusy;
 
-        public List<SqlSchema> listSchema = new List<SqlSchema>();
-
-        //List<Table> listTables = new List<Table>();
+        public readonly List<SqlSchema> ListSchema = new List<SqlSchema>();
 
         public SqlDatabase(SqlInstance parent, string name, string status, sbyte singleUserAccess)
         {
-            this.parent = parent;
+            Parent = parent;
             _name = name;
-            _status = status;
+            Status = status;
             _singleUserAccess = singleUserAccess;
 
             //getPaths();
@@ -129,7 +113,7 @@ namespace ScriptQL
 
         public override string ToString()
         {
-            return name;
+            return Name;
         }
 
         public override bool Equals(Object obj)
@@ -139,7 +123,7 @@ namespace ScriptQL
 
         public override int GetHashCode()
         {
-            return name.GetHashCode();
+            return Name.GetHashCode();
         }
 
         public void GetDatabaseProperties()
@@ -154,9 +138,9 @@ namespace ScriptQL
                             is_fulltext_enabled,
                             is_broker_enabled
                             FROM sys.databases where name = '@dbname';");
-            sb.Replace("@dbname", name);
+            sb.Replace("@dbname", Name);
 
-            var conn = parent.GetConnection();
+            var conn = Parent.GetConnection();
             var cmd = new SqlCommand(sb.ToString(), conn);
             try
             {
@@ -164,24 +148,24 @@ namespace ScriptQL
                 var rdr = cmd.ExecuteReader();
                 rdr.Read();
                 _created = rdr.GetDateTime(0); //create_date
-                _status = rdr.GetString(2); //state_desc
-                recovery = rdr.GetString(3); //recovery_model_desc
+                Status = rdr.GetString(2); //state_desc
+                Recovery = rdr.GetString(3); //recovery_model_desc
 
                 if (!rdr.IsDBNull(4))
                 {
                     _lastBackup = rdr.GetDateTime(4);
                 }
 
-                id = (int) rdr.GetSqlInt32(5);
+                Id = (int) rdr.GetSqlInt32(5);
                 GetSize();
-                if (_status != "ONLINE") return;
+                if (Status != "ONLINE") return;
                 if (!rdr.IsDBNull((1)))
                     // If AUTO_CLOSE is ON the query retrieves null, it's a instance-side issue http://technet.microsoft.com/en-us/library/ms178534.aspx
                 {
-                    _collation = rdr.GetString(1);
+                    Collation = rdr.GetString(1);
                 }
                 //if (_singleUserAccess == 0 && _status == "ONLINE")
-                if (_status == "ONLINE")
+                if (Status == "ONLINE")
                 {
                     GetPaths();    
                 }
@@ -200,7 +184,7 @@ namespace ScriptQL
 
         private void GetPaths()
         {
-            var conn = parent.GetConnection();
+            var conn = Parent.GetConnection();
             var cmd = new SqlCommand {Connection = conn};
             var sb = new StringBuilder("select name, physical_name, file_id, type from [@dbname].sys.database_files ORDER BY file_id;");
             sb.Replace("@dbname", _name);
@@ -215,24 +199,24 @@ namespace ScriptQL
                     switch (rdr["file_id"].ToString())
                     {
                         case "1":
-                            datafilePrimaryLogical = rdr.GetString(0); // primary logical file
-                            datafilePrimaryPhysical = rdr.GetString(1); // primary physical file
+                            DatafilePrimaryLogical = rdr.GetString(0); // primary logical file
+                            DatafilePrimaryPhysical = rdr.GetString(1); // primary physical file
                             break;
                         case "2":
-                            datafileLogLogical = rdr.GetString(0); // log logical file
-                            datafileLogPhysical = rdr.GetString(1); // log physical file
+                            DatafileLogLogical = rdr.GetString(0); // log logical file
+                            DatafileLogPhysical = rdr.GetString(1); // log physical file
                             break;
                         default:
-                            datafileDataSecondary = new List<string[]>();
-                            datafileLogSecondary = new List<string[]>();
+                            DatafileDataSecondary = new List<string[]>();
+                            DatafileLogSecondary = new List<string[]>();
                             if (rdr["Type"].ToString() == "D")
                             {
-                                datafileDataSecondary.Add(new[]
+                                DatafileDataSecondary.Add(new[]
                                 {(rdr["name"].ToString()), (rdr["physical_name"].ToString())});
                             }
                             else if (rdr["Type"].ToString() == "L")
                             {
-                                datafileLogSecondary.Add(new[] {(rdr["name"].ToString()), (rdr["physical_name"].ToString())});
+                                DatafileLogSecondary.Add(new[] {(rdr["name"].ToString()), (rdr["physical_name"].ToString())});
                             }
                             break;
                     }
@@ -247,20 +231,20 @@ namespace ScriptQL
                 conn.Close();
             }
             // the collection will be useful to delete the original files if the database got corrupted (i.e. stuck in restoring status)
-            dbPhysicalFiles = new List<string> { datafilePrimaryPhysical, datafileLogPhysical };
-            if (datafileDataSecondary != null && datafileDataSecondary.Count > 0)
+            _dbPhysicalFiles = new List<string> { DatafilePrimaryPhysical, DatafileLogPhysical };
+            if (DatafileDataSecondary != null && DatafileDataSecondary.Count > 0)
             {
-                dbPhysicalFiles.AddRange(from arr in datafileDataSecondary from s in arr select s);
+                _dbPhysicalFiles.AddRange(from arr in DatafileDataSecondary from s in arr select s);
             }
-            if (datafileLogSecondary != null && datafileLogSecondary.Count > 0)
+            if (DatafileLogSecondary != null && DatafileLogSecondary.Count > 0)
             {
-                dbPhysicalFiles.AddRange(from arr in datafileLogSecondary from s in arr select s);
+                _dbPhysicalFiles.AddRange(from arr in DatafileLogSecondary from s in arr select s);
             }
         }
 
         private void GetSize()
         {
-            var conn = parent.GetConnection();
+            var conn = Parent.GetConnection();
             var cmd = new SqlCommand {Connection = conn};
             var sb = new StringBuilder();
             sb.Append(@"SELECT 
@@ -269,16 +253,16 @@ namespace ScriptQL
                             total_size_mb = CAST(SUM(size) * 8. / 1024 AS DECIMAL(8,2))
                         FROM sys.master_files WITH(NOWAIT)
                         WHERE database_id = '@database_id'");
-            sb.Replace("@database_id", id.ToString(CultureInfo.InvariantCulture));
+            sb.Replace("@database_id", Id.ToString(CultureInfo.InvariantCulture));
             cmd.CommandText = sb.ToString();
             try
             {
             conn.Open();
             var rdr = cmd.ExecuteReader();
             rdr.Read();
-            logSize = decimal.Parse(rdr["log_size_mb"].ToString());
-            rowsSize = decimal.Parse(rdr["row_size_mb"].ToString());
-            totalSize = decimal.Parse(rdr["total_size_mb"].ToString());
+            LogSize = decimal.Parse(rdr["log_size_mb"].ToString());
+            RowsSize = decimal.Parse(rdr["row_size_mb"].ToString());
+            TotalSize = decimal.Parse(rdr["total_size_mb"].ToString());
             }
             catch (SqlException ex)
             {
@@ -297,13 +281,13 @@ namespace ScriptQL
 
         internal virtual void GetSchema()
         {
-            var conn = parent.GetConnection();
+            var conn = Parent.GetConnection();
             var cmd = new SqlCommand();
 
             var sb =
                 new StringBuilder(
                     "USE [@dbname] SELECT DISTINCT table_schema FROM INFORMATION_SCHEMA.TABLES ORDER BY table_schema");
-            sb.Replace("@dbname", name);
+            sb.Replace("@dbname", Name);
             cmd.Connection = conn;
             cmd.CommandText = sb.ToString();
 
@@ -328,35 +312,14 @@ namespace ScriptQL
         {
             if (oSchema != null)
             {
-                listSchema.Add(oSchema);
+                ListSchema.Add(oSchema);
             }
         }
-
-        //public bool AlterSync(string command, sbyte commandTimeout = 5, List<string[]> sqlParams = null, bool withRoolbackImmediate = false)
-        //{
-        //    var sb = new StringBuilder("ALTER DATABASE [@dbname] @command ");
-        //    sb.Replace("@dbname", name);
-        //    sb.Replace("@command", command);
-
-        //    if (sqlParams != null)
-        //    {
-        //        foreach (var par in sqlParams)
-        //        {
-        //            sb.Replace(par[0], par[1]);
-        //        }
-        //    }
-
-        //    if (withRoolbackImmediate)
-        //    {
-        //        sb.Append("WITH ROLLBACK IMMEDIATE");
-        //    }
-        //    return parent.ExecuteNonQuerySync(sb.ToString(), commandTimeout);
-        //}
 
         public async Task<bool> Alter(string command, CancellationToken token, sbyte commandTimeout = 10, List<string[]> sqlParams = null,bool withRoolbackImmediate = false)
         {
             var sb = new StringBuilder("ALTER DATABASE [@dbname] @command ");
-            sb.Replace("@dbname", name);
+            sb.Replace("@dbname", Name);
             sb.Replace("@command", command);
 
             if (sqlParams != null)
@@ -371,7 +334,7 @@ namespace ScriptQL
             {
                 sb.Append("WITH ROLLBACK IMMEDIATE");
             }
-            var executeAlter = Task.Run(() => parent.ExecuteNonQueryAsync(sb.ToString(), token, commandTimeout));
+            var executeAlter = Task.Run(() => Parent.ExecuteNonQueryAsync(sb.ToString(), token, commandTimeout));
             try
             {
                 await executeAlter;
@@ -391,11 +354,11 @@ namespace ScriptQL
 
         public async Task<bool> BackupAsync(List<string> par, CancellationToken token)
         {      
-            if (status != "ONLINE") { return false; }
+            if (Status != "ONLINE") { return false; }
 
-            var backupFile = Path.Combine(parent.pathBackup + Path.DirectorySeparatorChar + name + ".bak");
+            var backupFile = Path.Combine(Parent.pathBackup + Path.DirectorySeparatorChar + Name + ".bak");
             var sb = new StringBuilder("BACKUP DATABASE [@dbname] TO DISK='@backupfile'");
-            sb.Replace("@dbname", name);
+            sb.Replace("@dbname", Name);
             sb.Replace("@backupfile", backupFile);
 
             if (par.Count > 0)
@@ -411,7 +374,7 @@ namespace ScriptQL
                 sb.Append(s.Substring(0, s.Length - 1));
             }
 
-            var backup = Task.Run(() => parent.ExecuteNonQueryAsync(sb.ToString(), token));
+            var backup = Task.Run(() => Parent.ExecuteNonQueryAsync(sb.ToString(), token));
             try
             {
                 
@@ -451,10 +414,10 @@ namespace ScriptQL
 
             var mdfLogicalBackup = "";
             var ldfLogicalBackup = "";
-            var ndfSecondary_logical_Backup = new List<string[]>();
-            var ldfSecondary_logical_Backup = new List<string[]>();
+            var ndfSecondaryLogicalBackup = new List<string[]>();
+            var ldfSecondaryLogicalBackup = new List<string[]>();
 
-            var conn = parent.GetConnection(); 
+            var conn = Parent.GetConnection(); 
             var cmd = new SqlCommand(sb.ToString(), conn);
 
             try
@@ -475,10 +438,10 @@ namespace ScriptQL
                             switch (rdr["Type"].ToString())
                             {
                                 case "D":
-                                    ndfSecondary_logical_Backup.Add(new[] {rdr["LogicalName"].ToString(), rdr["PhysicalName"].ToString()});
+                                    ndfSecondaryLogicalBackup.Add(new[] {rdr["LogicalName"].ToString(), rdr["PhysicalName"].ToString()});
                                     break;
                                 case "L":
-                                    ldfSecondary_logical_Backup.Add(new[] {rdr["LogicalName"].ToString(), rdr["PhysicalName"].ToString()});
+                                    ldfSecondaryLogicalBackup.Add(new[] {rdr["LogicalName"].ToString(), rdr["PhysicalName"].ToString()});
                                     break;
                             }
                             break;
@@ -502,18 +465,18 @@ namespace ScriptQL
             sb.Replace("@dbname", _name);
             sb.Replace("@filename", filename);
             sb.Replace("@mdf_logical_backup", mdfLogicalBackup);
-            sb.Replace("@mdf_physical", datafilePrimaryPhysical);
+            sb.Replace("@mdf_physical", DatafilePrimaryPhysical);
             sb.Replace("@ldf_logical_backup", ldfLogicalBackup);
-            sb.Replace("@ldf_physical", datafileLogPhysical);
+            sb.Replace("@ldf_physical", DatafileLogPhysical);
 
-            if (ndfSecondary_logical_Backup.Count > 0)
+            if (ndfSecondaryLogicalBackup.Count > 0)
             {
                 var count = 0;
-                foreach (var s in ndfSecondary_logical_Backup)
+                foreach (var s in ndfSecondaryLogicalBackup)
                 {
                     sb.Append(", MOVE '@logical_ndf' TO '@datafile'");
-                    sb.Replace("@logical_ndf", ndfSecondary_logical_Backup[count][0]);
-                    sb.Replace("@datafile", Path.Combine(parent.pathData + ndfSecondary_logical_Backup[count][0] + ".ndf"));
+                    sb.Replace("@logical_ndf", ndfSecondaryLogicalBackup[count][0]);
+                    sb.Replace("@datafile", Path.Combine(Parent.pathData + ndfSecondaryLogicalBackup[count][0] + ".ndf"));
                     count++;
                 }
             }
@@ -523,7 +486,7 @@ namespace ScriptQL
         public async Task<bool> RestoreAsync(string filename, CancellationToken token)
         {
             var sb = RestoreLogicalFilenames(filename);
-            var restore = Task.Run(() => parent.ExecuteNonQueryAsync(sb, token));
+            var restore = Task.Run(() => Parent.ExecuteNonQueryAsync(sb, token));
             await restore;
             if (token.IsCancellationRequested)
             {
@@ -535,10 +498,10 @@ namespace ScriptQL
 
         public async Task<bool> Detach(CancellationToken token)
         {
-            var sqlParams = new List<string[]> { new[] { "@dbname", name } };
-            var detach = Task.Run(() => parent.ExecuteSp(token, "SP_DETACH_DB", sqlParams));
+            var sqlParams = new List<string[]> { new[] { "@dbname", Name } };
+            var detach = Task.Run(() => Parent.ExecuteSp(token, "SP_DETACH_DB", sqlParams));
 
-            if (_status != "ONLINE")
+            if (Status != "ONLINE")
             {
                 await Alter("SET ONLINE", token, 5, null, true);
             }
@@ -563,7 +526,7 @@ namespace ScriptQL
             sb.Append("dbcc checkdb([@dbname]) ");
             sb.Append("WITH NO_INFOMSGS, ALL_ERRORMSGS");
             sb.Replace("@dbname", _name);
-            var check = Task.Run(() => parent.ExecuteNonQueryAsync(sb.ToString(), token));
+            var check = Task.Run(() => Parent.ExecuteNonQueryAsync(sb.ToString(), token));
 
             await check;
             if (token.IsCancellationRequested)

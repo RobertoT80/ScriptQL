@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -35,7 +36,7 @@ namespace ScriptQL
                 txtName.Focus();
                 return;
             }
-            if (_instance.databasesCollection.FirstOrDefault(s => s.name == dbname) != null)
+            if (_instance.databasesCollection.FirstOrDefault(s => s.Name == dbname) != null)
             {
                 lblStatus.ForeColor = Color.Red;
                 lblStatus.Text = dbname + " exists yet.";
@@ -44,10 +45,73 @@ namespace ScriptQL
             }
             btnCreate.Enabled = false;
 
-            var result = Task.Run(() => _instance.CreateDatabase(dbname));
+            var sbCreate = new StringBuilder("CREATE DATABASE [@dbname];");
+            sbCreate.Append("ALTER DATABASE [@dbname] SET RECOVERY @recovery;");
+
+            if (ckbCreate.GetItemChecked(0))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_CLOSE ON;");
+            }
+            else if (!ckbCreate.GetItemChecked(0))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_CLOSE OFF;");
+            }
+            if (ckbCreate.GetItemChecked(1))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_CREATE_STATISTICS ON;");
+            }
+            else if (!ckbCreate.GetItemChecked(1))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_CREATE_STATISTICS OFF;");
+            }
+            if (ckbCreate.GetItemChecked(2))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_UPDATE_STATISTICS ON;");
+            }
+            else if (!ckbCreate.GetItemChecked(2))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_UPDATE_STATISTICS OFF;");
+            }
+            if (ckbCreate.GetItemChecked(3))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_UPDATE_STATISTICS_ASYNC ON;");
+            }
+            else if (!ckbCreate.GetItemChecked(3))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_UPDATE_STATISTICS_ASYNC OFF;");
+            }
+            if (ckbCreate.GetItemChecked(4))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_SHRINK ON;");
+            }
+            else if (!ckbCreate.GetItemChecked(4))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET AUTO_SHRINK OFF;");
+            }
+            if (ckbCreate.GetItemChecked(5))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET ENABLE_BROKER;");
+            }
+            else if (!ckbCreate.GetItemChecked(5))
+            {
+                sbCreate.Append("ALTER DATABASE [@dbname] SET DISABLE_BROKER;");
+            }
+
+            sbCreate.Replace("@dbname", txtName.Text);
+            sbCreate.Replace("@recovery", cmbRecovery.SelectedItem.ToString());
+
+            var result = Task.Run(() => _instance.ExecuteNonQueryAsync(sbCreate.ToString()));
             try
             {
                 await result;
+                Utils.WriteLog("result is::: " + result.Result);
+                if (result.Result)
+                {
+                    lblStatus.ForeColor = Color.Green;
+                    lblStatus.Text = dbname + " created!";
+                    var oDatabase = new SqlDatabase(_instance, dbname, "ONLINE", 0);
+                    _instance.databasesCollection.Add(oDatabase);
+                }
             }
             catch (Exception)
             {
@@ -56,73 +120,6 @@ namespace ScriptQL
                 txtName.Focus();
                 return;
             }
-            
-            var sbAlter = new StringBuilder();
-            sbAlter.Append("ALTER DATABASE [@dbname] SET RECOVERY @recovery;");
-
-            if (ckbCreate.GetItemChecked(0))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_CLOSE ON;");
-            }
-            else if (!ckbCreate.GetItemChecked(0))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_CLOSE OFF;");
-            }
-            if (ckbCreate.GetItemChecked(1))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_CREATE_STATISTICS ON;");
-            }
-            else if (!ckbCreate.GetItemChecked(1))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_CREATE_STATISTICS OFF;");
-            }
-            if (ckbCreate.GetItemChecked(2))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_UPDATE_STATISTICS ON;");
-            }
-            else if (!ckbCreate.GetItemChecked(2))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_UPDATE_STATISTICS OFF;");
-            }
-            if (ckbCreate.GetItemChecked(3))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_UPDATE_STATISTICS_ASYNC ON;");
-            }
-            else if (!ckbCreate.GetItemChecked(3))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_UPDATE_STATISTICS_ASYNC OFF;");
-            }
-            if (ckbCreate.GetItemChecked(4))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_SHRINK ON;");
-            }
-            else if (!ckbCreate.GetItemChecked(4))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET AUTO_SHRINK OFF;");
-            }
-            if (ckbCreate.GetItemChecked(5))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET ENABLE_BROKER;");
-            }
-            else if (!ckbCreate.GetItemChecked(5))
-            {
-                sbAlter.Append("ALTER DATABASE [@dbname] SET DISABLE_BROKER;");
-            }
-
-            sbAlter.Replace("@dbname", txtName.Text);
-            sbAlter.Replace("@recovery", cmbRecovery.SelectedItem.ToString());
-
-            try
-            {
-            await _instance.ExecuteNonQueryAsync(sbAlter.ToString());
-            lblStatus.ForeColor = Color.Green;
-            lblStatus.Text = String.Format("{0} created!", txtName.Text);
-            }
-            catch(Exception ex)
-            {
-                lblStatus.ForeColor = Color.Red;
-                lblStatus.Text = ex.Message;
-            } 
         btnCreate.Enabled = true;
         }
         
