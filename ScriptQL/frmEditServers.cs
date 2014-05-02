@@ -3,13 +3,14 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ScriptQL
 {
     public partial class FrmServers : Form
     {
-        private CancellationTokenSource cts;
+        private CancellationTokenSource _cts;
         private const sbyte MAXINSTANCES = 5;
         private const string DATA_REQUIRED = "Please compile all the fields.";
 
@@ -90,7 +91,6 @@ namespace ScriptQL
         {
             btnFrmEditServers_Test.Enabled = state;
             btnFrmEditServers_add.Enabled = state;
-            btnFrmEditServers_Delete.Enabled = state;
         }
 
         private async void btnTest_Click(object sender, EventArgs e)
@@ -105,13 +105,26 @@ namespace ScriptQL
             SetButtons(false);
             SetStatus(string.Format("Pinging {0} ...", txtEditServers_SqlInstance.Text.Trim()), Color.Black);
 
-            cts = new CancellationTokenSource();
-            var token = cts.Token;
+            _cts = new CancellationTokenSource();
+            var token = _cts.Token;
+            var connection = Task.Run(() => oServer.TestConnection(token));
 
             try
             {
                 btnCancel.Show();
-                await oServer.TestConnection(token);
+                await connection;
+                if (_cts.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+                if (oServer.isOnline == true)
+                {
+                    SetStatus("Connection OK to " + txtEditServers_SqlInstance.Text, Color.Green);
+                }
+                else
+                {
+                    SetStatus(txtEditServers_SqlInstance.Text + " not connected", Color.Red);
+                }
             }
             catch (OperationCanceledException)
             {
@@ -126,14 +139,7 @@ namespace ScriptQL
                 btnCancel.Hide();
             }
 
-            if (oServer.isOnline == true)
-            {
-                SetStatus("Connection OK to " + txtEditServers_SqlInstance.Text, Color.Green);
-            }
-            else
-            {
-                SetStatus(txtEditServers_SqlInstance.Text + " not connected", Color.Red);
-            }
+            
             SetButtons(true);
         }
 
@@ -249,9 +255,9 @@ namespace ScriptQL
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            if (cts != null)
+            if (_cts != null)
             {
-                cts.Cancel();
+                _cts.Cancel();
             }
         }
     }
