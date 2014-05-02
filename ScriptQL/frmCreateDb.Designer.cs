@@ -70,7 +70,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(303, 181);
             this.tableLayoutPanel1.TabIndex = 1;
             // 
@@ -78,7 +78,7 @@
             // 
             this.lblName.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(28, 9);
+            this.lblName.Location = new System.Drawing.Point(28, 10);
             this.lblName.Name = "lblName";
             this.lblName.Size = new System.Drawing.Size(35, 13);
             this.lblName.TabIndex = 1;
@@ -97,9 +97,9 @@
             "Auto Update Statistics Asynchronously",
             "Auto Shrink",
             "Broker Enabled"});
-            this.ckbCreate.Location = new System.Drawing.Point(3, 67);
+            this.ckbCreate.Location = new System.Drawing.Point(3, 71);
             this.ckbCreate.Name = "ckbCreate";
-            this.ckbCreate.Size = new System.Drawing.Size(297, 90);
+            this.ckbCreate.Size = new System.Drawing.Size(297, 96);
             this.ckbCreate.TabIndex = 1;
             this.ckbCreate.ThreeDCheckBoxes = true;
             // 
@@ -107,7 +107,7 @@
             // 
             this.lblRecoveryMode.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblRecoveryMode.AutoSize = true;
-            this.lblRecoveryMode.Location = new System.Drawing.Point(4, 41);
+            this.lblRecoveryMode.Location = new System.Drawing.Point(4, 44);
             this.lblRecoveryMode.Name = "lblRecoveryMode";
             this.lblRecoveryMode.Size = new System.Drawing.Size(83, 13);
             this.lblRecoveryMode.TabIndex = 4;
@@ -131,7 +131,7 @@
             "FULL",
             "BULK_LOGGED",
             "SIMPLE"});
-            this.cmbRecovery.Location = new System.Drawing.Point(95, 35);
+            this.cmbRecovery.Location = new System.Drawing.Point(95, 37);
             this.cmbRecovery.Name = "cmbRecovery";
             this.cmbRecovery.Size = new System.Drawing.Size(205, 21);
             this.cmbRecovery.TabIndex = 3;
@@ -181,6 +181,7 @@
             this.Controls.Add(this.toolStrip2);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.groupBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmCreateDb";
             this.Text = "Create Database";
             this.Load += new System.EventHandler(this.FrmCreateDb_Load);

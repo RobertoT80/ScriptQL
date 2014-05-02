@@ -390,8 +390,8 @@ namespace ScriptQL
 
             // Database busy or null
             if (database == null || database.isBusy) return;
-            // System database 
-            if (database.sysDb)
+
+            if(database is SqlSystemDatabase)
             {
                 foreach (var i in tbxDatabase.Items.OfType<ToolStripButton>().Where(i => (string) i.Tag == "sysdb"))
                 {
@@ -477,7 +477,13 @@ namespace ScriptQL
                 {
                     throw new OperationCanceledException();
                 }
-                Utils.WriteLog("ALTER RESULT" + alterDatabase.Result);
+                if (alterDatabase.Result)
+                {
+                    SetStatus(sender, database, "END", "COMPLETED", String.Format("{0} {1}", database.name, command));
+                    UIOperationClosed(sender, database.parent);
+                    return;
+                }
+                
 
             }
             catch (OperationCanceledException)
@@ -497,14 +503,7 @@ namespace ScriptQL
             {
                 SetStatus(sender, database, "END", "EXCEPTION", ex.Message);
             }
-            UIOperationClosed(sender, database.parent);
-
-            if (alterDatabase.Result)
-            {
-                SetStatus(sender, database, "END", "COMPLETED", String.Format("{0} {1}", database.name, command));
-                return;
-            }
-
+            
             var confirmation = MessageBox.Show(command + RETRY_CONFIRMATION, "Confirmation", MessageBoxButtons.YesNo);
             if (!confirmation.Equals(DialogResult.Yes))
             {
@@ -517,20 +516,22 @@ namespace ScriptQL
                 try
                 {
                     await alterDatabase;
+                    if (alterDatabase.Result)
+                    {
+                        SetStatus(sender, database, "END", "COMPLETED", String.Format("{0} {1}", database.name, command));
+                    }
+                    else
+                    {
+                        SetStatus(sender, database, "END", "ERROR", "Could not " + command + database.name);
+                    }
                 }
                 catch (Exception ex)
                 {
                     Utils.WriteLog(ex.Message);
+                    SetStatus(sender, database, "END", "ERROR", ex.Message);
                 }
             }
-            if (alterDatabase.Result)
-            {
-                SetStatus(sender, database, "END", "COMPLETED", String.Format("{0} {1}", database.name, command));
-            }
-            else
-            {
-                SetStatus(sender, database, "END", "ERROR", "Could not " + command + database.name);
-            }
+            
             UIOperationClosed(sender, database.parent);
         }
 
@@ -1085,7 +1086,22 @@ namespace ScriptQL
 
         private void ValidateRestoreFolder(object sender, SqlInstance instance, string folder)
         {
-            var backupArray = Directory.GetFiles(folder, "*.bak");
+            string[] backupArray;
+            try
+            {
+                backupArray = Directory.GetFiles(folder, "*.bak");
+            }
+            catch(UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have permission to access " + folder);
+                return;
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
             if (backupArray.Length == 0)
             {
                 MessageBox.Show(folder + " does not contain backups");
@@ -1769,7 +1785,7 @@ namespace ScriptQL
                 dgvDatabases.DataSource = _databaseCollectionBindingList;
             }
 
-            if (server != null && server.isBusy == false && server.isConnecting == false)
+            if (server.isBusy == false && server.isConnecting == false)
             {
                 prpServers.SelectedObject = null;
                 ButtonDisable();
@@ -1947,7 +1963,7 @@ namespace ScriptQL
             foreach (var database in listDatabases)
             {
                 var status = String.Format("({0}/{1})", listDatabases.IndexOf(database) + 1, listDatabases.Count);
-                if (database.sysDb)
+                if (database is SqlSystemDatabase)
                 {
                     SetStatus(sender, database, status, "SKIPPED", CANCEL_SYSDB);
                     continue;

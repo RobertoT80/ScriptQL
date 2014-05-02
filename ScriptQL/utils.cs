@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.IO;
 
 namespace ScriptQL
 {
     public class Utils
     {
-        internal static string appPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Mentina");
+        internal static string appPath =
+            Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), typeof(Program).Assembly.GetName().Name);
         internal static string logTxt = Path.Combine(appPath, "log.txt");
         private static readonly string serializedInstances = Path.Combine(appPath, "instances.dat");
 
-        internal const string patternSpecialChars = "[~#%&* {}/;:<>?|\"-]";
+        internal const string SPECIALCHARS = "[~#%&* {}/;:<>?|\"-]";
 
         public static void WriteLog(string text)
         {
@@ -78,7 +78,7 @@ namespace ScriptQL
         public static bool IsStringValid(string s)
         {
             Debug.Assert(s.Any());
-            return patternSpecialChars.All(cp => s.All(cs => cp != cs));
+            return SPECIALCHARS.All(cp => s.All(cs => cp != cs));
         }
     }
 }

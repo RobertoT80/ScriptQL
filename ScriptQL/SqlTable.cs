@@ -27,7 +27,7 @@ namespace ScriptQL
             var sb = new StringBuilder();
             sb.Append("SET ROWCOUNT @rowcount").Replace("@rowcount", rowsNumber.ToString(CultureInfo.InvariantCulture));
             sb.Append("USE [@dbname] ").Replace("@dbname", parent.parent.name);
-            sb.Append("SELECT * FROM [@schema].[@table]").Replace("@schema", parent.name).Replace("@table", name);
+            sb.Append("SELECT * FROM [@schema].[@table] with (NOLOCK)").Replace("@schema", parent.name).Replace("@table", name);
             sb.Append("ORDER BY [@column] @sortorder").Replace("@column", column).Replace("@sortorder", sortorder);
 
             var da = new SqlDataAdapter(sb.ToString(), conn);

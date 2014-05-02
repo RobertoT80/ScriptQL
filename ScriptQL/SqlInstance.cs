@@ -315,8 +315,8 @@ namespace ScriptQL
             }
             databasesCollection.Clear();
             const string qry = @"SELECT name, state_desc, user_access, 
-                            CASE owner_sid
-	                            WHEN 0x01 then 'true'
+                            CASE is_distributor
+	                            WHEN 1 then 'true'
 	                            ELSE 'false'
                             END
                             FROM sys.databases ORDER BY owner_sid, name";
@@ -333,26 +333,42 @@ namespace ScriptQL
 
                     var name = rdr.GetString(0);
                     var status = rdr.GetString(1);
-                    var user_access = (sbyte) rdr.GetByte(2);
+                    var userAccess = (sbyte) rdr.GetByte(2);
                     var sysdb = bool.Parse(rdr.GetString(3));
-                    if (!systemdbEnabled)
+
+
+                    if (systemNames.Any(name.Contains) || sysdb)
                     {
-                        if (systemNames.Any(name.Contains) || name.StartsWith("ReportServer"))
+                        if (systemdbEnabled && name != "tempdb")
                         {
-                            continue;
+                            var oDatabase = new SqlSystemDatabase(this, name, status, userAccess);
+                            databasesCollection.Add(oDatabase);
                         }
-                        var oDatabase = new SqlDatabase(this, name, status, user_access, sysdb);
-                        databasesCollection.Add(oDatabase);
-                        //oDatabase.getDatabaseProperties(); // to get size
+                            
                     }
                     else
                     {
-                        if (name != "tempdb")
-                        {
-                            var oDatabase = new SqlDatabase(this, name, status, user_access, sysdb);
-                            databasesCollection.Add(oDatabase);
-                        }
+                        var oDatabase = new SqlDatabase(this, name, status, userAccess);
+                        databasesCollection.Add(oDatabase);
                     }
+                //if (!systemdbEnabled)
+                    //{
+                    //    if (systemNames.Any(name.Contains) || name.StartsWith("ReportServer"))
+                    //    {
+                    //        continue;
+                    //    }
+                    //    var oDatabase = new SqlSystemDatabase(this, name, status, userAccess);
+                    //    databasesCollection.Add(oDatabase);
+                    //    //oDatabase.getDatabaseProperties(); // to get size
+                    //}
+                    //else
+                    //{
+                    //    if (name != "tempdb")
+                    //    {
+                    //        var oDatabase = new SqlDatabase(this, name, status, userAccess);
+                    //        databasesCollection.Add(oDatabase);
+                    //    }
+                    //}
                 }
 
             }
@@ -424,7 +440,7 @@ namespace ScriptQL
                 int databaseCreated = cmd.ExecuteNonQuery();
                 if (databaseCreated == -1)
                 {
-                    var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0, false);
+                    var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
                     databasesCollection.Add(oDatabase);
                     return true;
                 }
@@ -450,7 +466,7 @@ namespace ScriptQL
             await createDatabase;
             if (createDatabase.Result)
             {
-                var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0, false);
+                var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
                 databasesCollection.Add(oDatabase);
             }
             return createDatabase.Result;
@@ -483,7 +499,7 @@ namespace ScriptQL
             await createDatabase;
             if (createDatabase.Result)
             {
-                var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0, false);
+                var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
                 databasesCollection.Add(oDatabase);
             }
             return createDatabase.Result;
@@ -533,7 +549,7 @@ namespace ScriptQL
 
             var createDatabase = Task.Run(() => ExecuteNonQueryAsync(sbCreate.ToString(), 15));
             await createDatabase;
-            var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0, false);
+            var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
             databasesCollection.Add(oDatabase);
             return createDatabase.Result;
         }

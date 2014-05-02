@@ -49,7 +49,7 @@ namespace ScriptQL
             {
                 await result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 lblStatus.ForeColor = Color.Red;
                 lblStatus.Text = string.Format("{0} not created, check the log.", txtName.Text);

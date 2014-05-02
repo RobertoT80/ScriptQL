@@ -119,6 +119,7 @@
             this.txtEditServers_User.Size = new System.Drawing.Size(184, 20);
             this.txtEditServers_User.TabIndex = 6;
             this.toolTip1.SetToolTip(this.txtEditServers_User, "Sql login name");
+            this.txtEditServers_User.TextChanged += new System.EventHandler(this.txtEditServers_User_TextChanged);
             // 
             // txtEditServers_Password
             // 
@@ -130,6 +131,7 @@
             this.txtEditServers_Password.Size = new System.Drawing.Size(184, 20);
             this.txtEditServers_Password.TabIndex = 7;
             this.toolTip1.SetToolTip(this.txtEditServers_Password, "Sql login password");
+            this.txtEditServers_Password.TextChanged += new System.EventHandler(this.txtEditServers_Password_TextChanged);
             // 
             // chkFrmEditServers_WinAuth
             // 
@@ -407,6 +409,7 @@
             this.Controls.Add(this.chkFrmEditServers_WinAuth);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.lstEditServers_serverList);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmServers";
             this.Text = "Edit Servers";

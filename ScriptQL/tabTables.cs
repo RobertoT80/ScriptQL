@@ -8,7 +8,7 @@ namespace ScriptQL
         // ************** TABINDEX.1 "TABLES" ***********
         private void tabTables_Enter(object sender, EventArgs e)
         {
-            _oDatabaseIndex = dgvDatabases.CurrentCell.ColumnIndex;
+            _oDatabaseIndex = dgvDatabases.CurrentCell.RowIndex;
             _oDatabase = _oInstance.databasesCollection[_oDatabaseIndex];
             if (_oDatabase == null) // No db selected
             {

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ScriptQL
@@ -15,8 +17,9 @@ namespace ScriptQL
         {
             Text = "About " + Owner.Text;
             Icon = Owner.Icon;
+            lblTitle.Text = typeof (Program).Assembly.GetName().Name;
+            lblVersionNumber.Text = typeof (Program).Assembly.GetName().Version.ToString();
+            lblAuthorValue.Text = "Roberto Toso";
         }
-
-
     }
 }

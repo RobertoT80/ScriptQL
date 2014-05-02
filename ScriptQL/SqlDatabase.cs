@@ -38,16 +38,6 @@ namespace ScriptQL
             get { return _singleUserAccess == 0 ? "multi" : "single"; }
         }
 
-        private readonly bool _sysDb;
-
-        [Description("True if the database is a system one.")]
-        [Category("Properties")]
-        [ReadOnly(true)]
-        public bool sysDb
-        {
-            get { return _sysDb; }
-        }
-
         private DateTime _created;
 
         [Category("Properties")]
@@ -127,13 +117,12 @@ namespace ScriptQL
 
         //List<Table> listTables = new List<Table>();
 
-        public SqlDatabase(SqlInstance parent, string name, string status, sbyte singleUserAccess, bool sysDb)
+        public SqlDatabase(SqlInstance parent, string name, string status, sbyte singleUserAccess)
         {
             this.parent = parent;
             _name = name;
             _status = status;
             _singleUserAccess = singleUserAccess;
-            _sysDb = sysDb;
 
             //getPaths();
         }
@@ -306,7 +295,7 @@ namespace ScriptQL
             GetSchema();
         }
 
-        private void GetSchema()
+        internal virtual void GetSchema()
         {
             var conn = parent.GetConnection();
             var cmd = new SqlCommand();
@@ -324,12 +313,9 @@ namespace ScriptQL
                 var rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
-                    if (_sysDb == false)
-                    {
-                        string s = rdr.GetString(0);
-                        var oSchema = new SqlSchema(this, s);
-                        AddSchemaToDatabase(oSchema);
-                    }
+                    var s = rdr.GetString(0);
+                    var oSchema = new SqlSchema(this, s);
+                    AddSchemaToDatabase(oSchema);
                 }
             }
             finally

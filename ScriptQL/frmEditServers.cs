@@ -50,7 +50,7 @@ namespace ScriptQL
             return true;
 
         }
-        private void saveServers()
+        private void SaveServers()
         {
             SqlInstance.listServers.Clear();
             foreach (SqlInstance server in lstEditServers_serverList.Items)
@@ -74,6 +74,7 @@ namespace ScriptQL
                 txtEditServers_User.Enabled = true;
                 txtEditServers_Password.Enabled = true;
             }
+            ValidateSettings();
         }
         private async void btnTest_Click(object sender, EventArgs e)
         {
@@ -218,7 +219,7 @@ namespace ScriptQL
 
         private void btnFrmEditServers_SaveAndClose_Click(object sender, EventArgs e)
         {
-            saveServers();
+            SaveServers();
             Dispose();
         }
 
@@ -247,7 +248,42 @@ namespace ScriptQL
 
         private void btnFrmEditServers_Test_EnabledChanged(object sender, EventArgs e)
         {
-            btnCancel.Visible = !btnFrmEditServers_Test.Enabled;
+            //btnCancel.Visible = !btnFrmEditServers_Test.Enabled;
+        }
+
+        private void txtEditServers_Password_TextChanged(object sender, EventArgs e)
+        {
+            ValidateSettings();
+            //if (!chkFrmEditServers_WinAuth.Checked)
+            //{
+            //    if (txtEditServers_Password.Text.Length == 0)
+            //    {
+            //        btnAdd.Enabled = false;
+            //    }
+
+            //    if (txtEditServers_SqlInstance.Text.Length > 0 && txtEditServers_User.Text.Length > 0)
+            //    {
+            //        btnAdd.Enabled = true;
+            //    }
+            //}
+        }
+
+        private void txtEditServers_User_TextChanged(object sender, EventArgs e)
+        {
+            ValidateSettings();
+
+            //if (!chkFrmEditServers_WinAuth.Checked)
+            //{
+            //    if (txtEditServers_User.Text.Length == 0)
+            //    {
+            //        btnAdd.Enabled = false;
+            //    }
+                
+            //    if(txtEditServers_SqlInstance.Text.Length > 0 && txtEditServers_Password.Text.Length > 0)
+            //    {
+            //        btnAdd.Enabled = true;
+            //    }
+            //}
         }
     }
 }

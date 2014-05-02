@@ -60,7 +60,7 @@ namespace ScriptQL
                 for (var j = 0; j < maxValue; j++)
                 {
                     s += CHARS[random.Next(CHARS.Length)];
-                    s += Utils.patternSpecialChars[random.Next(0, Utils.patternSpecialChars.Length)].ToString(CultureInfo.InvariantCulture);
+                    s += Utils.SPECIALCHARS[random.Next(0, Utils.SPECIALCHARS.Length)].ToString(CultureInfo.InvariantCulture);
                 }
                 list.Add(s);
             }
