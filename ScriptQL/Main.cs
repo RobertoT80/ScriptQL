@@ -857,8 +857,11 @@ namespace ScriptQL
                 MessageBox.Show("At least one instance " + WARNING_IS_BUSY);
                 return;
             }
-            var ofrmServers = new FrmServers();
-            ofrmServers.ShowDialog();
+            using (var ofrmServers = new FrmServers())
+            {
+                ofrmServers.ShowDialog();
+            }
+            
         }
 
         private void tlsOpenBackupFolder_Click(object sender, EventArgs e)
@@ -1175,7 +1178,7 @@ namespace ScriptQL
 
                 if (!Utils.IsStringValid(dbname))
                 {
-                    SetStatus(sender, instance, "END", "ERROR", dbname + " is not valid, restore cannot continue");
+                    SetStatus(sender, instance, status, "ERROR", string.Format("{0} is not a valid name, restore cannot continue", dbname));
                     continue;
                 }
 
@@ -1664,7 +1667,7 @@ namespace ScriptQL
 
         private async void btnDeleteAll_Click(object sender, EventArgs e)
         {
-            var confirmation = MessageBox.Show("ARE YOU REALLY SURE you want to delete all user databases?", "Delete All Confirmation", MessageBoxButtons.YesNo);
+            var confirmation = MessageBox.Show("ARE YOU REALLY SURE you want to delete all user databases?\nRollback will NOT be possible.", "Delete All Confirmation", MessageBoxButtons.YesNo);
             if (!confirmation.Equals(DialogResult.Yes))
             {
                 SetStatus(sender, _oInstance, "END", "CANCEL");
@@ -1831,7 +1834,6 @@ namespace ScriptQL
                 v.Enabled = false;
             }
             ProcessImages();
-
             foreach (var server in SqlInstance.listServers)
             {
                 if (!lstMain_Servers.Items.Contains(server))
@@ -2118,7 +2120,7 @@ namespace ScriptQL
             UIOperationStarted(sender, database.Parent, 0, "Killing connections to database: " + database.Name);
             try
             {
-                await _oInstance.KillAllConnections(database.Name);
+                _oInstance.KillAllConnections(database.Name);
                 SetStatus(sender, database, "END", "COMPLETED", database.Name + " has no open connections now");
             }
             catch (Exception ex)
@@ -2127,16 +2129,6 @@ namespace ScriptQL
             }         
             UIOperationClosed(sender, database.Parent);
         }
-
-        private void lstMain_Servers_MouseHover(object sender, EventArgs e)
-        {
-            if (lstMain_Servers.Items.Count == 0)
-            {
-                lstMain_Servers.Text = "(no server configured)";
-            }
-
-        }
-
         }
     }
 

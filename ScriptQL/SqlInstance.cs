@@ -605,6 +605,7 @@ namespace ScriptQL
                         {
                             throw new OperationCanceledException();
                         }
+                        Utils.WriteLog("ExecuteSP result: " + result.Result);
                         return (result.Result == -1);
                     }
                     catch (OperationCanceledException)
@@ -620,14 +621,11 @@ namespace ScriptQL
                         {
                             throw new OperationCanceledException();
                         }
-                        else if (ex.Number == -2) // Timeout or "general network error"
+                        if (ex.Number == -2) // Timeout or "general network error"
                         {
                             throw new SqlTimeoutException();
                         }
-                        else
-                        {
-                            throw;
-                        }
+                        throw;
                     }
                     catch (Exception ex)
                     {
@@ -639,7 +637,7 @@ namespace ScriptQL
             }
         }
 
-        public async Task<bool> KillAllConnections(string dbname)
+        public bool KillAllConnections(string dbname)
         {
             var sb = new StringBuilder();
             sb.Append(@" DECLARE @spid int
@@ -651,56 +649,73 @@ namespace ScriptQL
                         END");
             sb.Replace("@dbname", dbname);
 
-            var result = await ExecuteNonQueryAsync(sb.ToString());
-            Utils.WriteLog("kill all result: " + result);
-            return result;
-
-
+            using (var conn = GetConnection())
+            {
+                using (var cmd = new SqlCommand(sb.ToString(), conn))
+                {
+                    try
+                    {
+                        var result = cmd.ExecuteNonQuery();
+                        Utils.WriteLog("KILL RESULT: " + result.ToString());
+                        return true;
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+            }
         }
         public async Task<bool> ExecuteSp(CancellationToken token, string command, IEnumerable<string[]> sqlParams = null)
         {
-            var conn = GetConnection();
-            var cmd = new SqlCommand
+            using (var conn = GetConnection())
             {
-                Connection = conn,
-                CommandText = command,
-                CommandType = CommandType.StoredProcedure
-            };
-            if (sqlParams != null)
-                foreach (var p in sqlParams)
+                using(var cmd = new SqlCommand{Connection = conn,CommandText = command,CommandType = CommandType.StoredProcedure})
                 {
-                    cmd.Parameters.AddWithValue(p[0], p[1]);
-                    Utils.WriteLog(string.Format("Appended parameter {0} with value {1}", p[0], p[1]));
+                   
+                    if (sqlParams != null)
+                        foreach (var p in sqlParams)
+                        {
+                            cmd.Parameters.AddWithValue(p[0], p[1]);
+                        }
+                    try
+                    {     
+                        conn.Open();
+                        var result = Task.Run(() =>cmd.ExecuteNonQueryAsync(), token);
+                        await result;
+                        if (token.IsCancellationRequested)
+                        {
+                            token.ThrowIfCancellationRequested();
+                        }
+                        Utils.WriteLog("RESULT SP : " + result.Result.ToString());
+                        return result.Result == -1;
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        Utils.WriteLog("ExecuteSP canceled: " + cmd.CommandText);
+                        throw;
+                    }
+                    catch (SqlException ex)
+                    {
+                        Utils.WriteLog("ExecuteSP sql exception: " + cmd.CommandText + "\n" + ex.Message + "\n" + ex.InnerException);
+                        if (ex.Message.Contains("Operation cancelled by user"))
+                        {
+                            throw new OperationCanceledException();
+                        }
+                        if (ex.Number == -2) // Timeout or "general network error"
+                        {
+                            throw new SqlTimeoutException();
+                        }
+                        throw;
+                    }
+                    catch (Exception ex)
+                    {
+                        Utils.WriteLog("ExecuteSP exception: " + cmd.CommandText + "\n" + ex.Message + "\n" +
+                                       ex.InnerException);
+                        throw;
+                    }
                 }
-
-            var result = Task.Run(() => cmd.ExecuteNonQueryAsync(), token);
-            try
-            {
-                conn.Open();
-                await result;
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
-            }
-            catch (SqlException ex)
-            {
-                Utils.WriteLog("Executesp sql exception: " + ex.Message + "\n" + ex.InnerException);
-                if (ex.Message.Contains("Operation cancelled by user"))
-                {
-                    throw new OperationCanceledException();
-                }
-                if (ex.Number == -2) // Timeout or "general network error"
-                {
-                    throw new SqlTimeoutException();
-                }
-                throw;
-            }
-            finally
-            {
-                conn.Close();
-            }
-            return result.Result == -1;
+            } 
         }
     }
 }

@@ -342,7 +342,6 @@ namespace ScriptQL
                 {
                     throw new OperationCanceledException();
                 }
-                Utils.WriteLog("executeAlter result: " + executeAlter.Result);
                 return true;
 
             }
@@ -499,24 +498,8 @@ namespace ScriptQL
         public async Task<bool> Detach(CancellationToken token)
         {
             var sqlParams = new List<string[]> { new[] { "@dbname", Name } };
-            var detach = Task.Run(() => Parent.ExecuteSp(token, "SP_DETACH_DB", sqlParams));
-
-            if (Status != "ONLINE")
-            {
-                await Alter("SET ONLINE", token, 5, null, true);
-            }
-            if (_singleUserAccess != 1)
-            {
-                await Alter("SET SINGLE_USER", token, 5, null, true);
-            }
-
-            await detach;
-            if (token.IsCancellationRequested)
-            {
-                throw new OperationCanceledException();
-            }
-            Utils.WriteLog("detach result: " + detach.Result);
-            return detach.Result;
+            Parent.KillAllConnections(Name);
+            return await Parent.ExecuteSp(token, "SP_DETACH_DB", sqlParams);
         }
 
 

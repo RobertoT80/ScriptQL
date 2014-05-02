@@ -19,12 +19,14 @@ namespace ScriptQL
             InitializeComponent();
             CenterToParent();
             SetStatus(DATA_REQUIRED, Color.Black);
+            Utils.WriteLog(Name + " opened.");
         }
 
         private void SetStatus(string text, Color color)
         {
             lblEditServers_Status.ForeColor = color;
             lblEditServers_Status.Text = text;
+            Utils.WriteLog(String.Format("[{0}]{1}", Name, text));
         }
 
         private Boolean ValidateSettings()
@@ -232,12 +234,6 @@ namespace ScriptQL
             }
         }
 
-        private void btnFrmEditServers_SaveAndClose_Click(object sender, EventArgs e)
-        {
-            SaveServers();
-            Dispose();
-        }
-
         private void txtEditServers_SqlInstance_TextChanged(object sender, EventArgs e)
         {
             ValidateSettings();
@@ -255,10 +251,17 @@ namespace ScriptQL
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            if (_cts != null)
-            {
-                _cts.Cancel();
-            }
+            if (_cts != null) _cts.Cancel();
+        }
+        private void btnFrmEditServers_SaveAndClose_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+        private void FrmServers_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            SaveServers();
+            Dispose();
+            Utils.WriteLog(Name + " closed.");
         }
     }
 }

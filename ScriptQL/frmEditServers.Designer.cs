@@ -412,6 +412,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmServers";
             this.Text = "Edit Servers";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmServers_FormClosed);
             this.Load += new System.EventHandler(this.frmServers_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
