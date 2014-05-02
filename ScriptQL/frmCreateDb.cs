@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -36,7 +35,7 @@ namespace ScriptQL
                 txtName.Focus();
                 return;
             }
-            if (_instance.databasesCollection.FirstOrDefault(s => s.Name == dbname) != null)
+            if (_instance.DatabasesCollection.FirstOrDefault(s => s.Name == dbname) != null)
             {
                 lblStatus.ForeColor = Color.Red;
                 lblStatus.Text = dbname + " exists yet.";
@@ -110,7 +109,7 @@ namespace ScriptQL
                     lblStatus.ForeColor = Color.Green;
                     lblStatus.Text = dbname + " created!";
                     var oDatabase = new SqlDatabase(_instance, dbname, "ONLINE", 0);
-                    _instance.databasesCollection.Add(oDatabase);
+                    _instance.DatabasesCollection.Add(oDatabase);
                 }
             }
             catch (Exception)

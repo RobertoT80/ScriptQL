@@ -36,9 +36,9 @@ namespace UtilsTest
         {
             SqlConnection conn = _s.GetConnection();
             Assert.IsNotNull(conn);
-            Assert.IsNull(_s.instancename);
-            Assert.AreEqual(_s.isBusy, false);
-            Assert.IsNull(_s.isOnline);
+            Assert.IsNull(_s.Instancename);
+            Assert.AreEqual(_s.IsBusy, false);
+            Assert.IsNull(_s.IsOnline);
 
             var connection = _s.TestConnectionSync();
             Assert.AreEqual(connection, true);
@@ -63,7 +63,6 @@ namespace UtilsTest
             
             
             _s.GetPaths();
-            _s.GetProperties();
             _s.GetPhysicalFiles();
 
             Utils.SerializeBinary(new List<SqlInstance>(){_s});

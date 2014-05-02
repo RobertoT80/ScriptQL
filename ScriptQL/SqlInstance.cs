@@ -34,68 +34,68 @@ namespace ScriptQL
             _user,
             _password;
 
-        public bool isBusy,
-            isConnecting;
-        public bool? isOnline = null;
+        public bool IsBusy,
+            IsConnecting;
+        public bool? IsOnline = null;
 
-        public static List<SqlInstance> listServers = new List<SqlInstance>();
-        public List<SqlDatabase> databasesCollection = new List<SqlDatabase>();
-
-        [Category("System Paths"), ReadOnly(true)]
-        public string pathData { get; private set; }
+        public static List<SqlInstance> ListServers = new List<SqlInstance>();
+        public List<SqlDatabase> DatabasesCollection = new List<SqlDatabase>();
 
         [Category("System Paths"), ReadOnly(true)]
-        public string pathLog { get; private set; }
+        public string PathData { get; private set; }
 
         [Category("System Paths"), ReadOnly(true)]
-        public string pathBackup { get; private set; }
+        public string PathLog { get; private set; }
+
+        [Category("System Paths"), ReadOnly(true)]
+        public string PathBackup { get; private set; }
 
         private readonly bool _winAuth;
 
         [Category("Properties")]
         [ReadOnly(true)]
-        public bool winAuth
+        public bool WinAuth
         {
             get { return _winAuth; }
         }
 
         [Category("Properties"), ReadOnly(true)]
-        public string hostname { get; private set; }
+        public string Hostname { get; private set; }
 
         [Category("Properties"), ReadOnly(true)]
-        public string machinename { get; private set; }
+        public string Machinename { get; private set; }
 
         [Category("Properties"), ReadOnly(true)]
-        public string collation { get; private set; }
+        public string Collation { get; private set; }
 
         [Category("Properties"), ReadOnly(true)]
-        public string service { get; set; }
+        public string Service { get; set; }
 
         [Category("Properties"), ReadOnly(true)]
-        public string instancename { get; private set; }
+        public string Instancename { get; private set; }
 
         [Category("Properties"), ReadOnly(true)]
-        public string productversion { get; private set; }
+        public string Productversion { get; private set; }
 
         [Category("Properties"), ReadOnly(true)]
-        public string edition { get; private set; }
+        public string Edition { get; private set; }
 
         [Category("Features"), ReadOnly(true)]
-        public int isclustered { get; private set; }
+        public int Isclustered { get; private set; }
 
         [Category("Features"), ReadOnly(true)]
-        public int isfulltextinstalled { get; private set; }
+        public int Isfulltextinstalled { get; private set; }
 
         [Category("Properties"), ReadOnly(true)]
-        public int isintegratedsecurityonly { get; private set; }
+        public int Isintegratedsecurityonly { get; private set; }
 
         [Category("Size (GB)"), ReadOnly(true)]
-        public decimal totalDataSize { get; set; }
+        public decimal TotalDataSize { get; set; }
 
         [Category("Size (GB)"), ReadOnly(true)]
-        public decimal totalLogSize { get; set; }
+        public decimal TotalLogSize { get; set; }
 
-        public static string[] systemNames ={"msdb", "master", "model", "tempdb", "distribution", "resource"};
+        public static string[] SystemNames ={"msdb", "master", "model", "tempdb", "distribution", "resource"};
 
 
         public SqlInstance(string instance, string user, string password, bool winAuth, bool doNotConnect = false)
@@ -124,10 +124,10 @@ namespace ScriptQL
 
         public override int GetHashCode()
         {
-            return string.Concat(machinename, instancename).GetHashCode();
+            return string.Concat(Machinename, Instancename).GetHashCode();
         }
 
-        public void GetProperties()
+        private void GetProperties()
         {
             const string qry = @"SELECT @@servername as hostname, SERVERPROPERTY('MachineName') as machinename, @@SERVICENAME as servicename,
                 SERVERPROPERTY('InstanceName') as instancename, SERVERPROPERTY('Collation') as collation, 
@@ -141,16 +141,16 @@ namespace ScriptQL
                 conn.Open();
                 var rdr = cmd.ExecuteReader();
                 rdr.Read();
-                hostname = rdr.GetString(0); //hostname
-                machinename = rdr.GetString(1); //machinename
-                service = rdr.GetString(2);  //servicename            
-                instancename = !rdr.IsDBNull(3) ? rdr.GetString(3) : "Default";
-                collation = rdr.GetString(4);  //collation
-                productversion = rdr.GetString(5); //productversion
-                edition = rdr.GetString(6);//edition
-                isclustered = rdr.GetInt32(7);//isclustered
-                isfulltextinstalled = rdr.GetInt32(8);//isfulltextinstalled
-                isintegratedsecurityonly = rdr.GetInt32(9);//isintegratedsecurityonly
+                Hostname = rdr.GetString(0); //hostname
+                Machinename = rdr.GetString(1); //machinename
+                Service = rdr.GetString(2);  //servicename            
+                Instancename = !rdr.IsDBNull(3) ? rdr.GetString(3) : "Default";
+                Collation = rdr.GetString(4);  //collation
+                Productversion = rdr.GetString(5); //productversion
+                Edition = rdr.GetString(6);//edition
+                Isclustered = rdr.GetInt32(7);//isclustered
+                Isfulltextinstalled = rdr.GetInt32(8);//isfulltextinstalled
+                Isintegratedsecurityonly = rdr.GetInt32(9);//isintegratedsecurityonly
             }
             catch (Exception ex)
             {
@@ -185,9 +185,9 @@ namespace ScriptQL
                 conn.Open();
                 var rdr = cmd.ExecuteReader();
                 rdr.Read();
-                pathData = rdr.GetString(0);
-                pathLog = rdr.GetString(1);
-                pathBackup = rdr.GetString(2);
+                PathData = rdr.GetString(0);
+                PathLog = rdr.GetString(1);
+                PathBackup = rdr.GetString(2);
             }
             catch (Exception ex)
             {
@@ -197,6 +197,7 @@ namespace ScriptQL
             {
                 conn.Close();
             }
+            GetProperties();
         }
 
         public List<string> GetPhysicalFiles()
@@ -241,7 +242,7 @@ namespace ScriptQL
             sb.Append("server=@server;database=@database;Integrated Security=@winauth;User ID=@user;Password=@password;timeout=10");
             sb.Replace("@server", _instance);
             sb.Replace("@database", database);
-            sb.Replace("@winauth", winAuth.ToString());
+            sb.Replace("@winauth", WinAuth.ToString());
             sb.Replace("@user", _user);
             sb.Replace("@password", _password);
 
@@ -251,7 +252,7 @@ namespace ScriptQL
 
         public async Task<bool> TestConnection(CancellationToken token)
         {
-            isConnecting = true;
+            IsConnecting = true;
             var conn = GetConnection();
             var connection = Task.Run(() => conn.OpenAsync(token));
             try
@@ -259,26 +260,26 @@ namespace ScriptQL
                 await connection;
                 if (token.IsCancellationRequested)
                 {
-                    isOnline = null;
+                    IsOnline = null;
                     token.ThrowIfCancellationRequested();
                 }
-                isOnline = true;
+                IsOnline = true;
                 return true;
             }
             catch (OperationCanceledException)
             {
-                isOnline = null;
+                IsOnline = null;
                 return false;
             }
             catch (Exception)
             {
-                isOnline = false;
+                IsOnline = false;
                 return false;
             }
             finally
             {
                 conn.Close();
-                isConnecting = false;
+                IsConnecting = false;
             }
         }
 
@@ -288,14 +289,14 @@ namespace ScriptQL
             try
             {
                 conn.Open();
-                isOnline = true;
+                IsOnline = true;
                 return true;
             }
             catch (SqlException ex)
             {
                 Utils.WriteLog("Connection to " + _instance + "failed: \n" + ex.Message);
                 MessageBox.Show(ex.Message);
-                isOnline = false;
+                IsOnline = false;
                 return false;
             }
             finally
@@ -306,14 +307,12 @@ namespace ScriptQL
 
         public void GetDbList(bool systemdbEnabled)
         {
-            //var connectionWorking = TestConnectionSync();
-            //if (!connectionWorking)
-            if (isOnline != true)
+            if (IsOnline != true)
             {
                 MessageBox.Show("Can't connect now to " + _instance + ", please try again.");
                 return;
             }
-            databasesCollection.Clear();
+            DatabasesCollection = new List<SqlDatabase>();
             const string qry = @"SELECT name, state_desc, user_access, 
                             CASE is_distributor
 	                            WHEN 1 then 'true'
@@ -321,70 +320,54 @@ namespace ScriptQL
                             END
                             FROM sys.databases ORDER BY name";
 
-            var conn = GetConnection();
-            var cmd = new SqlCommand(qry, conn);
-
-            try
+            using (var conn = GetConnection())
             {
-                conn.Open();
-                var rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                using (var cmd = new SqlCommand(qry, conn))
                 {
-
-                    var name = rdr.GetString(0);
-                    var status = rdr.GetString(1);
-                    var userAccess = (sbyte) rdr.GetByte(2);
-                    var distributor = bool.Parse(rdr.GetString(3));
-
-                    if (systemNames.Any(name.Contains) || distributor)
+                    try
                     {
-                        if (systemdbEnabled && name != "tempdb")
+                        conn.Open();
+                        var rdr = cmd.ExecuteReader();
+                        while (rdr.Read())
                         {
-                            var oDatabase = new SqlSystemDatabase(this, name, status, userAccess);
-                            databasesCollection.Add(oDatabase);
-                        }
-                            
-                    }
-                    else
-                    {
-                        var oDatabase = new SqlDatabase(this, name, status, userAccess);
-                        databasesCollection.Add(oDatabase);
-                    }
-                //if (!systemdbEnabled)
-                    //{
-                    //    if (systemNames.Any(name.Contains) || name.StartsWith("ReportServer"))
-                    //    {
-                    //        continue;
-                    //    }
-                    //    var oDatabase = new SqlSystemDatabase(this, name, status, userAccess);
-                    //    databasesCollection.Add(oDatabase);
-                    //    //oDatabase.getDatabaseProperties(); // to get size
-                    //}
-                    //else
-                    //{
-                    //    if (name != "tempdb")
-                    //    {
-                    //        var oDatabase = new SqlDatabase(this, name, status, userAccess);
-                    //        databasesCollection.Add(oDatabase);
-                    //    }
-                    //}
-                }
 
-            }
-            catch (SqlException ex)
-            {
-                Utils.WriteLog(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                Utils.WriteLog(ex.Message);
-            }
-            finally
-            {
-                conn.Close();
+                            var name = rdr.GetString(0);
+                            var status = rdr.GetString(1);
+                            var userAccess = (sbyte)rdr.GetByte(2);
+                            var distributor = bool.Parse(rdr.GetString(3));
+
+                            if (SystemNames.Any(name.Contains) || distributor)
+                            {
+                                if (systemdbEnabled && name != "tempdb")
+                                {
+                                    var oDatabase = new SqlSystemDatabase(this, name, status, userAccess);
+                                    DatabasesCollection.Add(oDatabase);
+                                }
+
+                            }
+                            else
+                            {
+                                var oDatabase = new SqlDatabase(this, name, status, userAccess);
+                                DatabasesCollection.Add(oDatabase);
+                            }
+                        }
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        Utils.WriteLog(ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Utils.WriteLog(ex.Message);
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
+                }
             }
         }
-
 
         private bool DbnameCheck(string dbname)
         {
@@ -393,7 +376,7 @@ namespace ScriptQL
                 MessageBox.Show(dbname + " is not a valid name.");
                 return false;
             }
-            if (databasesCollection.FirstOrDefault(s => s.Name == dbname) != null)
+            if (DatabasesCollection.FirstOrDefault(s => s.Name == dbname) != null)
             {
                 MessageBox.Show(dbname + " exists yet.");
                 return false;
@@ -405,7 +388,6 @@ namespace ScriptQL
         {
             var sb = new StringBuilder("DROP DATABASE [@dbname] ").Replace("@dbname", name);
             return await ExecuteNonQueryAsync(sb.ToString(), token);
-
         }
 
         public async Task<bool> Drop(string name)
@@ -431,43 +413,30 @@ namespace ScriptQL
             var sbCreate = new StringBuilder();
             sbCreate.Append("CREATE DATABASE [@dbname] ");
             sbCreate.Replace("@dbname", dbname);
-            var conn = GetConnection();
-            var cmd = new SqlCommand(sbCreate.ToString(), conn);
-            try
+
+            using (var conn = GetConnection())
             {
-                conn.Open();
-                int databaseCreated = cmd.ExecuteNonQuery();
-                if (databaseCreated == -1)
+                using (var cmd = new SqlCommand(sbCreate.ToString(), conn))
                 {
-                    var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
-                    databasesCollection.Add(oDatabase);
-                    return true;
+                    try
+                    {
+                        conn.Open();
+                        int databaseCreated = cmd.ExecuteNonQuery();
+                        if (databaseCreated == -1)
+                        {
+                            var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
+                            DatabasesCollection.Add(oDatabase);
+                            return true;
+                        }
+                        return false;
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
                 }
-                return false;
-            }
-            finally
-            {
-                conn.Close();
             }
         }
-
-        //public async Task<bool> CreateDatabase(string query)
-        //{
-        //    // Invoked by the create form and the main function that restores a database collection.
-        //    //if (!DbnameCheck(dbname)) return false;
-
-        //    var sbCreate = new StringBuilder();
-
-        //    var createDatabase = Task.Run(() => ExecuteNonQueryAsync(query));
-        //    await createDatabase;
-        //    if (createDatabase.Result)
-        //    {
-        //        var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
-        //        databasesCollection.Add(oDatabase);
-        //    }
-        //    return createDatabase.Result;
-        //}
-
 
         public async Task<bool> CreateDatabase(string dbname, FileInfo mdf, FileInfo ldf = null)
         {
@@ -496,7 +465,7 @@ namespace ScriptQL
             if (createDatabase.Result)
             {
                 var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
-                databasesCollection.Add(oDatabase);
+                DatabasesCollection.Add(oDatabase);
             }
             return createDatabase.Result;
         }
@@ -546,7 +515,7 @@ namespace ScriptQL
             var createDatabase = Task.Run(() => ExecuteNonQueryAsync(sbCreate.ToString(), 15));
             await createDatabase;
             var oDatabase = new SqlDatabase(this, dbname, "ONLINE", 0);
-            databasesCollection.Add(oDatabase);
+            DatabasesCollection.Add(oDatabase);
             return createDatabase.Result;
         }
 
@@ -655,13 +624,17 @@ namespace ScriptQL
                 {
                     try
                     {
-                        var result = cmd.ExecuteNonQuery();
-                        Utils.WriteLog("KILL RESULT: " + result.ToString());
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
                         return true;
                     }
                     catch
                     {
                         return false;
+                    }
+                    finally
+                    {
+                        conn.Close();
                     }
                 }
             }
@@ -681,13 +654,12 @@ namespace ScriptQL
                     try
                     {     
                         conn.Open();
-                        var result = Task.Run(() =>cmd.ExecuteNonQueryAsync(), token);
+                        var result = Task.Run(() => cmd.ExecuteNonQueryAsync(), token);
                         await result;
                         if (token.IsCancellationRequested)
                         {
                             token.ThrowIfCancellationRequested();
                         }
-                        Utils.WriteLog("RESULT SP : " + result.Result.ToString());
                         return result.Result == -1;
                     }
                     catch (OperationCanceledException)
@@ -710,8 +682,7 @@ namespace ScriptQL
                     }
                     catch (Exception ex)
                     {
-                        Utils.WriteLog("ExecuteSP exception: " + cmd.CommandText + "\n" + ex.Message + "\n" +
-                                       ex.InnerException);
+                        Utils.WriteLog("ExecuteSP exception: " + cmd.CommandText + "\n" + ex.Message + "\n" + ex.InnerException);
                         throw;
                     }
                 }

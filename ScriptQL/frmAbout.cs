@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace ScriptQL
 {
-    public partial class frmAbout : Form
+    public partial class FrmAbout : Form
     {
-        public frmAbout()
+        public FrmAbout()
         {
             InitializeComponent();
             CenterToParent();

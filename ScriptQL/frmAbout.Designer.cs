@@ -1,6 +1,6 @@
 ﻿namespace ScriptQL
 {
-    partial class frmAbout
+    partial class FrmAbout
     {
         /// <summary>
         /// Required designer variable.
@@ -157,7 +157,7 @@
             this.ClientSize = new System.Drawing.Size(266, 127);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Name = "frmAbout";
+            this.Name = "FrmAbout";
             this.Text = "frmAbout";
             this.Load += new System.EventHandler(this.frmAbout_Load);
             this.tableLayoutPanel1.ResumeLayout(false);

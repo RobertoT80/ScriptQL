@@ -55,9 +55,9 @@ namespace ScriptQL
                     var serverList = (List<SqlInstance>)bf.Deserialize(fs);
                     foreach (var s in serverList)
                     {
-                        s.isBusy = false;
-                        s.isConnecting = false;
-                        s.isOnline = null;
+                        s.IsBusy = false;
+                        s.IsConnecting = false;
+                        s.IsOnline = null;
                     }
                     return serverList;
                 }

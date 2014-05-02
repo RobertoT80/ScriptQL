@@ -47,29 +47,29 @@
     </Compile>
     <Compile Include="SqlDatabase.cs" />
     <Compile Include="EventArgsFactory.cs" />
-    <Compile Include="frmAbout.cs">
+    <Compile Include="FrmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAbout.Designer.cs">
-      <DependentUpon>frmAbout.cs</DependentUpon>
+    <Compile Include="FrmAbout.Designer.cs">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmCreateDb.cs">
+    <Compile Include="FrmCreateDb.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmCreateDb.Designer.cs">
-      <DependentUpon>frmCreateDb.cs</DependentUpon>
+    <Compile Include="FrmCreateDb.Designer.cs">
+      <DependentUpon>FrmCreateDb.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmDiscoverDetached.cs">
+    <Compile Include="FrmDiscoverDetached.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmDiscoverDetached.Designer.cs">
-      <DependentUpon>frmDiscoverDetached.cs</DependentUpon>
+    <Compile Include="FrmDiscoverDetached.Designer.cs">
+      <DependentUpon>FrmDiscoverDetached.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmEditServers.cs">
+    <Compile Include="FrmEditServers.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmEditServers.Designer.cs">
-      <DependentUpon>frmEditServers.cs</DependentUpon>
+    <Compile Include="FrmEditServers.Designer.cs">
+      <DependentUpon>FrmEditServers.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -84,21 +84,21 @@
     <Compile Include="SqlInstance.cs" />
     <Compile Include="SqlSystemDatabase.cs" />
     <Compile Include="SqlTable.cs" />
-    <Compile Include="tabTables.cs">
+    <Compile Include="TabTables.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="utils.cs" />
-    <EmbeddedResource Include="frmAbout.resx">
-      <DependentUpon>frmAbout.cs</DependentUpon>
+    <Compile Include="Utils.cs" />
+    <EmbeddedResource Include="FrmAbout.resx">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmCreateDb.resx">
-      <DependentUpon>frmCreateDb.cs</DependentUpon>
+    <EmbeddedResource Include="FrmCreateDb.resx">
+      <DependentUpon>FrmCreateDb.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmDiscoverDetached.resx">
-      <DependentUpon>frmDiscoverDetached.cs</DependentUpon>
+    <EmbeddedResource Include="FrmDiscoverDetached.resx">
+      <DependentUpon>FrmDiscoverDetached.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmEditServers.resx">
-      <DependentUpon>frmEditServers.cs</DependentUpon>
+    <EmbeddedResource Include="FrmEditServers.resx">
+      <DependentUpon>FrmEditServers.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>

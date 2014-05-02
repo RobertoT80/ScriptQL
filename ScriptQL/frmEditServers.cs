@@ -64,10 +64,10 @@ namespace ScriptQL
         }
         private void SaveServers()
         {
-            SqlInstance.listServers.Clear();
+            SqlInstance.ListServers.Clear();
             foreach (SqlInstance server in lstEditServers_serverList.Items)
             {
-                SqlInstance.listServers.Add(server);
+                SqlInstance.ListServers.Add(server);
             }
         }
         private void mnuQuit_Click(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace ScriptQL
                 {
                     token.ThrowIfCancellationRequested();
                 }
-                if (oServer.isOnline == true)
+                if (oServer.IsOnline == true)
                 {
                     SetStatus("Connection OK to " + txtEditServers_SqlInstance.Text, Color.Green);
                 }
@@ -156,13 +156,13 @@ namespace ScriptQL
 
             var oSqlServer = new SqlInstance(txtEditServers_SqlInstance.Text.Trim(),txtEditServers_User.Text,
                 txtEditServers_Password.Text, chkFrmEditServers_WinAuth.Checked, true);
-            if (SqlInstance.listServers.Contains(oSqlServer))
+            if (SqlInstance.ListServers.Contains(oSqlServer))
             {
                 SetStatus(oSqlServer + " exists yet.", Color.Red);
                 return;
             }
             lstEditServers_serverList.Items.Add(oSqlServer);
-            SqlInstance.listServers.Add(oSqlServer);
+            SqlInstance.ListServers.Add(oSqlServer);
             SetStatus(oSqlServer + " added.", Color.Green);
         }
 
@@ -182,7 +182,7 @@ namespace ScriptQL
                 var server = (SqlInstance)lstEditServers_serverList.SelectedItem;
                 SetStatus(lstEditServers_serverList.SelectedItem + " deleted.", Color.Green);
                 lstEditServers_serverList.Items.Remove(lstEditServers_serverList.SelectedItem);
-                SqlInstance.listServers.Remove(server);
+                SqlInstance.ListServers.Remove(server);
             }
             
         }
@@ -190,8 +190,8 @@ namespace ScriptQL
         private void frmServers_Load(object sender, EventArgs e)
         {
             ActiveControl = txtEditServers_SqlInstance;
-            if (SqlInstance.listServers.Count <= 0) return;
-            foreach (var server in SqlInstance.listServers)
+            if (SqlInstance.ListServers.Count <= 0) return;
+            foreach (var server in SqlInstance.ListServers)
             {
                 lstEditServers_serverList.Items.Add(server);
             }
@@ -224,7 +224,7 @@ namespace ScriptQL
             }
             try
             {
-                Utils.SerializeBinary(SqlInstance.listServers);
+                Utils.SerializeBinary(SqlInstance.ListServers);
                 SetStatus(lblEditServers_Status.Text = "Settings saved to " + Utils.appPath, Color.Black);
             }
             catch (SqlException ex)

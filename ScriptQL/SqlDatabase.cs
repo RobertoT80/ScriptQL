@@ -22,8 +22,13 @@ namespace ScriptQL
             get { return _name; }
         }
 
+        private string _status;
+
         [Category("Properties"), ReadOnly(true)]
-        public string Status { get; private set; }
+        public string Status
+        {
+            get { return _status; }
+        }
 
         private readonly sbyte _singleUserAccess;
 
@@ -61,7 +66,11 @@ namespace ScriptQL
         [Category("Size (MB)"), ReadOnly(true)]
         public decimal TotalSize { get; private set; }
 
-        public SqlInstance Parent;  
+        private readonly SqlInstance _parent;
+        public SqlInstance Parent
+        {
+            get { return _parent; }
+        }
 
         [Category("Properties"), ReadOnly(true)]
         public string Recovery { get; private set; }
@@ -93,27 +102,22 @@ namespace ScriptQL
 
         [Category("Data Files")]
         [ReadOnly(true)]
+        
         public List<string[]> DatafileLogSecondary { get; set; }
-
-        private List<string> _dbPhysicalFiles;
-
-        public bool IsBusy;
-
         public readonly List<SqlSchema> ListSchema = new List<SqlSchema>();
 
+        public bool IsBusy;
         public SqlDatabase(SqlInstance parent, string name, string status, sbyte singleUserAccess)
         {
-            Parent = parent;
+            _parent = parent;
             _name = name;
-            Status = status;
+            _status = status;
             _singleUserAccess = singleUserAccess;
-
-            //getPaths();
         }
 
         public override string ToString()
         {
-            return Name;
+            return _name;
         }
 
         public override bool Equals(Object obj)
@@ -123,7 +127,7 @@ namespace ScriptQL
 
         public override int GetHashCode()
         {
-            return Name.GetHashCode();
+            return _name.GetHashCode();
         }
 
         public void GetDatabaseProperties()
@@ -148,7 +152,7 @@ namespace ScriptQL
                 var rdr = cmd.ExecuteReader();
                 rdr.Read();
                 _created = rdr.GetDateTime(0); //create_date
-                Status = rdr.GetString(2); //state_desc
+                _status = rdr.GetString(2); //state_desc
                 Recovery = rdr.GetString(3); //recovery_model_desc
 
                 if (!rdr.IsDBNull(4))
@@ -158,14 +162,14 @@ namespace ScriptQL
 
                 Id = (int) rdr.GetSqlInt32(5);
                 GetSize();
-                if (Status != "ONLINE") return;
+                if (_status != "ONLINE") return;
                 if (!rdr.IsDBNull((1)))
                     // If AUTO_CLOSE is ON the query retrieves null, it's a instance-side issue http://technet.microsoft.com/en-us/library/ms178534.aspx
                 {
                     Collation = rdr.GetString(1);
                 }
                 //if (_singleUserAccess == 0 && _status == "ONLINE")
-                if (Status == "ONLINE")
+                if (_status == "ONLINE")
                 {
                     GetPaths();    
                 }
@@ -230,16 +234,6 @@ namespace ScriptQL
             {
                 conn.Close();
             }
-            // the collection will be useful to delete the original files if the database got corrupted (i.e. stuck in restoring status)
-            _dbPhysicalFiles = new List<string> { DatafilePrimaryPhysical, DatafileLogPhysical };
-            if (DatafileDataSecondary != null && DatafileDataSecondary.Count > 0)
-            {
-                _dbPhysicalFiles.AddRange(from arr in DatafileDataSecondary from s in arr select s);
-            }
-            if (DatafileLogSecondary != null && DatafileLogSecondary.Count > 0)
-            {
-                _dbPhysicalFiles.AddRange(from arr in DatafileLogSecondary from s in arr select s);
-            }
         }
 
         private void GetSize()
@@ -281,31 +275,30 @@ namespace ScriptQL
 
         internal virtual void GetSchema()
         {
-            var conn = Parent.GetConnection();
-            var cmd = new SqlCommand();
-
-            var sb =
-                new StringBuilder(
-                    "USE [@dbname] SELECT DISTINCT table_schema FROM INFORMATION_SCHEMA.TABLES ORDER BY table_schema");
+            var sb = new StringBuilder("USE [@dbname] SELECT DISTINCT table_schema FROM INFORMATION_SCHEMA.TABLES ORDER BY table_schema");
             sb.Replace("@dbname", Name);
-            cmd.Connection = conn;
-            cmd.CommandText = sb.ToString();
-
-            try
+            
+            using (var conn = _parent.GetConnection())
             {
-                conn.Open();
-                var rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                using (var cmd = new SqlCommand(sb.ToString(), conn))
                 {
-                    var s = rdr.GetString(0);
-                    var oSchema = new SqlSchema(this, s);
-                    AddSchemaToDatabase(oSchema);
+                    try
+                    {
+                        conn.Open();
+                        var rdr = cmd.ExecuteReader();
+                        while (rdr.Read())
+                        {
+                            var s = rdr.GetString(0);
+                            var oSchema = new SqlSchema(this, s);
+                            AddSchemaToDatabase(oSchema);
+                        }
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
                 }
-            }
-            finally
-            {
-                conn.Close();
-            }
+            }     
         }
 
         public void AddSchemaToDatabase(SqlSchema oSchema)
@@ -355,7 +348,7 @@ namespace ScriptQL
         {      
             if (Status != "ONLINE") { return false; }
 
-            var backupFile = Path.Combine(Parent.pathBackup + Path.DirectorySeparatorChar + Name + ".bak");
+            var backupFile = Path.Combine(Parent.PathBackup + Path.DirectorySeparatorChar + Name + ".bak");
             var sb = new StringBuilder("BACKUP DATABASE [@dbname] TO DISK='@backupfile'");
             sb.Replace("@dbname", Name);
             sb.Replace("@backupfile", backupFile);
@@ -416,46 +409,45 @@ namespace ScriptQL
             var ndfSecondaryLogicalBackup = new List<string[]>();
             var ldfSecondaryLogicalBackup = new List<string[]>();
 
-            var conn = Parent.GetConnection(); 
-            var cmd = new SqlCommand(sb.ToString(), conn);
-
-            try
+            using (var conn = _parent.GetConnection())
             {
-                conn.Open();
-                var rdr = cmd.ExecuteReader();
-                while (rdr.Read()) // TODO: handle rdr["FileGroupName"]
+                using (var cmd = new SqlCommand(sb.ToString(), conn))
                 {
-                    switch (rdr["FileId"].ToString())
+                    try
                     {
-                        case "1":
-                            mdfLogicalBackup = rdr["LogicalName"].ToString();
-                            break;
-                        case "2":
-                            ldfLogicalBackup = rdr["LogicalName"].ToString();
-                            break;
-                        default:
-                            switch (rdr["Type"].ToString())
+                        conn.Open();
+                        var rdr = cmd.ExecuteReader();
+                        while (rdr.Read()) // TODO: handle rdr["FileGroupName"]
+                        {
+                            switch (rdr["FileId"].ToString())
                             {
-                                case "D":
-                                    ndfSecondaryLogicalBackup.Add(new[] {rdr["LogicalName"].ToString(), rdr["PhysicalName"].ToString()});
+                                case "1":
+                                    mdfLogicalBackup = rdr["LogicalName"].ToString();
                                     break;
-                                case "L":
-                                    ldfSecondaryLogicalBackup.Add(new[] {rdr["LogicalName"].ToString(), rdr["PhysicalName"].ToString()});
+                                case "2":
+                                    ldfLogicalBackup = rdr["LogicalName"].ToString();
+                                    break;
+                                default:
+                                    switch (rdr["Type"].ToString())
+                                    {
+                                        case "D":
+                                            ndfSecondaryLogicalBackup.Add(new[] { rdr["LogicalName"].ToString(), rdr["PhysicalName"].ToString() });
+                                            break;
+                                        case "L":
+                                            ldfSecondaryLogicalBackup.Add(new[] { rdr["LogicalName"].ToString(), rdr["PhysicalName"].ToString() });
+                                            break;
+                                    }
                                     break;
                             }
-                            break;
+                        }
+                    }
+                    finally
+                    {
+                        conn.Close();
                     }
                 }
             }
-            //catch (SqlException)
-            //{
-
-            //}
-            finally
-            {
-                conn.Close();
-            }
-            
+     
             // Restore with replace
             sb.Clear();
             sb.Append("RESTORE DATABASE [@dbname] FROM DISK = '@filename' ");
@@ -475,7 +467,7 @@ namespace ScriptQL
                 {
                     sb.Append(", MOVE '@logical_ndf' TO '@datafile'");
                     sb.Replace("@logical_ndf", ndfSecondaryLogicalBackup[count][0]);
-                    sb.Replace("@datafile", Path.Combine(Parent.pathData + ndfSecondaryLogicalBackup[count][0] + ".ndf"));
+                    sb.Replace("@datafile", Path.Combine(Parent.PathData + ndfSecondaryLogicalBackup[count][0] + ".ndf"));
                     count++;
                 }
             }

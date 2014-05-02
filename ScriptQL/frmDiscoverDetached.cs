@@ -35,9 +35,9 @@ namespace ScriptQL
         private void loadDefaultPaths()
         {
             lstPaths.Items.Clear();
-            lstPaths.Items.Add(_oInstance.pathBackup);
-            lstPaths.Items.Add(_oInstance.pathData);
-            lstPaths.Items.Add(_oInstance.pathLog);
+            lstPaths.Items.Add(_oInstance.PathBackup);
+            lstPaths.Items.Add(_oInstance.PathData);
+            lstPaths.Items.Add(_oInstance.PathLog);
             clearListBoxes();
         }
 
