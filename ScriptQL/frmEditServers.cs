@@ -189,7 +189,7 @@ namespace ScriptQL
 
         private void frmServers_Load(object sender, EventArgs e)
         {
-            Icon = Owner.Icon;
+            //Icon = Owner.Icon;
             ActiveControl = txtEditServers_SqlInstance;
             if (SqlInstance.ListServers.Count <= 0) return;
             foreach (var server in SqlInstance.ListServers)
