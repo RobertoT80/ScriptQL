@@ -30,7 +30,6 @@ namespace ScriptQL
         public static List<string> GetRandomListOfInt(int listCount, int maxValue)
         {
             Debug.Assert(listCount > 0);
-
             var random = new Random();
             var list = new List<string>();
             for (int i = 0; i < listCount; i++)
@@ -48,7 +47,6 @@ namespace ScriptQL
         public static List<string> GetRandomListOfSpecialString(int listCount, int maxValue)
         {
             Debug.Assert(listCount > 0);
-
             var random = new Random();
             var list = new List<string>();
             for (var i = 0; i < listCount; i++)

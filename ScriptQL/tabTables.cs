@@ -45,9 +45,9 @@ namespace ScriptQL
         {
             if (cmbTable.SelectedIndex == -1) return;
             var oTable = (SqlTable) cmbTable.SelectedItem;
-            oTable.listColumn.Clear();
+            oTable.ListColumn.Clear();
             oTable.BindData();
-            cmbColumns.DataSource = oTable.listColumn;
+            cmbColumns.DataSource = oTable.ListColumn;
             cmbColumns.DisplayMember = "name";
             btnUpdate.Enabled = true;
             rdbSortASC.Enabled = true;

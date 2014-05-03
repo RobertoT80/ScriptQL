@@ -523,23 +523,23 @@ namespace ScriptQL
         {
             Debug.Assert(!string.IsNullOrEmpty(query));
             Debug.Assert(commandTimeout >= 0);
-            Utils.WriteLog("ExecuteNonQueryAsync: " + query);
 
-            using (SqlConnection conn = GetConnection())
+            using (var conn = GetConnection())
             {
                 using (var cmd = new SqlCommand(query, conn) {CommandTimeout = commandTimeout})
                 {
+                    
                     try
                     {
                         conn.Open();
-                        var result = Task.Run(() => cmd.ExecuteNonQueryAsync());
-                        await result;
-                        return (result.Result == -1);
+                        var execution = Task.Run(() => cmd.ExecuteNonQueryAsync());
+                        Debug.Assert(conn.State == ConnectionState.Open);
+                        await execution;
+                        return (execution.Result == -1);
                     }
                     catch (SqlException ex)
                     {
-                        Utils.WriteLog("ExecuteNonQueryAsync sql exception: " + cmd.CommandText + "\n" + ex.Message +
-                                       "\n" + ex.InnerException);
+                        Utils.WriteLog(cmd.CommandText + "\nSqlException: " + ex.Message + "\n" + ex.InnerException);
                         if (ex.Message.Contains("Operation cancelled by user"))
                         {
                             throw new OperationCanceledException();
@@ -549,6 +549,10 @@ namespace ScriptQL
                             throw new SqlTimeoutException();
                         }
                         throw;
+                    }
+                    finally
+                    {
+                        conn.Close();
                     }
                 }
             }
@@ -564,28 +568,28 @@ namespace ScriptQL
             {
                 using (var cmd = new SqlCommand(query, conn) {CommandTimeout = commandTimeout})
                 {
+                    
                     try
                     {
                         conn.Open();
+                        var execution = Task.Run(() => cmd.ExecuteNonQueryAsync(token));
                         Debug.Assert(conn.State == ConnectionState.Open);
-                        var result = Task.Run(() => cmd.ExecuteNonQueryAsync(token));
-                        await result;
+                        await execution;
                         if (token.IsCancellationRequested)
                         {
                             throw new OperationCanceledException();
                         }
-                        Utils.WriteLog("ExecuteSP result: " + result.Result);
-                        return (result.Result == -1);
+                        Utils.WriteLog(cmd.CommandText + "\n" + execution.Result);
+                        return (execution.Result == -1);
                     }
                     catch (OperationCanceledException)
                     {
-                        Utils.WriteLog("ExecuteNonQueryAsync canceled: " + cmd.CommandText);
+                        Utils.WriteLog(cmd.CommandText + "\nCanceled");
                         throw;
                     }
                     catch (SqlException ex)
                     {
-                        Utils.WriteLog("ExecuteNonQueryAsync sql exception: " + cmd.CommandText + "\n" + ex.Message +
-                                       "\n" + ex.InnerException);
+                        Utils.WriteLog(cmd.CommandText + "\nSqlException: "+ ex.Message +"\n" + ex.InnerException);
                         if (ex.Message.Contains("Operation cancelled by user"))
                         {
                             throw new OperationCanceledException();
@@ -598,9 +602,12 @@ namespace ScriptQL
                     }
                     catch (Exception ex)
                     {
-                        Utils.WriteLog("ExecuteNonQueryAsync exception: " + cmd.CommandText + "\n" + ex.Message + "\n" +
-                                       ex.InnerException);
+                        Utils.WriteLog(cmd.CommandText + "\nException: "+ ex.Message +"\n" + ex.InnerException);
                         throw;
+                    }
+                    finally
+                    {
+                        conn.Close();
                     }
                 }
             }
@@ -652,7 +659,7 @@ namespace ScriptQL
                             cmd.Parameters.AddWithValue(p[0], p[1]);
                         }
                     try
-                    {     
+                    {
                         conn.Open();
                         var result = Task.Run(() => cmd.ExecuteNonQueryAsync(), token);
                         await result;
@@ -669,7 +676,8 @@ namespace ScriptQL
                     }
                     catch (SqlException ex)
                     {
-                        Utils.WriteLog("ExecuteSP sql exception: " + cmd.CommandText + "\n" + ex.Message + "\n" + ex.InnerException);
+                        Utils.WriteLog("ExecuteSP sql exception: " + cmd.CommandText + "\n" + ex.Message + "\n" +
+                                       ex.InnerException);
                         if (ex.Message.Contains("Operation cancelled by user"))
                         {
                             throw new OperationCanceledException();
@@ -682,8 +690,13 @@ namespace ScriptQL
                     }
                     catch (Exception ex)
                     {
-                        Utils.WriteLog("ExecuteSP exception: " + cmd.CommandText + "\n" + ex.Message + "\n" + ex.InnerException);
+                        Utils.WriteLog("ExecuteSP exception: " + cmd.CommandText + "\n" + ex.Message + "\n" +
+                                       ex.InnerException);
                         throw;
+                    }
+                    finally
+                    {
+                        conn.Close();
                     }
                 }
             } 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ScriptQL
 {
     [Serializable]
-    class SqlSystemDatabase : SqlDatabase
+    public class SqlSystemDatabase : SqlDatabase
     {
         public SqlSystemDatabase(SqlInstance parent, string name, string status, sbyte singleUserAccess) : base(parent, name, status, singleUserAccess)
         {

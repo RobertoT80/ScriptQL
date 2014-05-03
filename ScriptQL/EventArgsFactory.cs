@@ -6,8 +6,8 @@ namespace ScriptQL
     {
         public class BackupEventArgs : EventArgs
         {
-            public bool format = false;
-            public bool compress = false;
+            public bool Format = false;
+            public bool Compress = false;
         }
     }
 }

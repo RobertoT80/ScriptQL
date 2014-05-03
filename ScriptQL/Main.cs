@@ -548,8 +548,8 @@ namespace ScriptQL
             var par = new List<string>();
             if (e != null)
             {
-                if (e.compress) par.Add("COMPRESSION");
-                if (e.format) par.Add("FORMAT");
+                if (e.Compress) par.Add("COMPRESSION");
+                if (e.Format) par.Add("FORMAT");
             }
 
 
@@ -608,8 +608,8 @@ namespace ScriptQL
                 }
                 var par = new List<string>();
                 if (e == null) e = new EventArgsFactory.BackupEventArgs();
-                if (e.compress) par.Add("COMPRESSION");
-                if (e.format) par.Add("FORMAT");
+                if (e.Compress) par.Add("COMPRESSION");
+                if (e.Format) par.Add("FORMAT");
 
                 var token = GetCancellationToken(SqlInstance.ListServers.IndexOf(server));
                 var db = database;
@@ -668,19 +668,19 @@ namespace ScriptQL
 
         private void mnuServer_backupWithCompress_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {compress = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Compress = true};
             tlsServer_BackupAll(sender, arg);
         }
 
         private void mnuServer_backupWithInit_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {format = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Format = true};
             tlsServer_BackupAll(sender, arg);
         }
 
         private void mnuServer_backupWithCompressAndInit_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {compress = true, format = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Compress = true, Format = true};
             tlsServer_BackupAll(sender, arg);
         }
 
@@ -1178,7 +1178,7 @@ namespace ScriptQL
 
                 if (!Utils.IsStringValid(dbname))
                 {
-                    SetStatus(sender, instance, status, "ERROR", string.Format("{0} is not a valid name, restore cannot continue", dbname));
+                    SetStatus(sender, instance, status, "ERROR", string.Format("[{0}] is not a valid name, restore cannot continue", dbname));
                     continue;
                 }
 
@@ -1325,19 +1325,19 @@ namespace ScriptQL
 
         private void tlsBackupAllWithCompression_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {compress = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Compress = true};
             tlsServer_BackupAll(sender, arg);
         }
 
         private void tlsBackupAllWithOverwrite_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {format = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Format = true};
             tlsServer_BackupAll(sender, arg);
         }
 
         private void tlsBackupAllWithCompressionOverwrite_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {compress = true, format = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Compress = true, Format = true};
             tlsServer_BackupAll(sender, arg);
         }
 
@@ -1439,19 +1439,19 @@ namespace ScriptQL
 
         private void tlsDatabase_BackupWithCompression_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {compress = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Compress = true};
             Database_Backup(sender, arg);
         }
 
         private void tlsDatabase_BackupWithOverwrite_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {format = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Format = true};
             Database_Backup(sender, arg);
         }
 
         private void tlsDatabase_BackupWithCompressionOverwrite_Click(object sender, EventArgs e)
         {
-            var arg = new EventArgsFactory.BackupEventArgs {compress = true, format = true};
+            var arg = new EventArgsFactory.BackupEventArgs {Compress = true, Format = true};
             Database_Backup(sender, arg);
         }
 
@@ -1835,6 +1835,13 @@ namespace ScriptQL
                 v.Enabled = false;
             }
             ProcessImages();
+            if (SqlInstance.ListServers.Count == 0)
+            {
+                _databaseCollectionBindingList = null;
+                dgvDatabases.DataSource = null;
+            }
+
+
             foreach (var server in SqlInstance.ListServers)
             {
                 if (!lstMain_Servers.Items.Contains(server))

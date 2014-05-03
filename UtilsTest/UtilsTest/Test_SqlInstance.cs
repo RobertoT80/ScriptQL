@@ -14,12 +14,14 @@ namespace UtilsTest
     {
         private SqlInstance _s;
         private CancellationToken _token;
+        Random _rand = new Random();
 
         [TestInitialize]
         public void InitializeServer()
         {
             _s = new SqlInstance("localhost", "", "", true, true);
             _token = new CancellationTokenSource().Token;
+            
             Utils.CreateLocalSettings();
             Utils.WriteLog("Test Started.");
         }
@@ -49,7 +51,7 @@ namespace UtilsTest
             var wrongName = RandomFactory.GetRandomListOfSpecialString(1, 64)[0];
             var wrongdbcreated = _s.CreateDatabaseSync(wrongName);
             Assert.AreEqual(wrongdbcreated, false);
-            wrongdbcreated = _s.CreateDatabase(wrongName).Result;
+            wrongdbcreated = _s.CreateDatabaseSync(wrongName);
             Assert.AreEqual(wrongdbcreated, false);
 
             var goodNames = RandomFactory.GetRandomListOfString(8, 32);
@@ -60,8 +62,7 @@ namespace UtilsTest
                 var deleted = _s.Drop(goodName).Result;
                 Assert.AreEqual(deleted, true);
             }
-            
-            
+                   
             _s.GetPaths();
             _s.GetPhysicalFiles();
 
@@ -72,5 +73,15 @@ namespace UtilsTest
             Assert.AreNotEqual(_s, null);
         }
 
+        [TestMethod]
+        public void SqlDatabase_Common()
+        {
+            foreach (SqlDatabase db in _s.DatabasesCollection)
+            {
+                db.GetDatabaseProperties();
+                db.Check(_token);
+
+            }
+        }
     }
 }

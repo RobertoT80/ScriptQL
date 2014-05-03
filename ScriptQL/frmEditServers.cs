@@ -32,6 +32,12 @@ namespace ScriptQL
         private Boolean ValidateSettings()
         {
             SetButtons(false);
+
+            if (lstEditServers_serverList.Items.Count >= MAXINSTANCES)
+            {
+                SetStatus(String.Format("Max number of instances ({0}) reached.", MAXINSTANCES), Color.Black);
+                return false;
+            }
  
             if (txtEditServers_SqlInstance.Text.Length == 0)
             {
@@ -43,11 +49,7 @@ namespace ScriptQL
                 SetStatus("Instance name has invalid characters", Color.Red);
                 return false;
             }
-            if (lstEditServers_serverList.Items.Count >= MAXINSTANCES)
-            {
-                SetStatus(DATA_REQUIRED, Color.Black);
-                return false;
-            }
+            
 
             if(!chkFrmEditServers_WinAuth.Checked)
             {
@@ -163,6 +165,7 @@ namespace ScriptQL
             }
             lstEditServers_serverList.Items.Add(oSqlServer);
             SqlInstance.ListServers.Add(oSqlServer);
+            ValidateSettings();
             SetStatus(oSqlServer + " added.", Color.Green);
         }
 
@@ -183,6 +186,7 @@ namespace ScriptQL
                 SetStatus(lstEditServers_serverList.SelectedItem + " deleted.", Color.Green);
                 lstEditServers_serverList.Items.Remove(lstEditServers_serverList.SelectedItem);
                 SqlInstance.ListServers.Remove(server);
+                ValidateSettings();
             }
             
         }
