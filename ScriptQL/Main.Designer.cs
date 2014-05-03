@@ -32,12 +32,12 @@ namespace ScriptQL
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.editConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -103,7 +103,9 @@ namespace ScriptQL
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.tlsAllMulti = new System.Windows.Forms.ToolStripButton();
             this.tlsAllSingle = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.btnDeleteAll = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.grpMainServers = new System.Windows.Forms.GroupBox();
             this.tblServers = new System.Windows.Forms.TableLayoutPanel();
             this.tblPictures = new System.Windows.Forms.TableLayoutPanel();
@@ -131,6 +133,7 @@ namespace ScriptQL
             this.tlsDatabase_Drop = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tlsDatabase_Check = new System.Windows.Forms.ToolStripButton();
+            this.tlsDatabase_KillConnections = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.tlsDatabase_Attach = new System.Windows.Forms.ToolStripButton();
             this.tlsDatabase_Detach = new System.Windows.Forms.ToolStripButton();
@@ -149,7 +152,6 @@ namespace ScriptQL
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tlsDatabase_Rename = new System.Windows.Forms.ToolStripButton();
             this.txtDatabase_Rename = new System.Windows.Forms.ToolStripTextBox();
-            this.tlsDatabase_KillConnections = new System.Windows.Forms.ToolStripButton();
             this.grpMainDatabases = new System.Windows.Forms.GroupBox();
             this.dgvDatabases = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -189,6 +191,7 @@ namespace ScriptQL
             this.tabServer = new System.Windows.Forms.TabPage();
             this.tabGroup = new System.Windows.Forms.TabControl();
             this.lblTablesStatus = new System.Windows.Forms.Label();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.tbxMain.SuspendLayout();
             this.grpMainServers.SuspendLayout();
@@ -258,6 +261,7 @@ namespace ScriptQL
             // 
             // editConfigToolStripMenuItem
             // 
+            this.editConfigToolStripMenuItem.Image = global::ScriptQL.Properties.Resources.settings;
             this.editConfigToolStripMenuItem.Name = "editConfigToolStripMenuItem";
             this.editConfigToolStripMenuItem.ShortcutKeyDisplayString = "CTRL+E";
             this.editConfigToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
@@ -267,6 +271,7 @@ namespace ScriptQL
             // 
             // openLogToolStripMenuItem
             // 
+            this.openLogToolStripMenuItem.Image = global::ScriptQL.Properties.Resources.TextFile;
             this.openLogToolStripMenuItem.Name = "openLogToolStripMenuItem";
             this.openLogToolStripMenuItem.ShortcutKeyDisplayString = "CTRL+L";
             this.openLogToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
@@ -276,6 +281,7 @@ namespace ScriptQL
             // 
             // quitToolStripMenuItem
             // 
+            this.quitToolStripMenuItem.Image = global::ScriptQL.Properties.Resources.quit;
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
             this.quitToolStripMenuItem.ShortcutKeyDisplayString = "ESC";
             this.quitToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
@@ -302,6 +308,7 @@ namespace ScriptQL
             // mnuServer_DiscoverDetached
             // 
             this.mnuServer_DiscoverDetached.Enabled = false;
+            this.mnuServer_DiscoverDetached.Image = global::ScriptQL.Properties.Resources.search;
             this.mnuServer_DiscoverDetached.Name = "mnuServer_DiscoverDetached";
             this.mnuServer_DiscoverDetached.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.D)));
@@ -313,6 +320,7 @@ namespace ScriptQL
             // mnuVerifyBakCollection
             // 
             this.mnuVerifyBakCollection.Enabled = false;
+            this.mnuVerifyBakCollection.Image = global::ScriptQL.Properties.Resources.verify;
             this.mnuVerifyBakCollection.Name = "mnuVerifyBakCollection";
             this.mnuVerifyBakCollection.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.V)));
@@ -324,7 +332,7 @@ namespace ScriptQL
             // mnuServer_RestoreAllDefault
             // 
             this.mnuServer_RestoreAllDefault.Enabled = false;
-            this.mnuServer_RestoreAllDefault.Image = global::ScriptQL.Properties.Resources.restorefromfolder;
+            this.mnuServer_RestoreAllDefault.Image = global::ScriptQL.Properties.Resources.undo_16;
             this.mnuServer_RestoreAllDefault.Name = "mnuServer_RestoreAllDefault";
             this.mnuServer_RestoreAllDefault.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.R)));
@@ -337,6 +345,7 @@ namespace ScriptQL
             // mnuServer_RestoreAllCustom
             // 
             this.mnuServer_RestoreAllCustom.Enabled = false;
+            this.mnuServer_RestoreAllCustom.Image = global::ScriptQL.Properties.Resources.restorefromfolder;
             this.mnuServer_RestoreAllCustom.Name = "mnuServer_RestoreAllCustom";
             this.mnuServer_RestoreAllCustom.Size = new System.Drawing.Size(336, 22);
             this.mnuServer_RestoreAllCustom.Text = "Restore bak collection...";
@@ -346,7 +355,7 @@ namespace ScriptQL
             // mnuServer_backup
             // 
             this.mnuServer_backup.Enabled = false;
-            this.mnuServer_backup.Image = global::ScriptQL.Properties.Resources.Arrow_RedoRetry_16xMD_color;
+            this.mnuServer_backup.Image = global::ScriptQL.Properties.Resources.backup;
             this.mnuServer_backup.Name = "mnuServer_backup";
             this.mnuServer_backup.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
             | System.Windows.Forms.Keys.B)));
@@ -362,7 +371,7 @@ namespace ScriptQL
             this.mnuServer_backupWithInit,
             this.mnuServer_backupWithCompressAndInit});
             this.mnuServer_backupWith.Enabled = false;
-            this.mnuServer_backupWith.Image = global::ScriptQL.Properties.Resources.Arrow_RedoRetry_16xMD_color;
+            this.mnuServer_backupWith.Image = global::ScriptQL.Properties.Resources.backup;
             this.mnuServer_backupWith.Name = "mnuServer_backupWith";
             this.mnuServer_backupWith.Size = new System.Drawing.Size(336, 22);
             this.mnuServer_backupWith.Text = "Backup all with ...";
@@ -426,6 +435,7 @@ namespace ScriptQL
             // mnuDatabase_Create
             // 
             this.mnuDatabase_Create.Enabled = false;
+            this.mnuDatabase_Create.Image = global::ScriptQL.Properties.Resources.new_db;
             this.mnuDatabase_Create.Name = "mnuDatabase_Create";
             this.mnuDatabase_Create.ShortcutKeyDisplayString = "INS";
             this.mnuDatabase_Create.ShortcutKeys = System.Windows.Forms.Keys.Insert;
@@ -438,6 +448,7 @@ namespace ScriptQL
             // mnuDatabase_Drop
             // 
             this.mnuDatabase_Drop.Enabled = false;
+            this.mnuDatabase_Drop.Image = global::ScriptQL.Properties.Resources.drop_db;
             this.mnuDatabase_Drop.Name = "mnuDatabase_Drop";
             this.mnuDatabase_Drop.ShortcutKeyDisplayString = "DEL";
             this.mnuDatabase_Drop.ShortcutKeys = System.Windows.Forms.Keys.Delete;
@@ -450,6 +461,7 @@ namespace ScriptQL
             // mnuDatabase_Rename
             // 
             this.mnuDatabase_Rename.Enabled = false;
+            this.mnuDatabase_Rename.Image = global::ScriptQL.Properties.Resources.rename;
             this.mnuDatabase_Rename.Name = "mnuDatabase_Rename";
             this.mnuDatabase_Rename.ShortcutKeyDisplayString = "CTRL +N";
             this.mnuDatabase_Rename.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
@@ -461,6 +473,7 @@ namespace ScriptQL
             // mnuDatabase_Check
             // 
             this.mnuDatabase_Check.Enabled = false;
+            this.mnuDatabase_Check.Image = global::ScriptQL.Properties.Resources.db_check;
             this.mnuDatabase_Check.Name = "mnuDatabase_Check";
             this.mnuDatabase_Check.ShortcutKeyDisplayString = "CTRL+C";
             this.mnuDatabase_Check.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
@@ -473,6 +486,7 @@ namespace ScriptQL
             // mnuDatabase_Attach
             // 
             this.mnuDatabase_Attach.Enabled = false;
+            this.mnuDatabase_Attach.Image = global::ScriptQL.Properties.Resources.dbattach;
             this.mnuDatabase_Attach.Name = "mnuDatabase_Attach";
             this.mnuDatabase_Attach.ShortcutKeyDisplayString = "CTRL+A";
             this.mnuDatabase_Attach.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
@@ -485,6 +499,7 @@ namespace ScriptQL
             // mnuDatabase_Detach
             // 
             this.mnuDatabase_Detach.Enabled = false;
+            this.mnuDatabase_Detach.Image = global::ScriptQL.Properties.Resources.dbdetach;
             this.mnuDatabase_Detach.Name = "mnuDatabase_Detach";
             this.mnuDatabase_Detach.ShortcutKeyDisplayString = "CTRL +D";
             this.mnuDatabase_Detach.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
@@ -497,6 +512,7 @@ namespace ScriptQL
             // mnuDatabase_Offline
             // 
             this.mnuDatabase_Offline.Enabled = false;
+            this.mnuDatabase_Offline.Image = global::ScriptQL.Properties.Resources.offline;
             this.mnuDatabase_Offline.Name = "mnuDatabase_Offline";
             this.mnuDatabase_Offline.ShortcutKeyDisplayString = "CTRL+DOWN";
             this.mnuDatabase_Offline.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
@@ -508,6 +524,7 @@ namespace ScriptQL
             // mnuDatabase_Online
             // 
             this.mnuDatabase_Online.Enabled = false;
+            this.mnuDatabase_Online.Image = global::ScriptQL.Properties.Resources.online;
             this.mnuDatabase_Online.Name = "mnuDatabase_Online";
             this.mnuDatabase_Online.ShortcutKeyDisplayString = "CTRL+UP";
             this.mnuDatabase_Online.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
@@ -520,6 +537,7 @@ namespace ScriptQL
             // mnuDatabase_SingleUser
             // 
             this.mnuDatabase_SingleUser.Enabled = false;
+            this.mnuDatabase_SingleUser.Image = global::ScriptQL.Properties.Resources.single_user;
             this.mnuDatabase_SingleUser.Name = "mnuDatabase_SingleUser";
             this.mnuDatabase_SingleUser.ShortcutKeyDisplayString = "CTRL+LEFT";
             this.mnuDatabase_SingleUser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
@@ -531,6 +549,7 @@ namespace ScriptQL
             // mnuDatabase_MultiUser
             // 
             this.mnuDatabase_MultiUser.Enabled = false;
+            this.mnuDatabase_MultiUser.Image = global::ScriptQL.Properties.Resources.multi_user;
             this.mnuDatabase_MultiUser.Name = "mnuDatabase_MultiUser";
             this.mnuDatabase_MultiUser.ShortcutKeyDisplayString = "CTRL+RIGHT";
             this.mnuDatabase_MultiUser.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
@@ -542,6 +561,7 @@ namespace ScriptQL
             // mnuDatabase_Restore
             // 
             this.mnuDatabase_Restore.Enabled = false;
+            this.mnuDatabase_Restore.Image = global::ScriptQL.Properties.Resources.restore;
             this.mnuDatabase_Restore.Name = "mnuDatabase_Restore";
             this.mnuDatabase_Restore.ShortcutKeyDisplayString = "CTRL +R";
             this.mnuDatabase_Restore.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
@@ -554,6 +574,7 @@ namespace ScriptQL
             // mnuDatabase_Backup
             // 
             this.mnuDatabase_Backup.Enabled = false;
+            this.mnuDatabase_Backup.Image = global::ScriptQL.Properties.Resources.backup;
             this.mnuDatabase_Backup.Name = "mnuDatabase_Backup";
             this.mnuDatabase_Backup.ShortcutKeyDisplayString = "CTRL+B";
             this.mnuDatabase_Backup.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
@@ -569,6 +590,7 @@ namespace ScriptQL
             this.mnuDatabase_BackupWithOverwrite,
             this.mnuDatabase_BackupWithCompressOverwrite});
             this.mnuDatabase_BackupWith.Enabled = false;
+            this.mnuDatabase_BackupWith.Image = global::ScriptQL.Properties.Resources.backup;
             this.mnuDatabase_BackupWith.Name = "mnuDatabase_BackupWith";
             this.mnuDatabase_BackupWith.Size = new System.Drawing.Size(237, 22);
             this.mnuDatabase_BackupWith.Tag = "sysdb";
@@ -617,7 +639,7 @@ namespace ScriptQL
             // mnuTools_OpenBackupFolder
             // 
             this.mnuTools_OpenBackupFolder.Enabled = false;
-            this.mnuTools_OpenBackupFolder.Image = global::ScriptQL.Properties.Resources.OpenSelectedItemHS;
+            this.mnuTools_OpenBackupFolder.Image = global::ScriptQL.Properties.Resources.folder;
             this.mnuTools_OpenBackupFolder.Name = "mnuTools_OpenBackupFolder";
             this.mnuTools_OpenBackupFolder.Size = new System.Drawing.Size(219, 22);
             this.mnuTools_OpenBackupFolder.Text = "Open default backup folder";
@@ -633,9 +655,8 @@ namespace ScriptQL
             // 
             // aboutToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Image = global::ScriptQL.Properties.Resources.StatusAnnotations_Help_and_inconclusive_16xLG_color;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -668,7 +689,6 @@ namespace ScriptQL
             // 
             // tbxMain
             // 
-            this.tbxMain.AutoSize = false;
             this.tbxMain.BackColor = System.Drawing.SystemColors.Control;
             this.tbxMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbxMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -692,35 +712,39 @@ namespace ScriptQL
             this.toolStripSeparator11,
             this.tlsAllMulti,
             this.tlsAllSingle,
-            this.btnDeleteAll});
+            this.toolStripSeparator12,
+            this.btnDeleteAll,
+            this.toolStripSeparator13});
             this.tbxMain.Location = new System.Drawing.Point(0, 0);
-            this.tbxMain.MaximumSize = new System.Drawing.Size(0, 24);
-            this.tbxMain.MinimumSize = new System.Drawing.Size(0, 24);
+            this.tbxMain.MaximumSize = new System.Drawing.Size(0, 32);
+            this.tbxMain.MinimumSize = new System.Drawing.Size(0, 26);
             this.tbxMain.Name = "tbxMain";
-            this.tbxMain.Size = new System.Drawing.Size(564, 24);
+            this.tbxMain.Size = new System.Drawing.Size(478, 26);
             this.tbxMain.TabIndex = 1;
             this.tbxMain.Text = "toolStrip1";
             // 
             // tlsEditConfig
             // 
+            this.tlsEditConfig.AutoSize = false;
             this.tlsEditConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tlsEditConfig.Image = ((System.Drawing.Image)(resources.GetObject("tlsEditConfig.Image")));
+            this.tlsEditConfig.Image = global::ScriptQL.Properties.Resources.settings;
             this.tlsEditConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsEditConfig.Name = "tlsEditConfig";
-            this.tlsEditConfig.Size = new System.Drawing.Size(23, 21);
+            this.tlsEditConfig.Size = new System.Drawing.Size(26, 26);
             this.tlsEditConfig.Tag = "AlwaysOn";
             this.tlsEditConfig.Text = "Edit Server List...";
             this.tlsEditConfig.Click += new System.EventHandler(this.tlsEditConfig_Click);
             // 
             // tlsEnableSystemDbs
             // 
+            this.tlsEnableSystemDbs.AutoSize = false;
             this.tlsEnableSystemDbs.BackColor = System.Drawing.Color.Transparent;
             this.tlsEnableSystemDbs.CheckOnClick = true;
             this.tlsEnableSystemDbs.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsEnableSystemDbs.Image = ((System.Drawing.Image)(resources.GetObject("tlsEnableSystemDbs.Image")));
             this.tlsEnableSystemDbs.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsEnableSystemDbs.Name = "tlsEnableSystemDbs";
-            this.tlsEnableSystemDbs.Size = new System.Drawing.Size(23, 21);
+            this.tlsEnableSystemDbs.Size = new System.Drawing.Size(26, 26);
             this.tlsEnableSystemDbs.Tag = "AlwaysOn";
             this.tlsEnableSystemDbs.Text = "Enable system databases";
             this.tlsEnableSystemDbs.Click += new System.EventHandler(this.tlsEnableSystemDbs_Click);
@@ -728,16 +752,17 @@ namespace ScriptQL
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsDiscoverDetached
             // 
+            this.tlsDiscoverDetached.AutoSize = false;
             this.tlsDiscoverDetached.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDiscoverDetached.Enabled = false;
-            this.tlsDiscoverDetached.Image = ((System.Drawing.Image)(resources.GetObject("tlsDiscoverDetached.Image")));
+            this.tlsDiscoverDetached.Image = global::ScriptQL.Properties.Resources.search;
             this.tlsDiscoverDetached.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDiscoverDetached.Name = "tlsDiscoverDetached";
-            this.tlsDiscoverDetached.Size = new System.Drawing.Size(23, 21);
+            this.tlsDiscoverDetached.Size = new System.Drawing.Size(26, 26);
             this.tlsDiscoverDetached.Text = "Discover detached databases...";
             this.tlsDiscoverDetached.ToolTipText = "Discover detached databases (only local instances)";
             this.tlsDiscoverDetached.Click += new System.EventHandler(this.tlsDiscoverDetached_Click);
@@ -745,52 +770,56 @@ namespace ScriptQL
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsServer_VerifyBackupsCustomFolder
             // 
+            this.tlsServer_VerifyBackupsCustomFolder.AutoSize = false;
             this.tlsServer_VerifyBackupsCustomFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsServer_VerifyBackupsCustomFolder.Enabled = false;
-            this.tlsServer_VerifyBackupsCustomFolder.Image = ((System.Drawing.Image)(resources.GetObject("tlsServer_VerifyBackupsCustomFolder.Image")));
+            this.tlsServer_VerifyBackupsCustomFolder.Image = global::ScriptQL.Properties.Resources.verify;
             this.tlsServer_VerifyBackupsCustomFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsServer_VerifyBackupsCustomFolder.Name = "tlsServer_VerifyBackupsCustomFolder";
-            this.tlsServer_VerifyBackupsCustomFolder.Size = new System.Drawing.Size(23, 21);
+            this.tlsServer_VerifyBackupsCustomFolder.Size = new System.Drawing.Size(26, 26);
             this.tlsServer_VerifyBackupsCustomFolder.Text = "Verify backups custom";
             this.tlsServer_VerifyBackupsCustomFolder.ToolTipText = "Verify backups in a user-specified folder(Local instances only)";
             this.tlsServer_VerifyBackupsCustomFolder.Click += new System.EventHandler(this.tlsServer_VerifyBackupsCustomFolder_Click);
             // 
             // tlsServer_VerifyBackupsDefaultFolder
             // 
+            this.tlsServer_VerifyBackupsDefaultFolder.AutoSize = false;
             this.tlsServer_VerifyBackupsDefaultFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsServer_VerifyBackupsDefaultFolder.Enabled = false;
             this.tlsServer_VerifyBackupsDefaultFolder.Image = ((System.Drawing.Image)(resources.GetObject("tlsServer_VerifyBackupsDefaultFolder.Image")));
             this.tlsServer_VerifyBackupsDefaultFolder.ImageTransparentColor = System.Drawing.Color.Transparent;
             this.tlsServer_VerifyBackupsDefaultFolder.Name = "tlsServer_VerifyBackupsDefaultFolder";
-            this.tlsServer_VerifyBackupsDefaultFolder.Size = new System.Drawing.Size(23, 21);
+            this.tlsServer_VerifyBackupsDefaultFolder.Size = new System.Drawing.Size(26, 26);
             this.tlsServer_VerifyBackupsDefaultFolder.Text = "verify backups default";
             this.tlsServer_VerifyBackupsDefaultFolder.ToolTipText = "Verify backups in the default backup folder";
             this.tlsServer_VerifyBackupsDefaultFolder.Click += new System.EventHandler(this.tlsServer_VerifyBackupsDefaultFolder_Click);
             // 
             // tlsRestoreAllFromCustomFolder
             // 
+            this.tlsRestoreAllFromCustomFolder.AutoSize = false;
             this.tlsRestoreAllFromCustomFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsRestoreAllFromCustomFolder.Enabled = false;
             this.tlsRestoreAllFromCustomFolder.Image = global::ScriptQL.Properties.Resources.restorefromfolder;
             this.tlsRestoreAllFromCustomFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsRestoreAllFromCustomFolder.Name = "tlsRestoreAllFromCustomFolder";
-            this.tlsRestoreAllFromCustomFolder.Size = new System.Drawing.Size(23, 21);
+            this.tlsRestoreAllFromCustomFolder.Size = new System.Drawing.Size(26, 26);
             this.tlsRestoreAllFromCustomFolder.Text = "Restore all custom";
             this.tlsRestoreAllFromCustomFolder.ToolTipText = "Restore all .bak files from a user-specified folder (only from local instances)";
             this.tlsRestoreAllFromCustomFolder.Click += new System.EventHandler(this.tlsRestoreAllFromCustomFolder_Click);
             // 
             // tlsRestoreAllFromDefaultFolder
             // 
+            this.tlsRestoreAllFromDefaultFolder.AutoSize = false;
             this.tlsRestoreAllFromDefaultFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsRestoreAllFromDefaultFolder.Enabled = false;
-            this.tlsRestoreAllFromDefaultFolder.Image = global::ScriptQL.Properties.Resources.Arrow_UndoRevertRestore_16xLG_color;
+            this.tlsRestoreAllFromDefaultFolder.Image = global::ScriptQL.Properties.Resources.restore;
             this.tlsRestoreAllFromDefaultFolder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsRestoreAllFromDefaultFolder.Name = "tlsRestoreAllFromDefaultFolder";
-            this.tlsRestoreAllFromDefaultFolder.Size = new System.Drawing.Size(23, 21);
+            this.tlsRestoreAllFromDefaultFolder.Size = new System.Drawing.Size(26, 26);
             this.tlsRestoreAllFromDefaultFolder.Text = "restore all default";
             this.tlsRestoreAllFromDefaultFolder.ToolTipText = "Restore all .bak files from the default backup folder";
             this.tlsRestoreAllFromDefaultFolder.Click += new System.EventHandler(this.tlsRestoreAllFromDefaultFolder_Click);
@@ -804,11 +833,11 @@ namespace ScriptQL
             this.tlsBackupAllWithOverwrite,
             this.tlsBackupAllWithCompressionOverwrite});
             this.tlsBackupAll.Enabled = false;
-            this.tlsBackupAll.Image = ((System.Drawing.Image)(resources.GetObject("tlsBackupAll.Image")));
+            this.tlsBackupAll.Image = global::ScriptQL.Properties.Resources.backup;
             this.tlsBackupAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsBackupAll.Margin = new System.Windows.Forms.Padding(0);
             this.tlsBackupAll.Name = "tlsBackupAll";
-            this.tlsBackupAll.Size = new System.Drawing.Size(32, 24);
+            this.tlsBackupAll.Size = new System.Drawing.Size(32, 26);
             this.tlsBackupAll.Text = "Backup all";
             this.tlsBackupAll.ToolTipText = "Backup all databases to the default folder (appending to the current set)";
             this.tlsBackupAll.ButtonClick += new System.EventHandler(this.tlsBackupAll_ButtonClick);
@@ -839,12 +868,13 @@ namespace ScriptQL
             // 
             // tlsCheckAll
             // 
+            this.tlsCheckAll.AutoSize = false;
             this.tlsCheckAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsCheckAll.Enabled = false;
             this.tlsCheckAll.Image = ((System.Drawing.Image)(resources.GetObject("tlsCheckAll.Image")));
             this.tlsCheckAll.ImageTransparentColor = System.Drawing.Color.Transparent;
             this.tlsCheckAll.Name = "tlsCheckAll";
-            this.tlsCheckAll.Size = new System.Drawing.Size(23, 21);
+            this.tlsCheckAll.Size = new System.Drawing.Size(26, 26);
             this.tlsCheckAll.Text = "Check all";
             this.tlsCheckAll.ToolTipText = "Check all databases for consistency";
             this.tlsCheckAll.Click += new System.EventHandler(this.tlsCheckAll_Click);
@@ -852,28 +882,30 @@ namespace ScriptQL
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsOpenBackupFolder
             // 
+            this.tlsOpenBackupFolder.AutoSize = false;
             this.tlsOpenBackupFolder.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsOpenBackupFolder.Enabled = false;
-            this.tlsOpenBackupFolder.Image = ((System.Drawing.Image)(resources.GetObject("tlsOpenBackupFolder.Image")));
+            this.tlsOpenBackupFolder.Image = global::ScriptQL.Properties.Resources.folder;
             this.tlsOpenBackupFolder.ImageTransparentColor = System.Drawing.Color.Transparent;
             this.tlsOpenBackupFolder.Name = "tlsOpenBackupFolder";
-            this.tlsOpenBackupFolder.Size = new System.Drawing.Size(23, 21);
+            this.tlsOpenBackupFolder.Size = new System.Drawing.Size(26, 26);
             this.tlsOpenBackupFolder.Text = "Open default backup folder";
             this.tlsOpenBackupFolder.Click += new System.EventHandler(this.tlsOpenBackupFolder_Click);
             this.tlsOpenBackupFolder.EnabledChanged += new System.EventHandler(this.tlsOpenBackupFolder_EnabledChanged);
             // 
             // tlsClearLog
             // 
+            this.tlsClearLog.AutoSize = false;
             this.tlsClearLog.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsClearLog.Enabled = false;
             this.tlsClearLog.Image = ((System.Drawing.Image)(resources.GetObject("tlsClearLog.Image")));
             this.tlsClearLog.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsClearLog.Name = "tlsClearLog";
-            this.tlsClearLog.Size = new System.Drawing.Size(23, 21);
+            this.tlsClearLog.Size = new System.Drawing.Size(26, 26);
             this.tlsClearLog.Tag = "AlwaysOn";
             this.tlsClearLog.Text = "Clear log";
             this.tlsClearLog.ToolTipText = "Clear the log window";
@@ -883,28 +915,30 @@ namespace ScriptQL
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsAllOnline
             // 
+            this.tlsAllOnline.AutoSize = false;
             this.tlsAllOnline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsAllOnline.Enabled = false;
-            this.tlsAllOnline.Image = ((System.Drawing.Image)(resources.GetObject("tlsAllOnline.Image")));
+            this.tlsAllOnline.Image = global::ScriptQL.Properties.Resources.online;
             this.tlsAllOnline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsAllOnline.Name = "tlsAllOnline";
-            this.tlsAllOnline.Size = new System.Drawing.Size(23, 21);
+            this.tlsAllOnline.Size = new System.Drawing.Size(26, 26);
             this.tlsAllOnline.Text = "ALL ONLINE";
             this.tlsAllOnline.ToolTipText = "Switch all databases online";
             this.tlsAllOnline.Click += new System.EventHandler(this.tlsAllOnline_Click);
             // 
             // tlsAllOffline
             // 
+            this.tlsAllOffline.AutoSize = false;
             this.tlsAllOffline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsAllOffline.Enabled = false;
-            this.tlsAllOffline.Image = ((System.Drawing.Image)(resources.GetObject("tlsAllOffline.Image")));
+            this.tlsAllOffline.Image = global::ScriptQL.Properties.Resources.offline;
             this.tlsAllOffline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsAllOffline.Name = "tlsAllOffline";
-            this.tlsAllOffline.Size = new System.Drawing.Size(23, 21);
+            this.tlsAllOffline.Size = new System.Drawing.Size(26, 26);
             this.tlsAllOffline.Text = "ALL OFFLINE";
             this.tlsAllOffline.ToolTipText = "Switch all databases offline";
             this.tlsAllOffline.Click += new System.EventHandler(this.tlsAllOffline_Click);
@@ -912,44 +946,57 @@ namespace ScriptQL
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsAllMulti
             // 
+            this.tlsAllMulti.AutoSize = false;
             this.tlsAllMulti.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsAllMulti.Enabled = false;
-            this.tlsAllMulti.Image = ((System.Drawing.Image)(resources.GetObject("tlsAllMulti.Image")));
+            this.tlsAllMulti.Image = global::ScriptQL.Properties.Resources.multi_user;
             this.tlsAllMulti.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsAllMulti.Name = "tlsAllMulti";
-            this.tlsAllMulti.Size = new System.Drawing.Size(23, 21);
+            this.tlsAllMulti.Size = new System.Drawing.Size(26, 26);
             this.tlsAllMulti.Text = "ALL MULTI";
             this.tlsAllMulti.ToolTipText = "Switch all databases multi user";
             this.tlsAllMulti.Click += new System.EventHandler(this.tlsAllMulti_Click);
             // 
             // tlsAllSingle
             // 
+            this.tlsAllSingle.AutoSize = false;
             this.tlsAllSingle.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsAllSingle.Enabled = false;
-            this.tlsAllSingle.Image = ((System.Drawing.Image)(resources.GetObject("tlsAllSingle.Image")));
+            this.tlsAllSingle.Image = global::ScriptQL.Properties.Resources.single_user;
             this.tlsAllSingle.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsAllSingle.Name = "tlsAllSingle";
-            this.tlsAllSingle.Size = new System.Drawing.Size(23, 21);
+            this.tlsAllSingle.Size = new System.Drawing.Size(26, 26);
             this.tlsAllSingle.Text = "ALL SINGLE";
             this.tlsAllSingle.ToolTipText = "Switch all databases single user";
             this.tlsAllSingle.Click += new System.EventHandler(this.tlsAllSingle_Click);
             // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(6, 26);
+            // 
             // btnDeleteAll
             // 
+            this.btnDeleteAll.AutoSize = false;
             this.btnDeleteAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.btnDeleteAll.Enabled = false;
-            this.btnDeleteAll.Image = global::ScriptQL.Properties.Resources.dbDestruction;
+            this.btnDeleteAll.Image = global::ScriptQL.Properties.Resources.Deleteall;
             this.btnDeleteAll.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDeleteAll.Name = "btnDeleteAll";
-            this.btnDeleteAll.Size = new System.Drawing.Size(23, 21);
+            this.btnDeleteAll.Size = new System.Drawing.Size(26, 26);
             this.btnDeleteAll.Tag = "";
             this.btnDeleteAll.Text = "DROP ALL";
             this.btnDeleteAll.ToolTipText = "Drop all databases (DANGEROUS)";
             this.btnDeleteAll.Click += new System.EventHandler(this.btnDeleteAll_Click);
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(6, 26);
             // 
             // grpMainServers
             // 
@@ -963,7 +1010,7 @@ namespace ScriptQL
             this.grpMainServers.MinimumSize = new System.Drawing.Size(0, 100);
             this.grpMainServers.Name = "grpMainServers";
             this.grpMainServers.Padding = new System.Windows.Forms.Padding(1);
-            this.grpMainServers.Size = new System.Drawing.Size(564, 115);
+            this.grpMainServers.Size = new System.Drawing.Size(478, 115);
             this.grpMainServers.TabIndex = 30;
             this.grpMainServers.TabStop = false;
             this.grpMainServers.Text = "  SERVERS";
@@ -973,9 +1020,9 @@ namespace ScriptQL
             this.tblServers.BackColor = System.Drawing.Color.Black;
             this.tblServers.ColumnCount = 4;
             this.tblServers.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblServers.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.83193F));
-            this.tblServers.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.16807F));
-            this.tblServers.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tblServers.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 80.31674F));
+            this.tblServers.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 19.68326F));
+            this.tblServers.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tblServers.Controls.Add(this.tblPictures, 0, 0);
             this.tblServers.Controls.Add(this.tblCancel, 3, 0);
             this.tblServers.Controls.Add(this.lstMain_Servers, 1, 0);
@@ -989,7 +1036,7 @@ namespace ScriptQL
             this.tblServers.Name = "tblServers";
             this.tblServers.RowCount = 1;
             this.tblServers.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25.60241F));
-            this.tblServers.Size = new System.Drawing.Size(562, 100);
+            this.tblServers.Size = new System.Drawing.Size(476, 100);
             this.tblServers.TabIndex = 41;
             // 
             // tblPictures
@@ -1097,7 +1144,7 @@ namespace ScriptQL
             this.tblCancel.Controls.Add(this.btnCancel1, 0, 1);
             this.tblCancel.Controls.Add(this.btnCancel2, 0, 2);
             this.tblCancel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tblCancel.Location = new System.Drawing.Point(527, 0);
+            this.tblCancel.Location = new System.Drawing.Point(449, 0);
             this.tblCancel.Margin = new System.Windows.Forms.Padding(0);
             this.tblCancel.Name = "tblCancel";
             this.tblCancel.RowCount = 5;
@@ -1191,9 +1238,9 @@ namespace ScriptQL
             this.lstMain_Servers.Location = new System.Drawing.Point(20, 0);
             this.lstMain_Servers.Margin = new System.Windows.Forms.Padding(0);
             this.lstMain_Servers.MaximumSize = new System.Drawing.Size(0, 100);
-            this.lstMain_Servers.MinimumSize = new System.Drawing.Size(0, 100);
+            this.lstMain_Servers.MinimumSize = new System.Drawing.Size(300, 100);
             this.lstMain_Servers.Name = "lstMain_Servers";
-            this.lstMain_Servers.Size = new System.Drawing.Size(405, 100);
+            this.lstMain_Servers.Size = new System.Drawing.Size(345, 100);
             this.lstMain_Servers.TabIndex = 2;
             this.lstMain_Servers.SelectedIndexChanged += new System.EventHandler(this.lstMain_Servers_SelectedIndexChanged);
             this.lstMain_Servers.SelectedValueChanged += new System.EventHandler(this.lstMain_Servers_SelectedValueChanged);
@@ -1209,7 +1256,7 @@ namespace ScriptQL
             this.tblProgressBars.Controls.Add(this.prgServer2, 0, 2);
             this.tblProgressBars.Controls.Add(this.prgServer3, 0, 3);
             this.tblProgressBars.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tblProgressBars.Location = new System.Drawing.Point(425, 0);
+            this.tblProgressBars.Location = new System.Drawing.Point(365, 0);
             this.tblProgressBars.Margin = new System.Windows.Forms.Padding(0);
             this.tblProgressBars.Name = "tblProgressBars";
             this.tblProgressBars.RowCount = 5;
@@ -1219,7 +1266,7 @@ namespace ScriptQL
             this.tblProgressBars.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tblProgressBars.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tblProgressBars.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tblProgressBars.Size = new System.Drawing.Size(102, 100);
+            this.tblProgressBars.Size = new System.Drawing.Size(84, 100);
             this.tblProgressBars.TabIndex = 41;
             // 
             // prgServer0
@@ -1229,7 +1276,7 @@ namespace ScriptQL
             this.prgServer0.Location = new System.Drawing.Point(2, 2);
             this.prgServer0.Margin = new System.Windows.Forms.Padding(2);
             this.prgServer0.Name = "prgServer0";
-            this.prgServer0.Size = new System.Drawing.Size(98, 16);
+            this.prgServer0.Size = new System.Drawing.Size(80, 16);
             this.prgServer0.TabIndex = 28;
             this.prgServer0.Visible = false;
             this.prgServer0.VisibleChanged += new System.EventHandler(this.prgServer0_VisibleChanged);
@@ -1241,7 +1288,7 @@ namespace ScriptQL
             this.prgServer1.Location = new System.Drawing.Point(2, 22);
             this.prgServer1.Margin = new System.Windows.Forms.Padding(2);
             this.prgServer1.Name = "prgServer1";
-            this.prgServer1.Size = new System.Drawing.Size(98, 16);
+            this.prgServer1.Size = new System.Drawing.Size(80, 16);
             this.prgServer1.TabIndex = 29;
             this.prgServer1.Visible = false;
             this.prgServer1.VisibleChanged += new System.EventHandler(this.prgServer1_VisibleChanged);
@@ -1253,7 +1300,7 @@ namespace ScriptQL
             this.prgServer4.Location = new System.Drawing.Point(2, 82);
             this.prgServer4.Margin = new System.Windows.Forms.Padding(2);
             this.prgServer4.Name = "prgServer4";
-            this.prgServer4.Size = new System.Drawing.Size(98, 16);
+            this.prgServer4.Size = new System.Drawing.Size(80, 16);
             this.prgServer4.TabIndex = 32;
             this.prgServer4.Visible = false;
             this.prgServer4.VisibleChanged += new System.EventHandler(this.prgServer4_VisibleChanged);
@@ -1265,7 +1312,7 @@ namespace ScriptQL
             this.prgServer2.Location = new System.Drawing.Point(2, 42);
             this.prgServer2.Margin = new System.Windows.Forms.Padding(2);
             this.prgServer2.Name = "prgServer2";
-            this.prgServer2.Size = new System.Drawing.Size(98, 16);
+            this.prgServer2.Size = new System.Drawing.Size(80, 16);
             this.prgServer2.TabIndex = 30;
             this.prgServer2.Visible = false;
             this.prgServer2.VisibleChanged += new System.EventHandler(this.prgServer2_VisibleChanged);
@@ -1277,7 +1324,7 @@ namespace ScriptQL
             this.prgServer3.Location = new System.Drawing.Point(2, 62);
             this.prgServer3.Margin = new System.Windows.Forms.Padding(2);
             this.prgServer3.Name = "prgServer3";
-            this.prgServer3.Size = new System.Drawing.Size(98, 16);
+            this.prgServer3.Size = new System.Drawing.Size(80, 16);
             this.prgServer3.TabIndex = 31;
             this.prgServer3.Visible = false;
             this.prgServer3.VisibleChanged += new System.EventHandler(this.prgServer3_VisibleChanged);
@@ -1292,7 +1339,7 @@ namespace ScriptQL
             this.prpServers.Location = new System.Drawing.Point(0, 0);
             this.prpServers.Margin = new System.Windows.Forms.Padding(2);
             this.prpServers.Name = "prpServers";
-            this.prpServers.Size = new System.Drawing.Size(564, 330);
+            this.prpServers.Size = new System.Drawing.Size(478, 329);
             this.prpServers.TabIndex = 27;
             this.prpServers.ToolbarVisible = false;
             this.prpServers.ViewBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
@@ -1306,6 +1353,7 @@ namespace ScriptQL
             this.tlsDatabase_Drop,
             this.toolStripSeparator5,
             this.tlsDatabase_Check,
+            this.tlsDatabase_KillConnections,
             this.toolStripSeparator6,
             this.tlsDatabase_Attach,
             this.tlsDatabase_Detach,
@@ -1320,24 +1368,24 @@ namespace ScriptQL
             this.tlsDatabase_BackupWith,
             this.toolStripSeparator1,
             this.tlsDatabase_Rename,
-            this.txtDatabase_Rename,
-            this.tlsDatabase_KillConnections});
+            this.txtDatabase_Rename});
             this.tbxDatabase.Location = new System.Drawing.Point(0, 0);
-            this.tbxDatabase.MaximumSize = new System.Drawing.Size(0, 24);
-            this.tbxDatabase.MinimumSize = new System.Drawing.Size(0, 24);
+            this.tbxDatabase.MaximumSize = new System.Drawing.Size(0, 32);
+            this.tbxDatabase.MinimumSize = new System.Drawing.Size(0, 26);
             this.tbxDatabase.Name = "tbxDatabase";
-            this.tbxDatabase.Size = new System.Drawing.Size(733, 24);
+            this.tbxDatabase.Size = new System.Drawing.Size(819, 26);
             this.tbxDatabase.TabIndex = 0;
             this.tbxDatabase.Text = "toolStrip1";
             // 
             // tlsDatabase_Create
             // 
+            this.tlsDatabase_Create.AutoSize = false;
             this.tlsDatabase_Create.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Create.Enabled = false;
-            this.tlsDatabase_Create.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Create.Image")));
+            this.tlsDatabase_Create.Image = global::ScriptQL.Properties.Resources.new_db;
             this.tlsDatabase_Create.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Create.Name = "tlsDatabase_Create";
-            this.tlsDatabase_Create.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Create.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Create.Tag = "server";
             this.tlsDatabase_Create.Text = "Create";
             this.tlsDatabase_Create.ToolTipText = "Create a new database...";
@@ -1345,12 +1393,13 @@ namespace ScriptQL
             // 
             // tlsDatabase_Drop
             // 
+            this.tlsDatabase_Drop.AutoSize = false;
             this.tlsDatabase_Drop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Drop.Enabled = false;
-            this.tlsDatabase_Drop.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Drop.Image")));
+            this.tlsDatabase_Drop.Image = global::ScriptQL.Properties.Resources.drop_db;
             this.tlsDatabase_Drop.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Drop.Name = "tlsDatabase_Drop";
-            this.tlsDatabase_Drop.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Drop.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Drop.Tag = "offline";
             this.tlsDatabase_Drop.Text = "Drop";
             this.tlsDatabase_Drop.ToolTipText = "Drop database";
@@ -1360,34 +1409,49 @@ namespace ScriptQL
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsDatabase_Check
             // 
+            this.tlsDatabase_Check.AutoSize = false;
             this.tlsDatabase_Check.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Check.Enabled = false;
-            this.tlsDatabase_Check.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Check.Image")));
+            this.tlsDatabase_Check.Image = global::ScriptQL.Properties.Resources.db_check;
             this.tlsDatabase_Check.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Check.Name = "tlsDatabase_Check";
-            this.tlsDatabase_Check.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Check.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Check.Tag = "sysdb";
             this.tlsDatabase_Check.Text = "Check";
             this.tlsDatabase_Check.ToolTipText = "Check database";
             this.tlsDatabase_Check.Click += new System.EventHandler(this.tlsDatabase_Check_Click);
             // 
+            // tlsDatabase_KillConnections
+            // 
+            this.tlsDatabase_KillConnections.AutoSize = false;
+            this.tlsDatabase_KillConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tlsDatabase_KillConnections.Enabled = false;
+            this.tlsDatabase_KillConnections.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_KillConnections.Image")));
+            this.tlsDatabase_KillConnections.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tlsDatabase_KillConnections.Name = "tlsDatabase_KillConnections";
+            this.tlsDatabase_KillConnections.Size = new System.Drawing.Size(26, 26);
+            this.tlsDatabase_KillConnections.Text = "Kill connections";
+            this.tlsDatabase_KillConnections.ToolTipText = "Forcibly close all current connections to the database";
+            this.tlsDatabase_KillConnections.Click += new System.EventHandler(this.tlsDatabase_KillConnections_Click);
+            // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsDatabase_Attach
             // 
+            this.tlsDatabase_Attach.AutoSize = false;
             this.tlsDatabase_Attach.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Attach.Enabled = false;
-            this.tlsDatabase_Attach.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Attach.Image")));
+            this.tlsDatabase_Attach.Image = global::ScriptQL.Properties.Resources.dbattach;
             this.tlsDatabase_Attach.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Attach.Name = "tlsDatabase_Attach";
-            this.tlsDatabase_Attach.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Attach.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Attach.Tag = "server";
             this.tlsDatabase_Attach.Text = "Attach";
             this.tlsDatabase_Attach.ToolTipText = "Attach database";
@@ -1395,12 +1459,13 @@ namespace ScriptQL
             // 
             // tlsDatabase_Detach
             // 
+            this.tlsDatabase_Detach.AutoSize = false;
             this.tlsDatabase_Detach.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Detach.Enabled = false;
-            this.tlsDatabase_Detach.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Detach.Image")));
+            this.tlsDatabase_Detach.Image = global::ScriptQL.Properties.Resources.dbdetach;
             this.tlsDatabase_Detach.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Detach.Name = "tlsDatabase_Detach";
-            this.tlsDatabase_Detach.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Detach.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Detach.Tag = "offline";
             this.tlsDatabase_Detach.Text = "Detach";
             this.tlsDatabase_Detach.ToolTipText = "Detach database";
@@ -1409,16 +1474,17 @@ namespace ScriptQL
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsDatabase_Online
             // 
+            this.tlsDatabase_Online.AutoSize = false;
             this.tlsDatabase_Online.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Online.Enabled = false;
-            this.tlsDatabase_Online.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Online.Image")));
+            this.tlsDatabase_Online.Image = global::ScriptQL.Properties.Resources.online;
             this.tlsDatabase_Online.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Online.Name = "tlsDatabase_Online";
-            this.tlsDatabase_Online.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Online.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Online.Tag = "offline";
             this.tlsDatabase_Online.Text = "Online";
             this.tlsDatabase_Online.ToolTipText = "Switch database online";
@@ -1427,12 +1493,13 @@ namespace ScriptQL
             // 
             // tlsDatabase_Offline
             // 
+            this.tlsDatabase_Offline.AutoSize = false;
             this.tlsDatabase_Offline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Offline.Enabled = false;
-            this.tlsDatabase_Offline.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Offline.Image")));
+            this.tlsDatabase_Offline.Image = global::ScriptQL.Properties.Resources.offline;
             this.tlsDatabase_Offline.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Offline.Name = "tlsDatabase_Offline";
-            this.tlsDatabase_Offline.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Offline.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Offline.Text = "Offline";
             this.tlsDatabase_Offline.ToolTipText = "Switch database offline";
             this.tlsDatabase_Offline.Click += new System.EventHandler(this.tlsDatabase_Offline_Click);
@@ -1441,16 +1508,17 @@ namespace ScriptQL
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsDatabase_Multi
             // 
+            this.tlsDatabase_Multi.AutoSize = false;
             this.tlsDatabase_Multi.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Multi.Enabled = false;
-            this.tlsDatabase_Multi.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Multi.Image")));
+            this.tlsDatabase_Multi.Image = global::ScriptQL.Properties.Resources.multi_user;
             this.tlsDatabase_Multi.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Multi.Name = "tlsDatabase_Multi";
-            this.tlsDatabase_Multi.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Multi.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Multi.Text = "Multi user";
             this.tlsDatabase_Multi.ToolTipText = "Set the database to multi user mode";
             this.tlsDatabase_Multi.Click += new System.EventHandler(this.tlsDatabase_Multi_Click);
@@ -1458,12 +1526,13 @@ namespace ScriptQL
             // 
             // tlsDatabase_Single
             // 
+            this.tlsDatabase_Single.AutoSize = false;
             this.tlsDatabase_Single.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Single.Enabled = false;
-            this.tlsDatabase_Single.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Single.Image")));
+            this.tlsDatabase_Single.Image = global::ScriptQL.Properties.Resources.single_user;
             this.tlsDatabase_Single.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Single.Name = "tlsDatabase_Single";
-            this.tlsDatabase_Single.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Single.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Single.Text = "Single user";
             this.tlsDatabase_Single.ToolTipText = "Set the database to single user mode";
             this.tlsDatabase_Single.Click += new System.EventHandler(this.tlsDatabase_Single_Click);
@@ -1472,16 +1541,17 @@ namespace ScriptQL
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsDatabase_Restore
             // 
+            this.tlsDatabase_Restore.AutoSize = false;
             this.tlsDatabase_Restore.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Restore.Enabled = false;
-            this.tlsDatabase_Restore.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Restore.Image")));
+            this.tlsDatabase_Restore.Image = global::ScriptQL.Properties.Resources.restore;
             this.tlsDatabase_Restore.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Restore.Name = "tlsDatabase_Restore";
-            this.tlsDatabase_Restore.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Restore.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Restore.Tag = "offline";
             this.tlsDatabase_Restore.Text = "Restore";
             this.tlsDatabase_Restore.ToolTipText = "Restore database from file";
@@ -1495,10 +1565,10 @@ namespace ScriptQL
             this.tlsDatabase_BackupWithOverwrite,
             this.tlsDatabase_BackupWithCompressionOverwrite});
             this.tlsDatabase_BackupWith.Enabled = false;
-            this.tlsDatabase_BackupWith.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_BackupWith.Image")));
+            this.tlsDatabase_BackupWith.Image = global::ScriptQL.Properties.Resources.backup;
             this.tlsDatabase_BackupWith.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_BackupWith.Name = "tlsDatabase_BackupWith";
-            this.tlsDatabase_BackupWith.Size = new System.Drawing.Size(32, 21);
+            this.tlsDatabase_BackupWith.Size = new System.Drawing.Size(32, 23);
             this.tlsDatabase_BackupWith.Tag = "sysdb";
             this.tlsDatabase_BackupWith.Text = "Backup";
             this.tlsDatabase_BackupWith.ToolTipText = "Backup database to the default folder (appending to the current set)";
@@ -1532,16 +1602,17 @@ namespace ScriptQL
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 24);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 26);
             // 
             // tlsDatabase_Rename
             // 
+            this.tlsDatabase_Rename.AutoSize = false;
             this.tlsDatabase_Rename.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.tlsDatabase_Rename.Enabled = false;
-            this.tlsDatabase_Rename.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_Rename.Image")));
+            this.tlsDatabase_Rename.Image = global::ScriptQL.Properties.Resources.rename;
             this.tlsDatabase_Rename.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlsDatabase_Rename.Name = "tlsDatabase_Rename";
-            this.tlsDatabase_Rename.Size = new System.Drawing.Size(23, 21);
+            this.tlsDatabase_Rename.Size = new System.Drawing.Size(26, 26);
             this.tlsDatabase_Rename.Text = "Rename";
             this.tlsDatabase_Rename.ToolTipText = "Rename database";
             this.tlsDatabase_Rename.Click += new System.EventHandler(this.tlsDatabase_Rename_Click);
@@ -1550,20 +1621,8 @@ namespace ScriptQL
             // 
             this.txtDatabase_Rename.Enabled = false;
             this.txtDatabase_Rename.Name = "txtDatabase_Rename";
-            this.txtDatabase_Rename.Size = new System.Drawing.Size(145, 24);
+            this.txtDatabase_Rename.Size = new System.Drawing.Size(145, 26);
             this.txtDatabase_Rename.ToolTipText = "Rename database to...";
-            // 
-            // tlsDatabase_KillConnections
-            // 
-            this.tlsDatabase_KillConnections.AutoSize = false;
-            this.tlsDatabase_KillConnections.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tlsDatabase_KillConnections.Image = ((System.Drawing.Image)(resources.GetObject("tlsDatabase_KillConnections.Image")));
-            this.tlsDatabase_KillConnections.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tlsDatabase_KillConnections.Name = "tlsDatabase_KillConnections";
-            this.tlsDatabase_KillConnections.Size = new System.Drawing.Size(32, 32);
-            this.tlsDatabase_KillConnections.Text = "Kill connections";
-            this.tlsDatabase_KillConnections.ToolTipText = "Forcibly close all current connections to the database";
-            this.tlsDatabase_KillConnections.Click += new System.EventHandler(this.tlsDatabase_KillConnections_Click);
             // 
             // grpMainDatabases
             // 
@@ -1575,7 +1634,7 @@ namespace ScriptQL
             this.grpMainDatabases.Margin = new System.Windows.Forms.Padding(0);
             this.grpMainDatabases.Name = "grpMainDatabases";
             this.grpMainDatabases.Padding = new System.Windows.Forms.Padding(1);
-            this.grpMainDatabases.Size = new System.Drawing.Size(733, 449);
+            this.grpMainDatabases.Size = new System.Drawing.Size(819, 448);
             this.grpMainDatabases.TabIndex = 31;
             this.grpMainDatabases.TabStop = false;
             this.grpMainDatabases.Text = "DATABASES";
@@ -1590,41 +1649,41 @@ namespace ScriptQL
             this.dgvDatabases.BackgroundColor = System.Drawing.SystemColors.Control;
             this.dgvDatabases.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvDatabases.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Sunken;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDatabases.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDatabases.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDatabases.ColumnHeadersHeight = 20;
             this.dgvDatabases.Cursor = System.Windows.Forms.Cursors.Default;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDatabases.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDatabases.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDatabases.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDatabases.Location = new System.Drawing.Point(1, 14);
             this.dgvDatabases.MultiSelect = false;
             this.dgvDatabases.Name = "dgvDatabases";
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDatabases.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDatabases.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvDatabases.RowHeadersVisible = false;
             this.dgvDatabases.RowTemplate.Height = 30;
             this.dgvDatabases.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvDatabases.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDatabases.Size = new System.Drawing.Size(731, 434);
+            this.dgvDatabases.Size = new System.Drawing.Size(817, 433);
             this.dgvDatabases.TabIndex = 27;
             this.dgvDatabases.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvDatabases_CellFormatting);
             this.dgvDatabases.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvDatabases_DataBindingComplete);
@@ -1695,6 +1754,7 @@ namespace ScriptQL
             // log_state
             // 
             this.log_state.Text = "state";
+            this.log_state.Width = 72;
             // 
             // log_message
             // 
@@ -1737,7 +1797,7 @@ namespace ScriptQL
             // 
             this.splitSubMain.Panel2.Controls.Add(this.panelToolbarDatabase);
             this.splitSubMain.Size = new System.Drawing.Size(1301, 478);
-            this.splitSubMain.SplitterDistance = 564;
+            this.splitSubMain.SplitterDistance = 478;
             this.splitSubMain.TabIndex = 0;
             // 
             // panelToolbarServer
@@ -1755,8 +1815,8 @@ namespace ScriptQL
             // panelToolbarServer.Panel2
             // 
             this.panelToolbarServer.Panel2.Controls.Add(this.splitServerControls1);
-            this.panelToolbarServer.Size = new System.Drawing.Size(564, 478);
-            this.panelToolbarServer.SplitterDistance = 25;
+            this.panelToolbarServer.Size = new System.Drawing.Size(478, 478);
+            this.panelToolbarServer.SplitterDistance = 26;
             this.panelToolbarServer.TabIndex = 0;
             // 
             // splitServerControls1
@@ -1778,7 +1838,7 @@ namespace ScriptQL
             // 
             this.splitServerControls1.Panel2.Controls.Add(this.prpServers);
             this.splitServerControls1.Panel2MinSize = 100;
-            this.splitServerControls1.Size = new System.Drawing.Size(564, 449);
+            this.splitServerControls1.Size = new System.Drawing.Size(478, 448);
             this.splitServerControls1.SplitterDistance = 115;
             this.splitServerControls1.TabIndex = 0;
             // 
@@ -1797,8 +1857,8 @@ namespace ScriptQL
             // panelToolbarDatabase.Panel2
             // 
             this.panelToolbarDatabase.Panel2.Controls.Add(this.grpMainDatabases);
-            this.panelToolbarDatabase.Size = new System.Drawing.Size(733, 478);
-            this.panelToolbarDatabase.SplitterDistance = 25;
+            this.panelToolbarDatabase.Size = new System.Drawing.Size(819, 478);
+            this.panelToolbarDatabase.SplitterDistance = 26;
             this.panelToolbarDatabase.TabIndex = 0;
             // 
             // tabTables
@@ -1884,37 +1944,37 @@ namespace ScriptQL
             this.dgvMain_Rows.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvMain_Rows.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgvMain_Rows.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMain_Rows.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMain_Rows.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvMain_Rows.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tableLayoutPanel1.SetColumnSpan(this.dgvMain_Rows, 14);
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMain_Rows.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMain_Rows.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvMain_Rows.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMain_Rows.GridColor = System.Drawing.SystemColors.ActiveBorder;
             this.dgvMain_Rows.Location = new System.Drawing.Point(5, 35);
             this.dgvMain_Rows.Margin = new System.Windows.Forms.Padding(5);
             this.dgvMain_Rows.Name = "dgvMain_Rows";
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMain_Rows.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMain_Rows.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvMain_Rows.Size = new System.Drawing.Size(1285, 603);
             this.dgvMain_Rows.TabIndex = 17;
             // 
@@ -2123,6 +2183,11 @@ namespace ScriptQL
             this.lblTablesStatus.Size = new System.Drawing.Size(0, 18);
             this.lblTablesStatus.TabIndex = 26;
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 23);
+            // 
             // Main
             // 
             this.AcceptButton = this.btnTableRefresh;
@@ -2172,6 +2237,7 @@ namespace ScriptQL
             ((System.ComponentModel.ISupportInitialize)(this.splitSubMain)).EndInit();
             this.splitSubMain.ResumeLayout(false);
             this.panelToolbarServer.Panel1.ResumeLayout(false);
+            this.panelToolbarServer.Panel1.PerformLayout();
             this.panelToolbarServer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.panelToolbarServer)).EndInit();
             this.panelToolbarServer.ResumeLayout(false);
@@ -2349,5 +2415,8 @@ namespace ScriptQL
         private SplitContainer panelToolbarServer;
         private SplitContainer splitServerControls1;
         private SplitContainer panelToolbarDatabase;
+        private ToolStripSeparator toolStripSeparator12;
+        private ToolStripSeparator toolStripSeparator13;
+        private ToolStripButton toolStripButton1;
     }
 }

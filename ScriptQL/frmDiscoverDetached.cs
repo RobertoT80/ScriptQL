@@ -16,11 +16,13 @@ namespace ScriptQL
         {
             InitializeComponent();
             CenterToParent();
+            
             this._oInstance = _oInstance;
         }
 
         private void frmDiscoverDetached_Load(object sender, EventArgs e)
         {
+            Icon = Owner.Icon;
             loadDefaultPaths();
             if (lstPaths.Items.Count > 0) btnSearch.Enabled = true;
         }

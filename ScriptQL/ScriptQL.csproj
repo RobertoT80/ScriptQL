@@ -124,7 +124,9 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\db1.ico" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Icons\109_AllAnnotations_Complete_16x16_72.png" />
   </ItemGroup>
@@ -241,6 +243,114 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dbDestruction.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\db2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gear.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LOGOP10.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LOGOP12.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LOGOP24.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\online.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\offline.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\undo_16.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ICO16_XYZ0.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dbread.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LOGOP16.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LOGOP18.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\s7.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\s2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\multi_user.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\single_user.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\restore1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\backup1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ren.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\new_db.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drop_db.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\db_check.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dbattach.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dbdetach.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\FolderSearch.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\online1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\offline1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\verify.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextFile.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\quit.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\settings.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Deleteall.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\rename.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

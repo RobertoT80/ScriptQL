@@ -1470,6 +1470,7 @@ namespace ScriptQL
 
         private void tlsEnableSystemDbs_Click(object sender, EventArgs e)
         {
+            if (_oInstance == null) return;
             var server = _oInstance;
             if (server.IsBusy)
             {
@@ -1844,21 +1845,20 @@ namespace ScriptQL
             if(_oServerIndex != -1 && (lstMain_Servers.Items.Count > _oServerIndex + 1)) lstMain_Servers.SetSelected(_oServerIndex, true);
         }
 
-
         private async void lstMain_Servers_SelectedValueChanged(object sender, EventArgs e)
         {
             var server = (SqlInstance) lstMain_Servers.SelectedItem; // need a copy to handle another instance while this is connecting
             _oInstance = server;
             Debug.Assert(server != null);
             var serverIndex = lstMain_Servers.SelectedIndex;
-            if (server.IsBusy == true)
+            if (server.IsBusy)
             {
                 prpServers.SelectedObject = server;
                 _databaseCollectionBindingList = new BindingList<SqlDatabase>(server.DatabasesCollection);
                 dgvDatabases.DataSource = _databaseCollectionBindingList;
             }
 
-            if (server.IsBusy == false && server.IsConnecting == false)
+            if (!server.IsBusy && !server.IsConnecting)
             {
                 prpServers.SelectedObject = null;
                 ButtonDisable();
