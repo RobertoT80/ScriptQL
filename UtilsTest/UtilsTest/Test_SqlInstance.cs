@@ -79,8 +79,6 @@ namespace UtilsTest
             foreach (SqlDatabase db in _s.DatabasesCollection)
             {
                 db.GetDatabaseProperties();
-                db.Check(_token);
-
             }
         }
     }

@@ -1849,7 +1849,7 @@ namespace ScriptQL
                     lstMain_Servers.Items.Add(server);
                 }
             }
-            if(_oServerIndex != -1 && (lstMain_Servers.Items.Count > _oServerIndex + 1)) lstMain_Servers.SetSelected(_oServerIndex, true);
+            if(_oServerIndex != -1 && (lstMain_Servers.Items.Count >= _oServerIndex + 1)) lstMain_Servers.SetSelected(_oServerIndex, true);
         }
 
         private async void lstMain_Servers_SelectedValueChanged(object sender, EventArgs e)
